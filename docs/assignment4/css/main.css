@@ -73,9 +73,6 @@ header {
 
 footer {
     border-top: 20px solid var(--light-bg-color);
-    position: absolute;
-    bottom: 0;
-    width: 100%;
 }
 
 header,
