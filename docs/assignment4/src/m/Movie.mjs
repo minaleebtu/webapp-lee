@@ -60,10 +60,10 @@ class Movie {
     }
     return validationResult;
   }
-  set movieId( mId) {
-    const validationResult = Movie.checkMovieIdAsId( mId);
+  set movieId( movieId) {
+    const validationResult = Movie.checkMovieIdAsId( movieId);
     if (validationResult instanceof NoConstraintViolation) {
-      this._movieId = mId;
+      this._movieId = movieId;
     } else {
       throw validationResult;
     }
@@ -72,13 +72,13 @@ class Movie {
   get title() {
     return this._title;
   }
-  static checkTitle(t) {
+  static checkTitle(title) {
     const TITLE_LENGTH_MAX = 120;
-    if (!t) {
+    if (!title) {
       return new MandatoryValueConstraintViolation("A title must be provided!");
-    } else if (!isNonEmptyString(t)) {
+    } else if (!isNonEmptyString(title)) {
       return new RangeConstraintViolation("The title must be a non-empty string!");
-    } else if (t.length > TITLE_LENGTH_MAX) {
+    } else if (title.length > TITLE_LENGTH_MAX) {
       return new StringLengthConstraintViolation(
           `The value of title must be at most ${TITLE_LENGTH_MAX} characters!`);
     }
@@ -86,10 +86,10 @@ class Movie {
       return new NoConstraintViolation();
     }
   }
-  set title( t) {
-    const validationResult = Movie.checkTitle( t);
+  set title( title) {
+    const validationResult = Movie.checkTitle( title);
     if (validationResult instanceof NoConstraintViolation) {
-      this._title = t;
+      this._title = title;
     } else {
       throw validationResult;
     }
@@ -136,12 +136,12 @@ class Movie {
     }
     return validationResult;
   }
-  set director( d) {
-    if (!d) {  // unset director
+  set director( director) {
+    if (!director) {  // unset director
       delete this._director;
     } else {
-      // d can be an ID reference or an object reference
-      const director_id = (typeof d !== "object") ? d : d.personId;
+      // director can be an ID reference or an object reference
+      const director_id = (typeof director !== "object") ? director : director.personId;
       const validationResult = Movie.checkDirector( director_id);
       if (validationResult instanceof NoConstraintViolation) {
         // create the new director reference
@@ -166,9 +166,9 @@ class Movie {
     }
     return validationResult;
   }
-  addActor( a) {
-    // a can be an ID reference or an object reference
-    const actor_id = (typeof a !== "object") ? parseInt( a) : a.personId;
+  addActor( actor) {
+    // actor can be an ID reference or an object reference
+    const actor_id = (typeof actor !== "object") ? parseInt( actor) : actor.personId;
     const validationResult = Movie.checkActor( actor_id);
 
     if (actor_id && validationResult instanceof NoConstraintViolation) {
@@ -179,9 +179,9 @@ class Movie {
       throw validationResult;
     }
   }
-  removeActor( a) {
-    // a can be an ID reference or an object reference
-    const actor_id = (typeof a !== "object") ? parseInt( a) : a.personId;
+  removeActor( actor) {
+    // actor can be an ID reference or an object reference
+    const actor_id = (typeof actor !== "object") ? parseInt( actor) : actor.personId;
     const validationResult = Movie.checkActor( actor_id);
 
     if (validationResult instanceof NoConstraintViolation) {
@@ -191,15 +191,15 @@ class Movie {
       throw validationResult;
     }
   }
-  set actors( a) {
+  set actors( actor) {
     this._actors = {};
-    if (Array.isArray(a)) {  // array of IdRefs
-      for (const idRef of a) {
+    if (Array.isArray(actor)) {  // array of IdRefs
+      for (const idRef of actor) {
         this.addActor( idRef);
       }
     } else {  // map of IdRefs to object references
-      for (const idRef of Object.keys( a)) {
-        this.addActor( a[idRef]);
+      for (const idRef of Object.keys( actor)) {
+        this.addActor( actor[idRef]);
       }
     }
   }
@@ -239,14 +239,14 @@ class Movie {
 }
 
 /***********************************************
-*** Class-level ("static") properties **********
-************************************************/
+ *** Class-level ("static") properties **********
+ ************************************************/
 // initially an empty collection (in the form of a map)
 Movie.instances = {};
 
 /********************************************************
-*** Class-level ("static") storage management methods ***
-*********************************************************/
+ *** Class-level ("static") storage management methods ***
+ *********************************************************/
 /**
  *  Create a new movie record/object
  */
@@ -269,7 +269,7 @@ Movie.add = function (slots) {
  *  that the new values are validated
  */
 Movie.update = function ({movieId, title, releaseDate,
-    actorIdRefsToAdd, actorIdRefsToRemove, director_id}) {
+                           actorIdRefsToAdd, actorIdRefsToRemove, director_id}) {
   const movie = Movie.instances[movieId],
       objectBeforeUpdate = cloneObject( movie);  // save the current state of movie
   var noConstraintViolated = true, updatedProperties = [];
@@ -295,7 +295,10 @@ Movie.update = function ({movieId, title, releaseDate,
         movie.removeActor( actor_id);
       }
     }
-    if (director_id && movie.director.personId !== parseInt(director_id)) {
+    if (!movie.director && director_id) {
+      movie.director = director_id;
+      updatedProperties.push("director");
+    } else if (director_id && movie.director.personId !== parseInt(director_id)) {
       movie.director = director_id;
       updatedProperties.push("director");
     }

@@ -86,14 +86,6 @@ createFormEl.releaseDate.addEventListener("input", function () {
     createFormEl.releaseDate.setCustomValidity(
     Movie.checkReleaseDate(createFormEl.releaseDate.value).message);
 });
-// createFormEl.title.addEventListener("input", function () {
-//     createFormEl.title.setCustomValidity(
-//         Movie.checkTitle( createFormEl.title.value).message);
-// });
-// createFormEl.releaseDate.addEventListener("input", function () {
-//     createFormEl.releaseDate.setCustomValidity(
-//         Movie.checkReleaseDate( createFormEl.releaseDate.value).message);
-// });
 
 // handle Save button click events
 createFormEl["commit"].addEventListener("click", function () {
@@ -190,18 +182,6 @@ updateFormEl["commit"].addEventListener("click", function () {
     }
     // add event listeners for responsive validation
     /* MISSING CODE */
-    // updateFormEl.title.addEventListener("input", function () {
-    //     updateFormEl.title.setCustomValidity(
-    //         Movie.checkTitle( updateFormEl.title.value).message);
-    // });
-    // updateFormEl.releaseDate.addEventListener("input", function () {
-    //     updateFormEl.releaseDate.setCustomValidity(
-    //         Movie.checkReleaseDate(updateFormEl.releaseDate.value).message);
-    // });
-    // updateFormEl.title.setCustomValidity(
-    //     Movie.checkTitle( slots.title).message);
-    // updateFormEl.releaseDate.setCustomValidity(
-    //     Movie.checkReleaseDate( slots.releaseDate).message);
 
     // commit the update only if all form field values are valid
     if (updateFormEl.checkValidity()) {

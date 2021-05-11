@@ -110,6 +110,7 @@ updateFormEl["commit"].addEventListener("click", function () {
     }
     // check all property constraints
     /* SIMPLIFIED CODE: no before-save validation of name */
+
     // save the input data only if all of the form fields are valid
     if (selectUpdatePersonEl.checkValidity()) {
         Person.update( slots);
@@ -151,7 +152,6 @@ document.getElementById("destroy")
 // handle Delete button click events
 deleteFormEl["commit"].addEventListener("click", function () {
     const personIdRef = selectDeletePersonEl.value;
-    console.log("personIdRef: " + personIdRef);
     if (!personIdRef) return;
     if (confirm( "Do you really want to delete this person?")) {
         Person.destroy( personIdRef);

@@ -140,7 +140,7 @@ button {
     border-radius: 2px;
 }
 
-div label, legend {
+div label, legend #text{
     font-weight: bold;
 }
 
