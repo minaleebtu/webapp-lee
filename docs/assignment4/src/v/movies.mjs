@@ -86,6 +86,10 @@ createFormEl.releaseDate.addEventListener("input", function () {
     createFormEl.releaseDate.setCustomValidity(
     Movie.checkReleaseDate(createFormEl.releaseDate.value).message);
 });
+createFormEl.selectDirector.addEventListener("input", function () {
+    createFormEl.selectDirector.setCustomValidity(
+        Movie.checkDirector(createFormEl.selectDirector.value).message);
+});
 
 // handle Save button click events
 createFormEl["commit"].addEventListener("click", function () {

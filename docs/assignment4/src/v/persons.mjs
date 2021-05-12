@@ -67,7 +67,10 @@ createFormEl.personId.addEventListener("input", function () {
     createFormEl.personId.setCustomValidity(
         Person.checkPersonIdAsId( createFormEl.personId.value).message);
 });
-/* SIMPLIFIED CODE: no responsive validation of name */
+createFormEl.name.addEventListener("input", function () {
+    createFormEl.name.setCustomValidity(
+        Person.checkName( createFormEl.name.value).message);
+});
 
 // handle Save button click events
 createFormEl["commit"].addEventListener("click", function () {
