@@ -1,6 +1,6 @@
 {
-  "name": "UnidirectionalAssociation App",
-  "short_name": "UnidirectionalAssociation App",
+  "name": "BidirectionalAssociation App",
+  "short_name": "BidirectionalAssociation App",
   "icons": [{
     "src": "android-chrome.png",
     "sizes": "512x512"
