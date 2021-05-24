@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Plain JS Unidirectional Association App: Manage Persons</title>
+    <title>Plain JS Bidirectional Association App: Manage Movies</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <meta name="theme-color" content="#ffffff"/>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="css/normalize.css"/>
     <link rel="stylesheet" href="css/main.css"/>
 
-    <script src="src/v/persons.mjs" type="module"></script>
+    <script src="src/v/movies.mjs" type="module"></script>
 </head>
 <body>
 <header>
@@ -23,8 +23,7 @@
             <figure><a href="index.html">
                 <img alt="" title="Home Button"
                      src="favicon.svg" /></a></figure>
-            <h1>Manage person data</h1>
-<!--            <h2>Unidirectional Association App</h2>-->
+            <h1>Manage movie data</h1>
         </div>
         <nav>
             <ul>
@@ -37,35 +36,38 @@
 <main>
     <div class="wrapper clearfix">
         <!-- ======================================================= -->
-        <section id="Person-M" class="UI-Page">
+        <section id="Movie-M" class="UI-Page">
             <!-- ======================================================= -->
             <ul class="menu">
                 <li>
-                    <button type="button" id="retrieveAndListAll">Retrieve/list all person
+                    <button type="button" id="moviesRetrieveAndListAll">Retrieve/list all movie
                         records
                     </button>
                 </li>
                 <li>
-                    <button type="button" id="create">Create a new person record</button>
+                    <button type="button" id="Create">Create a new movie record</button>
                 </li>
                 <li>
-                    <button type="button" id="update">Update a person record</button>
+                    <button type="button" id="Update">Update a movie record</button>
                 </li>
                 <li>
-                    <button type="button" id="destroy">Delete a person record</button>
+                    <button type="button" id="Delete">Delete a movie record</button>
                 </li>
             </ul>
             <div class="button"><a href="index.html">Back to Main menu</a></div>
         </section>
         <!-- ======================================================= -->
-        <section id="Person-R" class="UI-Page">
+        <section id="Movie-R" class="UI-Page">
             <!-- ======================================================= -->
-            <h1>Retrieve and list all person records</h1>
+            <h1>Retrieve and list all movie records</h1>
             <table>
                 <thead>
                 <tr>
-                    <th>Person ID</th>
-                    <th>Name</th>
+                    <th>Movie ID</th>
+                    <th>Title</th>
+                    <th>Release Date</th>
+                    <th>Director</th>
+                    <th>Actors</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -75,15 +77,26 @@
             </div>
         </section>
         <!-- ======================================================= -->
-        <section id="Person-C" class="UI-Page">
+        <section id="Movie-C" class="UI-Page">
             <!-- ======================================================= -->
-            <h1>Create a new person record</h1>
-            <form>
+            <h1>Create a new movie record</h1>
+            <form autocomplete="off">
                 <div class="field">
-                    <label>Person ID: <input type="text" name="personId" /></label>
+                    <label>Movie ID: <input type="text" name="movieId" /></label>
                 </div>
                 <div class="field">
-                    <label>Name: <input type="text" name="name" /></label>
+                    <label>Title: <input type="text" name="title" /></label>
+                </div>
+                <div class="field">
+                    <label>Release Date: <input type="date" name="releaseDate" /></label>
+                </div>
+                <div class="select-one">
+                    <label>Director: <select name="selectDirector"></select></label>
+                </div>
+                <div class="select-many">
+                    <label>Actors:
+                        <select name="selectActors" multiple="multiple"></select>
+                    </label>
                 </div>
                 <div class="button-group">
                     <button type="submit" name="commit">Save</button>
@@ -92,18 +105,28 @@
             </form>
         </section>
         <!-- ======================================================= -->
-        <section id="Person-U" class="UI-Page">
+        <section id="Movie-U" class="UI-Page">
             <!-- ======================================================= -->
-            <h1>Update a person record</h1>
+            <h1>Update a movie record</h1>
             <form>
                 <div class="select-one">
-                    <label>Select person: <select name="selectPerson"></select></label>
+                    <label>Select movie: <select name="selectMovie"></select></label>
                 </div>
                 <div class="field">
-                    <label>Person ID: <output name="personId"></output></label>
+                    <label>Movie ID: <output name="movieId"></output></label>
                 </div>
                 <div class="field">
-                    <label>Name: <input type="text" name="name" /></label>
+                    <label>Title: <input type="text" name="title" /></label>
+                </div>
+                <div class="field">
+                    <label>Release Date: <input type="date" name="releaseDate" /></label>
+                </div>
+                <div class="select-one">
+                    <label>Director: <select name="selectDirector"></select></label>
+                </div>
+                <div class="widget">
+                    <label>Actors:</label>
+                    <div class="MultiChoiceWidget"></div>
                 </div>
                 <div class="button-group">
                     <button type="submit" name="commit">Save changes</button>
@@ -112,12 +135,12 @@
             </form>
         </section>
         <!-- ======================================================= -->
-        <section id="Person-D" class="UI-Page">
+        <section id="Movie-D" class="UI-Page">
             <!-- ======================================================= -->
-            <h1>Delete a person record</h1>
+            <h1>Delete a movie record</h1>
             <form>
                 <div class="select-one">
-                    <label>Select person: <select name="selectPerson"></select></label>
+                    <label>Select movie: <select name="selectMovie"></select></label>
                 </div>
                 <div class="button-group">
                     <button type="submit" name="commit">Delete</button>

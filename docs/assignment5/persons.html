@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Plain JS Unidirectional Association App: Manage Persons</title>
+    <title>Plain JS Bidirectional Association App: Manage Persons</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <meta name="theme-color" content="#ffffff"/>
@@ -24,7 +24,6 @@
                 <img alt="" title="Home Button"
                      src="favicon.svg" /></a></figure>
             <h1>Manage person data</h1>
-<!--            <h2>Unidirectional Association App</h2>-->
         </div>
         <nav>
             <ul>
@@ -41,18 +40,18 @@
             <!-- ======================================================= -->
             <ul class="menu">
                 <li>
-                    <button type="button" id="retrieveAndListAll">Retrieve/list all person
+                    <button type="button" id="RetrieveAndListAll">Retrieve/list all person
                         records
                     </button>
                 </li>
                 <li>
-                    <button type="button" id="create">Create a new person record</button>
+                    <button type="button" id="Create">Create a new person record</button>
                 </li>
                 <li>
-                    <button type="button" id="update">Update a person record</button>
+                    <button type="button" id="Update">Update a person record</button>
                 </li>
                 <li>
-                    <button type="button" id="destroy">Delete a person record</button>
+                    <button type="button" id="Delete">Delete a person record</button>
                 </li>
             </ul>
             <div class="button"><a href="index.html">Back to Main menu</a></div>
@@ -66,6 +65,8 @@
                 <tr>
                     <th>Person ID</th>
                     <th>Name</th>
+                    <th>Directed Movies</th>
+                    <th>Played Movies</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
