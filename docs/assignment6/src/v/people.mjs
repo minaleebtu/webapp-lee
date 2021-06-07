@@ -10,6 +10,7 @@
  ***************************************************************/
 import Person from "../m/Person.mjs";
 import { fillSelectWithOptions } from "../../lib/util.mjs";
+import Actor from "../m/Actor.mjs";
 
 /***************************************************************
  Load data
