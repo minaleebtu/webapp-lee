@@ -284,8 +284,10 @@ function fillListFromMapOld( listEl, eTbl, displayProp) {
   // create list items from object property values
   for (const key of keys) {
     const listItemEl = document.createElement("li");
-    listItemEl.textContent = eTbl[key][displayProp];
-    listEl.appendChild( listItemEl);
+    if (eTbl[key]) {
+      listItemEl.textContent = eTbl[key][displayProp];
+      listEl.appendChild( listItemEl);
+    }
   }
 }
 

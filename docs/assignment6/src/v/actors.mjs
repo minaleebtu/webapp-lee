@@ -143,17 +143,21 @@ updateFormEl.agent.addEventListener("input", function () {
 // handle Save button click events
 updateFormEl["commit"].addEventListener("click", function () {
     const actorIdRef = updSelActorEl.value;
+    const agentValue = updateFormEl.agent.value;
     if (!actorIdRef) return;
     const slots = {
         personId: updateFormEl.personId.value,
         name: updateFormEl.name.value,
-        agent: updateFormEl.agent.value
     }
     // check all property constraints
     updateFormEl.name.setCustomValidity(
         Person.checkName( slots.name).message);
-    updateFormEl.name.setCustomValidity(
-        Actor.checkAgent( slots.agent).message);
+
+    if (agentValue) {
+        updateFormEl.agent.setCustomValidity(
+            Actor.checkAgent( agentValue).message);
+        slots.agent = agentValue;
+    }
 
     // save the input data only if all of the form fields are valid
     if (updSelActorEl.checkValidity()) {
@@ -173,7 +177,7 @@ function handleActorSelectChangeEvent() {
         const act = Actor.instances[key];
         updateFormEl.personId.value = act.personId;
         updateFormEl.name.value = act.name;
-        updateFormEl.agent.value = act.agent;
+        if (updateFormEl.agent.value) updateFormEl.agent.value = act.agent;
     } else {
         updateFormEl.reset();
     }
