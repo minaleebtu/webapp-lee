@@ -15,66 +15,6 @@ import Movie, { MovieCategoryEL } from "../m/Movie.mjs";
  */
 function generateTestData() {
     try {
-        // Director.instances["1"] = new Director({
-        //   personId: 1,
-        //   name: "Quentin Tarantino"
-        // });
-        // Director.instances["2"] = new Director({
-        //   personId: 2,
-        //   name: "George Lucas"
-        // });
-        // Director.instances["4"] = new Director({
-        //   personId: 4,
-        //   name: "Francis Ford Coppola"
-        // });
-        // Director.saveAll();
-        //
-        // Actor.instances["4"] =  new Actor({
-        //   personId: 4,
-        //   name: "Francis Ford Coppola",
-        //   agent: "merong"
-        // })
-        // Actor.instances["5"] = new Actor({
-        //   personId: 5,
-        //   name: "Uma Thurman",
-        //   agent: "Agent Uma"
-        // });
-        // Actor.instances["6"] = new Actor({
-        //   personId: 6,
-        //   name: "John Travolta",
-        //   agent: "Agent John"
-        // });
-        // Actor.instances["7"] = new Actor({
-        //   personId: 7,
-        //   name: "Ewan McGregor",
-        //   agent: "Agent Ewan"
-        // });
-        // Actor.instances["8"] = new Actor({
-        //   personId: 8,
-        //   name: "Natalie Portman",
-        //   agent: "Agent Natalie"
-        // });
-        // Actor.instances["9"] = new Actor({
-        //   personId: 9,
-        //   name: "Brad Pitt",
-        //   agent: "Agent Brad"
-        // });
-        // Actor.instances["10"] = new Actor({
-        //   personId: 10,
-        //   name: "Ten Zehn",
-        //   agent: "Agent Ten"
-        // });
-        // Actor.instances["11"] = new Actor({
-        //   personId: 11,
-        //   name: "Marlon Brando",
-        //   agent: "Agent Marlon"
-        // });
-        // Actor.instances["12"] = new Actor({
-        //   personId: 12,
-        //   name: "Al Pacino",
-        //   agent: "Agent Al"
-        // });
-        // Actor.saveAll();
         Person.instances["16"] = new Person({
             personId: 16,
             name: "John Forbes Nash",

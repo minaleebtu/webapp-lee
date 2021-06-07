@@ -80,9 +80,15 @@ function createDiv (id, classValues, txt) {
 function createSpan (id, classValues, txt) {
   return createElement("span", id, classValues, txt);
 }
-function createPushButton( id, classValues, txt) {
-  var pB = createElement("button", id, classValues, txt);
+/**
+ * Create a Push Button
+ * @param {string} txt [optional]
+ * @return {object}
+ */
+function createPushButton( txt) {
+  var pB = document.createElement("button");
   pB.type = "button";
+  if (txt) pB.textContent = txt;
   return pB;
 }
 /**
@@ -320,6 +326,7 @@ function createMultipleChoiceWidget(widgetContainerEl, selection, selectionRange
         // undoing a previous removal
         listItemEl.classList.remove("removed");
         // change button text
+        console.log("e.target: " + e.target);
         e.target.textContent = "✕";
       } else if (listItemEl.classList.contains("added")) {
         // removing an added item means moving it back to the selection range

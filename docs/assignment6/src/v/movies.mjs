@@ -307,6 +307,7 @@ updateFormEl["commit"].addEventListener("click", function () {
         updateSelectMovieEl.options[updateSelectMovieEl.selectedIndex].text = slots.title;
     }
 });
+
 /**
  * handle movie selection events
  * when a movie is selected, populate the form with the data of the selected movie

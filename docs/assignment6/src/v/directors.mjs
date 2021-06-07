@@ -128,9 +128,10 @@ updateFormEl["commit"].addEventListener("click", function () {
         personId: updateFormEl.personId.value,
         name: updateFormEl.name.value,
     }
+    // check name property constraint
+    updateFormEl.name.setCustomValidity(
+        Person.checkName( slots.name).message);
 
-    // check all property constraints
-    /* SIMPLIFIED CODE: no before-save validation of name */
     // save the input data only if all of the form fields are valid
     if (updSelDirectorEl.checkValidity()) {
         Director.update( slots);
@@ -138,6 +139,7 @@ updateFormEl["commit"].addEventListener("click", function () {
         updSelDirectorEl.options[updSelDirectorEl.selectedIndex].text = slots.name;
     }
 });
+
 /**
  * handle director selection events
  * when a director is selected, populate the form with the data of the selected director

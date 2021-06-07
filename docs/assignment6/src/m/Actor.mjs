@@ -12,11 +12,7 @@
  */
 import Person from "./Person.mjs";
 import {cloneObject, isNonEmptyString} from "../../lib/util.mjs";
-import {
-    MandatoryValueConstraintViolation,
-    NoConstraintViolation, RangeConstraintViolation,
-    ReferentialIntegrityConstraintViolation
-} from "../../lib/errorTypes.mjs";
+import { NoConstraintViolation, RangeConstraintViolation } from "../../lib/errorTypes.mjs";
 
 /**
  * The class Actor
@@ -27,21 +23,8 @@ class Actor extends Person {
     constructor ({personId, name, agent}) {
         super({personId, name});  // invoke Person constructor
         // assign additional properties
-        // this.agent = agent;
         if (agent) this.agent = agent;
     }
-    // static checkPersonIdAsIdRef(id) {
-    //     var validationResult = Actor.checkPersonId( id);
-    //     if ((validationResult instanceof NoConstraintViolation) && id) {
-    //
-    //         if (!Actor.instances[id]) {
-    //             // validationResult = new NoConstraintViolation;
-    //             validationResult = new ReferentialIntegrityConstraintViolation(
-    //                 '[Actor] There is no person record with this person ID!');
-    //         }
-    //     }
-    //     return validationResult;
-    // }
 
     get agent() {
         return this._agent;
@@ -55,9 +38,6 @@ class Actor extends Person {
             return new NoConstraintViolation();
         }
     }
-    // set agent(a) {
-    //     this._agent = a;
-    // }
     set agent(a) {
         const constraintViolation = Actor.checkAgent( a);
         if (constraintViolation instanceof NoConstraintViolation) {
@@ -66,6 +46,7 @@ class Actor extends Person {
             throw constraintViolation;
         }
     }
+
     toString() {
         var actStr = `Actor{ person ID: ${this.personId}, name: ${this.name}`;
         if (this.agent) actStr += `, agent: ${this.agent}`;
@@ -99,6 +80,7 @@ Actor.add = function (slots) {
         console.log(`[Actor] Saved: ${actor.name}`);
     }
 };
+
 /**
  *  Update an existing actor record
  */
@@ -130,6 +112,7 @@ Actor.update = function ({personId, name, agent}) {
         }
     }
 };
+
 /**
  *  Delete an existing actor record
  */
@@ -138,6 +121,7 @@ Actor.destroy = function (personId) {
     delete Actor.instances[personId];
     console.log(`Actor ${actor.name} deleted.`);
 };
+
 /**
  *  Retrieve all actor objects as records
  */
@@ -160,6 +144,7 @@ Actor.retrieveAll = function () {
     }
     console.log(`${Object.keys( Actor.instances).length} Actor records loaded.`);
 }
+
 /**
  * Save all Actor objects as rows
  */

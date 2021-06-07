@@ -9,15 +9,6 @@
 import Person from "./Person.mjs";
 import Movie from "./Movie.mjs";
 import { cloneObject } from "../../lib/util.mjs";
-import {
-    NoConstraintViolation,
-    MandatoryValueConstraintViolation,
-    RangeConstraintViolation,
-    FrozenValueConstraintViolation,
-    ConstraintViolation,
-    ReferentialIntegrityConstraintViolation
-}
-    from "../../lib/errorTypes.mjs";
 
 /**
  * The class Director
@@ -28,16 +19,6 @@ class Director extends Person {
     constructor ({personId, name}) {
         super({personId, name});  // invoke Person constructor
     }
-    // static checkPersonIdAsIdRef(id) {
-    //     var validationResult = Director.checkPersonId( id);
-    //     // if ((validationResult instanceof NoConstraintViolation) && id) {
-    //     //     if (!Director.instances[id]) {
-    //     //         validationResult = new ReferentialIntegrityConstraintViolation(
-    //     //             '[Director] There is no person record with this person ID!');
-    //     //     }
-    //     // }
-    //     return validationResult;
-    // }
 
     toString() {
         return `Director{ person ID: ${this.personId}, name: ${this.name}}`;
@@ -70,6 +51,7 @@ Director.add = function (slots) {
         console.log(`[Director] Saved: ${director.name}`);
     }
 };
+
 /**
  *  Update an existing director record
  */
@@ -97,6 +79,7 @@ Director.update = function ({personId, name}) {
         }
     }
 };
+
 /**
  *  Delete an existing director record
  */
@@ -113,6 +96,7 @@ Director.destroy = function (personId) {
     delete Director.instances[personId];
     console.log(`Director ${director.name} deleted.`);
 };
+
 /**
  *  Retrieve all director objects as records
  */
@@ -135,6 +119,7 @@ Director.retrieveAll = function () {
     }
     console.log(`${Object.keys( Director.instances).length} Director records loaded.`);
 };
+
 /**
  *  Save all director objects as records
  */

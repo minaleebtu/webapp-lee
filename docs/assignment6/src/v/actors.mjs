@@ -155,7 +155,6 @@ updateFormEl["commit"].addEventListener("click", function () {
     updateFormEl.name.setCustomValidity(
         Actor.checkAgent( slots.agent).message);
 
-    /*SIMPLIFIED CODE: no before-save validation of name */
     // save the input data only if all of the form fields are valid
     if (updSelActorEl.checkValidity()) {
         Actor.update( slots);
@@ -163,6 +162,7 @@ updateFormEl["commit"].addEventListener("click", function () {
         updSelActorEl.options[updSelActorEl.selectedIndex].text = slots.name;
     }
 });
+
 /**
  * handle actor selection events
  * on selection, populate the form with the data of the selected actor
