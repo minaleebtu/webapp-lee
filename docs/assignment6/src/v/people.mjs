@@ -163,6 +163,12 @@ document.getElementById("Delete").addEventListener("click", function () {
 //----- set up event handler for Delete button -------------------------
 deleteFormEl["commit"].addEventListener("click", function () {
     const personIdRef = delSelPersonEl.value;
+    const actors = Actor.instances;
+    for (const key of Object.keys( actors)) {
+        if (actors[key].agent == Person.instances[personIdRef].name) {
+            delete actors[key]._agent;
+        }
+    }
     if (!personIdRef) return;
     if (confirm("Do you really want to delete this person?")) {
         Person.destroy( personIdRef);
