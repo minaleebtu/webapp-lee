@@ -50,11 +50,14 @@ document.getElementById("RetrieveAndListAll")
         tableBodyEl.innerHTML = "";
         // populate view table
         for (const key of Object.keys(Person.instances)) {
-            const person = Person.instances[key];
+            let person = null;
             const row = tableBodyEl.insertRow();
 
-            row.insertCell().textContent = person.personId;
-            row.insertCell().textContent = person.name;
+            if (Person.instances[key].constructor.name == "Person") {
+                person = Person.instances[key];
+                row.insertCell().textContent = person.personId;
+                row.insertCell().textContent = person.name;
+            }
         }
         document.getElementById("Person-M").style.display = "none";
         document.getElementById("Person-R").style.display = "block";
