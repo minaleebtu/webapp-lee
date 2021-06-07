@@ -132,9 +132,7 @@ updateFormEl["commit"].addEventListener("click", function () {
         personId: updateFormEl.personId.value,
         name: updateFormEl.name.value
     }
-    // check all property constraints
-    updateFormEl.personId.setCustomValidity(
-        Person.checkPersonIdAsId( slots.personId).message);
+    // check name property constraint
     updateFormEl.name.setCustomValidity(
         Person.checkName( slots.name).message);
 
