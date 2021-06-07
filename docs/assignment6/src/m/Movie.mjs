@@ -306,6 +306,7 @@ class Movie {
     }
     static checkAbout( a, c) {
         const cat = parseInt( c);
+        //??? if (!cat) cat = MovieCategoryEL.BIOGRAPHY;
         if (cat === MovieCategoryEL.BIOGRAPHY && !a) {
             return new MandatoryValueConstraintViolation(
                 "A biography movie record must have an 'about' field!");
@@ -347,8 +348,32 @@ class Movie {
         }
         return movieStr + "}";
     }
+    /* Convert object to record */
+    toJSON() { // is invoked by JSON.stringify in Movie.saveAll
+        const rec = {};
+        for (const p of Object.keys( this)) {
+            // remove underscore prefix
+            if (p.charAt(0) !== "_") continue;
+            switch (p) {
+                case "_director":
+                    // convert object reference to ID reference
+                    if (this._director) rec.director_id = this._director.personId;
+                    break;
+                case "_actors":
+                    // convert the map of object references to a list of ID references
+                    rec.actorIdRefs = [];
+                    for (const actorIdStr of Object.keys( this.actors)) {
+                        rec.actorIdRefs.push( parseInt( actorIdStr));
+                    }
+                    break;
+                default:
+                    // remove underscore prefix
+                    rec[p.substr(1)] = this[p];
+            }
+        }
+        return rec;
+    }
 }
-
 /************************************************
  *** Class-level ("static") properties **********
  ************************************************/
@@ -375,7 +400,6 @@ Movie.add = function (slots) {
         console.log(`${movie.toString()} created!`);
     }
 };
-
 /**
  * Update an existing Movie row
  * where the slots argument contains the slots to be updated and performing
@@ -454,7 +478,6 @@ Movie.update = function ({movieId, title, releaseDate,
         }
     }
 };
-
 /**
  * Delete an existing Movie row
  */
@@ -466,7 +489,6 @@ Movie.destroy = function (movieId) {
         console.log(`There is no movie with movie ID ${movieId} in the database!`);
     }
 };
-
 /**
  *  Load all movie table rows and convert them to objects
  */
@@ -491,7 +513,22 @@ Movie.retrieveAll = function () {
 };
 
 /**
+ * Convert movie record to movie object
+ */
+Movie.convertRec2Obj = function (movieRow) {
+    var movie = null;
+    try {
+        movie = new Movie( movieRow);
+    } catch (e) {
+        console.log(`${e.constructor.name} while deserializing a movie record: ${e.message}`);
+    }
+    return movie;
+};
+
+/**
  *  Save all movie objects as records
+ * @method
+ * @static
  */
 Movie.saveAll = function () {
     const nmrOfMovies = Object.keys( Movie.instances).length;

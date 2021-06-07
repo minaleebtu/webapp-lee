@@ -89,7 +89,7 @@ document.getElementById("RetrieveAndListAll")
 const createFormEl = document.querySelector("section#Movie-C > form"),
     selectActorsEl = createFormEl.selectActors,
     selectDirectorEl = createFormEl.selectDirector,
-    createCategorySelectEl = createFormEl.category;
+    selectCategorySelectEl = createFormEl.category;
 //----- set up event handler for menu item "Create" -----------
 document.getElementById("Create").addEventListener("click", function () {
     document.getElementById("Movie-M").style.display = "none";
@@ -139,8 +139,8 @@ createFormEl.about.addEventListener("input", function () {
 });
 
 // set up the movie category selection list
-fillSelectWithOptions( createCategorySelectEl, MovieCategoryEL.labels);
-createCategorySelectEl.addEventListener("change", handleCategorySelectChangeEvent);
+fillSelectWithOptions( selectCategorySelectEl, MovieCategoryEL.labels);
+selectCategorySelectEl.addEventListener("change", handleCategorySelectChangeEvent);
 
 // handle Save button click events
 createFormEl["commit"].addEventListener("click", function () {
@@ -296,15 +296,12 @@ updateFormEl["commit"].addEventListener("click", function () {
         if (actorIdRefsToAdd.length > 0) {
             slots.actorIdRefsToAdd = actorIdRefsToAdd;
         }
-    }
-
-    // save the input data only if all form fields are valid
-    if (updateFormEl.checkValidity()) {
         Movie.update( slots);
         // un-render all segment/category-specific fields
         undisplayAllSegmentFields( updateFormEl, MovieCategoryEL.labels);
         // update the movie selection list's option element
         updateSelectMovieEl.options[updateSelectMovieEl.selectedIndex].text = slots.title;
+        selectActorsWidget.innerHTML = "";
     }
 });
 

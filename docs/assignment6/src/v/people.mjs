@@ -51,14 +51,9 @@ document.getElementById("RetrieveAndListAll")
         for (const key of Object.keys(Person.instances)) {
             const person = Person.instances[key];
             const row = tableBodyEl.insertRow();
-            const roles = [];
 
             row.insertCell().textContent = person.personId;
             row.insertCell().textContent = person.name;
-            for (const Subtype of Person.subtypes) {
-                if (person.personId in Subtype.instances) roles.push( Subtype.name);
-            }
-            row.insertCell().textContent = roles.toString();
         }
         document.getElementById("Person-M").style.display = "none";
         document.getElementById("Person-R").style.display = "block";
