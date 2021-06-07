@@ -287,12 +287,12 @@ form div.MultiChoiceWidget > ul > li.added {
        ==================== */
     nav a {
         float: left;
-        width: 5em;
+        width: 4.2em;
         margin: 0 1.7%;
         padding: 25px 2%;
     }
     nav li:first-child a {
-        margin-left: 0;
+        /*margin-left: 0;*/
     }
     nav li:last-child a {
         margin-right: 0;
