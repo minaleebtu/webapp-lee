@@ -3,18 +3,12 @@
  *                setter methods, and the special methods saveAll and retrieveAll
  * @person Gerd Wagner
  */
-import {cloneObject, isIntegerOrIntegerString, isNonEmptyString} from "../../lib/util.mjs";
+import {cloneObject, isNonEmptyString} from "../../lib/util.mjs";
 import {
     NoConstraintViolation, MandatoryValueConstraintViolation, RangeConstraintViolation,
-    UniquenessConstraintViolation, ReferentialIntegrityConstraintViolation, FrozenValueConstraintViolation
+    UniquenessConstraintViolation, ReferentialIntegrityConstraintViolation
 }
     from "../../lib/errorTypes.mjs";
-// import { Enumeration } from "../../lib/Enumeration.mjs";
-/**
- * Enumeration type
- * @global
- */
-// const PersonTypeEL = new Enumeration(["Director", "Actor"]);
 /**
  * Constructor function for the class Person
  */
@@ -24,9 +18,6 @@ class Person {
         // assign properties by invoking implicit setters
         this.personId = personId;  // number (integer)
         this.name = name;  // string
-        // this.category = category;
-        // if (category) this.category = category;
-        // if (agent) this.agent = agent;
     }
     get personId() {
         return this._personId;
@@ -104,59 +95,6 @@ class Person {
             throw constraintViolation;
         }
     }
-
-    // get category() {
-    //     return this._category;
-    // }
-    // static checkCategory( c) {
-    //     if (c === undefined) {
-    //         return new NoConstraintViolation();  // category is optional
-    //     } else if (!isIntegerOrIntegerString( c) || parseInt( c) < 1 ||
-    //         parseInt( c) > PersonTypeEL.MAX) {
-    //         return new RangeConstraintViolation(
-    //             `Invalid value for category: ${c}`);
-    //     } else {
-    //         return new NoConstraintViolation();
-    //     }
-    // }
-    // set category( c) {
-    //     var validationResult = null;
-    //     if (this.category) {  // already set/assigned
-    //         validationResult = new FrozenValueConstraintViolation(
-    //             "The category cannot be changed!");
-    //     } else {
-    //         validationResult = Person.checkCategory( c);
-    //     }
-    //     if (validationResult instanceof NoConstraintViolation) {
-    //         this._category = parseInt( c);
-    //     } else {
-    //         throw validationResult;
-    //     }
-    // }
-    // get agent() {
-    //     return this._agent;
-    // }
-    // static checkAgent(a) {
-    //     if (!a) {
-    //         return new NoConstraintViolation();
-    //     } else if (!isNonEmptyString(a)) {
-    //         return new RangeConstraintViolation("The agent must be a non-empty string!");
-    //     } else {
-    //         return new NoConstraintViolation();
-    //     }
-    // }
-    // // set agent(a) {
-    // //     this._agent = a;
-    // // }
-    // set agent(a) {
-    //     const constraintViolation = Person.checkAgent( a);
-    //     if (constraintViolation instanceof NoConstraintViolation) {
-    //         this._agent = a;
-    //     } else {
-    //         throw constraintViolation;
-    //     }
-    // }
-
 
     /* Convert object to string */
     toString() {
@@ -262,7 +200,13 @@ Person.retrieveAll = function () {
             Person.instances[key] = Subtype.instances[key];
         }
     }
-    console.log(`${Object.keys( Person.instances).length} Person records loaded.`);
+    let person = [];
+    for (const key of Object.keys(Person.instances)) {
+        if (Person.instances[key].constructor.name == "Person") {
+            person.push(Person.instances[key]);
+        }
+    }
+    console.log(`${Object.keys( person).length} Person records loaded.`);
 };
 
 /**
@@ -284,4 +228,3 @@ Person.saveAll = function () {
 };
 
 export default Person;
-// export { PersonTypeEL };

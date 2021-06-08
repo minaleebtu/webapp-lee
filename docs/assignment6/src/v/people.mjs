@@ -111,8 +111,15 @@ const updSelPersonEl = updateFormEl.selectPerson;
 document.getElementById("Update").addEventListener("click", function () {
     // reset selection list (drop its previous contents)
     updSelPersonEl.innerHTML = "";
+
+    let person = [];
+    for (const key of Object.keys(Person.instances)) {
+        if (Person.instances[key].constructor.name == "Person") {
+            person.push(Person.instances[key]);
+        }
+    }
     // populate the selection list
-    fillSelectWithOptions( updSelPersonEl, Person.instances,
+    fillSelectWithOptions( updSelPersonEl, person,
         "personId", {displayProp:"name"});
 
     document.getElementById("Person-M").style.display = "none";
@@ -157,8 +164,14 @@ const delSelPersonEl = deleteFormEl.selectPerson;
 document.getElementById("Delete").addEventListener("click", function () {
     // reset selection list (drop its previous contents)
     delSelPersonEl.innerHTML = "";
+    let person = [];
+    for (const key of Object.keys(Person.instances)) {
+        if (Person.instances[key].constructor.name == "Person") {
+            person.push(Person.instances[key]);
+        }
+    }
     // populate the selection list
-    fillSelectWithOptions( delSelPersonEl, Person.instances,
+    fillSelectWithOptions( delSelPersonEl, person,
         "personId", {displayProp:"name"});
     document.getElementById("Person-M").style.display = "none";
     document.getElementById("Person-D").style.display = "block";
