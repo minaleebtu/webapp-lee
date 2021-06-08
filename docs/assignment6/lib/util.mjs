@@ -159,30 +159,24 @@ function fillListFromMap (listEl, aa, displayProp) {
  * @param {object} optPar [optional]  A record of optional parameter slots
  *                 including optPar.displayProp and optPar.selection
  */
-function fillSelectWithOptions( selectEl, selectionRange, keyProp, optPar) {
-  var optionEl=null, displayProp="";
+function fillSelectWithOptions(selectEl, selectionRange, keyProp, optPar) {
+  var optionEl = null, obj = null, displayProp = "";
   // delete old contents
   selectEl.innerHTML = "";
   // create "no selection yet" entry
   if (!selectEl.multiple) selectEl.add( createOption(""," --- "));
   // create option elements from object property values
-  var options = Array.isArray( selectionRange) ? selectionRange : Object.keys( selectionRange);
-  for (let i=0; i < options.length; i++) {
-    if (Array.isArray( selectionRange)) {
-      optionEl = createOption( i, options[i]);
-    } else {
-      const key = options[i];
-      const obj = selectionRange[key];
-      if (!selectEl.multiple) obj.index = i+1;  // store selection list index
-      if (optPar && optPar.displayProp) displayProp = optPar.displayProp;
-      else displayProp = keyProp;
-      optionEl = createOption( key, obj[displayProp]);
-      // if invoked with a selection argument, flag the selected options
-      if (selectEl.multiple && optPar && optPar.selection &&
-          optPar.selection[keyProp]) {
-        // flag the option element with this value as selected
-        optionEl.selected = true;
-      }
+  var options = Object.keys( selectionRange);
+  for (const i of options.keys()) {
+    obj = selectionRange[options[i]];
+    if (optPar && optPar.displayProp) displayProp = optPar.displayProp;
+    else displayProp = keyProp;
+    optionEl = createOption( obj[keyProp], obj[displayProp]);
+    // if invoked with a selection argument, flag the selected options
+    if (selectEl.multiple && optPar && optPar.selection &&
+        optPar.selection[keyProp]) {
+      // flag the option element with this value as selected
+      optionEl.selected = true;
     }
     selectEl.add( optionEl);
   }
@@ -203,20 +197,7 @@ function typeName(val) {
   // all other cases: "Number", "String", "Boolean", "Function", "Array", "HTMLDocument", ...
   return typeName;
 }
-/**
- * Creates a clone of a data record object or extracts the data record part of an object
- * @param {object} obj
- */
-function cloneRecord(obj) {
-  var record = null;
-  for (var p in obj) {
-    if (obj.hasOwnProperty(p) && typeof obj[p] != "object" &&
-        typeof obj[p] != "null" && typeof obj[p] != "undefined") {
-      record[p] = obj[p];
-    }
-  }
-  return record;
-}
+
 /**
  * Creates a typed "data clone" of an object
  * Notice that Object.getPrototypeOf(obj) === obj.__proto__
@@ -328,7 +309,6 @@ function createMultipleChoiceWidget(widgetContainerEl, selection, selectionRange
         // undoing a previous removal
         listItemEl.classList.remove("removed");
         // change button text
-        console.log("e.target: " + e.target);
         e.target.textContent = "✕";
       } else if (listItemEl.classList.contains("added")) {
         // removing an added item means moving it back to the selection range
