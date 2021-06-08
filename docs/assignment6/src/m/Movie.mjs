@@ -333,9 +333,9 @@ class Movie {
      ***  Other Instance-Level Methods  ***********************
      **********************************************************/
     toString() {
-        console.log("this.movieId: " + this.movieId);
         var movieStr = `Movie{ movie ID: ${this.movieId}, title: ${this.title}, 
-        releaseDate: ${createIsoDateString(this.releaseDate)}, director: ${this.director.name}`;
+        releaseDate: ${createIsoDateString(this.releaseDate)}`;
+        if (this.director) movieStr += `, director: ${this.director.name}`
         if (this.actors) movieStr += `, actors: ${Object.keys( this.actors).join(",")}`
         switch (this.category) {
             case MovieCategoryEL.TVSERIESEPISODE:
