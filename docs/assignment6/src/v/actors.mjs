@@ -177,7 +177,7 @@ function handleActorSelectChangeEvent() {
         const act = Actor.instances[key];
         updateFormEl.personId.value = act.personId;
         updateFormEl.name.value = act.name;
-        if (updateFormEl.agent.value) updateFormEl.agent.value = act.agent;
+        if (act.agent) updateFormEl.agent.value = act.agent;
     } else {
         updateFormEl.reset();
     }
