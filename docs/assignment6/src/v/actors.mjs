@@ -100,7 +100,6 @@ createFormEl["commit"].addEventListener("click", function () {
 
     // save the input data only if all form fields are valid
     if (createFormEl.checkValidity()) {
-        console.log("slots.agent: " + slots.agent);
         Actor.add( slots);
     }
 });
