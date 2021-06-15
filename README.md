@@ -20,30 +20,55 @@
 &nbsp;To promote students to enjoy music by playing musical instruments with having regular performances and by going to a concert by experienced musicians.
 
 ### Title
-Music Box <br><br>
-**Domain name**: www.musicbox.com
+BTU Music Club (**Domain name**: btu-musicclub)
 
 ## List of information management tasks
-+ Manage personal information of members
-  + Title: Manage Members
-  + Description: You can manage the member's information such as a name of the member, the musical instrument which s/he plays, a telephone number, a role (for example, president, manager, etc).
++ Create the data of a new member of the club
+  + Title: Create a new Member
+  + Description: Creating a record of a new member such as a name of the member, the musical instrument which the member plays, a telephone number, a role (for example, president, manager, etc).
  
-+ Manage members of the committee
-  + Title: Manage Committee
-  + Description: You can manage the committee members such as a name of the member in committee, a role that s/he has, a telephone number of the committee's member.
++ Update the data of a member of the club
+  + Title: Update a Member
+  + Description: Making modification of the data of an exsisting member.
   
-+ Manage concerts' information
-  + Title: Manage Concerts
-  + Description: You can manage the concert's information such as a name of the concert, the date and time when the concert holds, a location where the concert is held, the short information about the concert.
++ Delete the data of a member of the club
+  + Title: Delete a Member
+  + Description: Deleting the data of the member who leaves the club.
   
-+ Manage meetings' information
-  + Title: Manage Meetings
-  + Description: You can manage announcements' information of meetings such as a title of the meeting, the date and time when the meeting is held, a person who manages the meeting.
++ List all members of the committee
+  + Title: List Committee's Members
+  + Description: Showing a list of committee's members such as a name of the member in committee, a role that s/he has, a telephone number of the committee's member so that people can contact to the specific committee's member with respect to the interests.
 
-+ Manage workshops' information
-  + Title: Manage Workshops
-  + Description: You can manage the workshops' information such as a title of the workshop, the start and end date of the workshop, a location of the workshop, a person who manages the workshop.
++ List all accouncements of concerts, meetings, workshops
+  + Title: List of Announcements
+  + Description: Showing a list of information about concerts, meetings, and workshops. The concert's information could be a name of the concert, the date and time when the concert holds, a location where the concert is held, the short information about the concert. The information of meetings could be what the meeting is about, the date and time when the meeting is held, a person who manages the meeting. The workshop's information could be a title of the workshop, the start and end date of the workshop, a location of the workshop, a person who manages the workshop.
 
-+ Manage ensembles' information
-  + Title: Manage Ensembles
-  + Description: You can mange all ensembles' and each ensemble's information such as the information of the members who are in the ensemble, a location for practice, the practice date and time. Types of ensembles would be wind band, flute choir, saxophone ensemble, string ensemble, etc.
++ Create an accouncement of concerts, meetings, workshops
+  + Title: Create an Announcement
+  + Description: Creating a new announcement of one of the concert, the meeting, and the workshop. The selection can be performed with the help of a category.
+
++ Update an accouncement of concerts, meetings, workshops
+  + Title: Update an Announcement
+  + Description: Modifiying the content of an existing announcement.
+
++ List all ensembles' information
+  + Title: List Ensembles
+  + Description: Showing the data of each ensemble such as the members who are in the ensemble, a location for practice, the practice date and time. Types of ensembles would be wind band, flute choir, saxophone ensemble, string ensemble, etc.
+
++ Create the data of the ensemble
+  + Title: Create an Ensemble
+  + Description: Creating a new ensemble's data.
+
++ Update the data of the ensemble
+  + Title: Update an Ensemble
+  + Description: Updating an exsisting ensemble's data.
+
++ Delete the data of the ensemble
+  + Title: Delete an Ensemble
+  + Description: Deleting the data of the ensemble if it is not active anymore.
+
+
+
+
+
+
