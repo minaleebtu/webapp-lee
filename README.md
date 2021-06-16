@@ -56,7 +56,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
 
 + List all ensembles' information
   + Title: List Ensembles
-  + Description: Showing the data of each ensemble such as the members who are in the ensemble, a location for practice, the practice date and time. Types of ensembles would be wind band, flute choir, saxophone ensemble, string ensemble, etc.
+  + Description: Showing the data of each ensemble such as information about the ensemble, the members who are in the ensemble, a location for practice, the practice date and time. Types of ensembles would be wind band, flute choir, saxophone ensemble, string ensemble, etc.
 
 + Create the data of the ensemble
   + Title: Create an Ensemble
