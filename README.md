@@ -40,7 +40,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
   
 + List all members of the committee
   + Title: List Committee's Members
-  + Description: Showing a list of committee's members such as a name of the member in committee, a role that s/he has, an email address of the committee's member so that people can contact to the specific committee's member with respect to the interests.
+  + Description: Showing a list of committee's members such as a name of the member in committee, a role that the member has, an email address of the committee's member so that people can contact to the specific committee's member with respect to the interests.
 
 + List all announcements of concerts, meetings, workshops
   + Title: List of Announcements
