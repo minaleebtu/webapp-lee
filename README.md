@@ -7,17 +7,20 @@
 ## Description and Activities
 
 ### Description 
-&nbsp;This music club was formed to promote taste and talent amongst Brandenburg Technology University (BTU) students by organizing regular performances and going to the concert by professionals. This club is for amateurs who are currently studying in BTU. It is a great opportunity to come together and discuss music for students who are interested in playing musical instruments or classical music. Meetings are usually held once a week for each ensemble and once a month for the entire ensembles.
+&nbsp;This music club was formed to promote taste and talent amongst Brandenburg Technology University (BTU) students by organizing regular performances and going to the concert by professionals. This club is for amateur players who are currently studying in BTU. It is a great opportunity to come together and discuss music for students who are interested in playing musical instruments or classical music. 
+
+&nbsp;Meetings are usually held once a week for each ensemble and once a month for the entire ensembles. Apart from these meetings, other meetings are scheduled based on the individual needs of students. Also, workshops are sometimes preceded depending on the schedules of the members to promote relationship between colleagues.
 
 ### Activities
 - Practice playing musical instruments which you want to play
 - Periodic performances twice in a year
 - Going to the concerts together to feel professional playing and get motivated
 - Workshops for promoting the relationship between colleagues 
+- Meetings for each ensemble or whole ensembles
 
 ## Purpose and Title
 ### Purpose
-&nbsp;To promote students to enjoy music by playing musical instruments with having regular performances and by going to a concert by experienced musicians.
+&nbsp;To promote students to enjoy music by playing musical instruments with having regular performances and by going to a concert by experienced musicians. Moreover, students in the music club can develop musical skills by playing the musical instruments and preparing for the performances as well as the organizational skills through creating groups and managing the concerts together with other students. The biggest purpose of this club is to enhance the enjoyment for music to the students.
 
 ### Title
 BTU Music Club (**Domain name**: btu-musicclub)
@@ -25,7 +28,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
 ## List of information management tasks
 + Create the data of a new member of the club
   + Title: Create a new Member
-  + Description: Creating a record of a new member such as a name of the member, the musical instrument which the member plays, an email address, a role (for example, president, manager, etc).
+  + Description: Creating a record of a new member such as a name of the member, the musical instrument which the member plays, an email address, a role (for example, a president, a manager, a leader of each ensemble etc).
  
 + Update the data of a member of the club
   + Title: Update a Member
