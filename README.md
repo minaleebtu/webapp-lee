@@ -42,15 +42,15 @@ BTU Music Club (**Domain name**: btu-musicclub)
   + Title: List Committee's Members
   + Description: Showing a list of committee's members such as a name of the member in committee, a role that s/he has, an email address of the committee's member so that people can contact to the specific committee's member with respect to the interests.
 
-+ List all accouncements of concerts, meetings, workshops
++ List all announcements of concerts, meetings, workshops
   + Title: List of Announcements
   + Description: Showing a list of information about concerts, meetings, and workshops. The concert's information could be a name of the concert, the date and time when the concert holds, a location where the concert is held, the short information about the concert. The information of meetings could be what the meeting is about, the date and time when the meeting is held, a person who manages the meeting. The workshop's information could be a title of the workshop, the start and end date of the workshop, a location of the workshop, a person who manages the workshop.
 
-+ Create an accouncement of concerts, meetings, workshops
++ Create an announcement of concerts, meetings, workshops
   + Title: Create an Announcement
   + Description: Creating a new announcement of one of the concert, the meeting, and the workshop. The selection can be performed with the help of a category.
 
-+ Update an accouncement of concerts, meetings, workshops
++ Update an announcement of concerts, meetings, workshops
   + Title: Update an Announcement
   + Description: Modifiying the content of an existing announcement.
 
