@@ -25,7 +25,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
 ## List of information management tasks
 + Create the data of a new member of the club
   + Title: Create a new Member
-  + Description: Creating a record of a new member such as a name of the member, the musical instrument which the member plays, a telephone number, a role (for example, president, manager, etc).
+  + Description: Creating a record of a new member such as a name of the member, the musical instrument which the member plays, an email address, a role (for example, president, manager, etc).
  
 + Update the data of a member of the club
   + Title: Update a Member
@@ -37,7 +37,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
   
 + List all members of the committee
   + Title: List Committee's Members
-  + Description: Showing a list of committee's members such as a name of the member in committee, a role that s/he has, a telephone number of the committee's member so that people can contact to the specific committee's member with respect to the interests.
+  + Description: Showing a list of committee's members such as a name of the member in committee, a role that s/he has, an email address of the committee's member so that people can contact to the specific committee's member with respect to the interests.
 
 + List all accouncements of concerts, meetings, workshops
   + Title: List of Announcements
