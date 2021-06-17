@@ -37,10 +37,6 @@ BTU Music Club (**Domain name**: btu-musicclub)
 + Delete the data of a member of the club
   + Title: Delete a Member
   + Description: Deleting the data of the member who leaves the club.
-  
-+ List all members of the committee
-  + Title: List Committee's Members
-  + Description: Showing a list of committee's members such as a name of the member in committee, a role that the member has, an email address of the committee's member so that people can contact to the specific committee's member with respect to the interests.
 
 + List all announcements of concerts, meetings, workshops
   + Title: List of Announcements
