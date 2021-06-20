@@ -66,8 +66,18 @@ BTU Music Club (**Domain name**: btu-musicclub)
   + Title: Delete an Ensemble
   + Description: Deleting the data of the ensemble if it is not active anymore.
 
-
-
-
-
-
+|requirements of client                                   |requirements elaborated  |
+|:------------------------------:|:-------------------:|
+|member related | |
+|Create a new Member  | creating a new club member record with name, instrument, mail address, role in {president, manager, ensemble leader} |
+|Update a Member  | modifying the data of an existing member  |
+|Delete a Member  | delete the data of a member of the club  |
+|announcement related | |
+|List of Announcements  | listing all announcements of event in {concert, meeting, workshop} with related information <ul><li>concert {title, date, location, description, acts}</li> <li>meeting {date, description, person in charge}</li> <li>workshop {title, date, location, description, person in charge}</li></ul>   |
+|Create an Announcement | creating an event announcement with a type in {concert, meeting, workshop}  |
+|Update an Announcement | modifying the date of an existing announcement  |
+|ensemble related | |
+|List Ensembles | listing all ensembles of type in {wind band, flute choir, saxophone ensemble, string ensemble} with related information {members, practicing location, practicing date} |
+|Create an Ensemble | creating a new ensemble  |
+|Update an Ensemble | modifying the date of an existing ensemble  |
+|Delete an Ensemble | deleting the data of an existing ensemble  |
