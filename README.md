@@ -73,7 +73,7 @@ BTU Music Club (**Domain name**: btu-musicclub)
 |Update a Member  | modifying the data of an existing member  |
 |Delete a Member  | delete the data of a member of the club  |
 |event related    | |
-|List of Events  | listing all events of event in {concert, meeting, workshop} with related information <ul><li>concert {title, date, location, description, acts}</li> <li>meeting {title, date, description, person in charge}</li> <li>workshop {title, date, location, description, person in charge}</li></ul>   |
+|List of Events  | listing all events of event in {concert, meeting, workshop} with related information <ul><li>concert {title, date, location, description, acts, person in charge}</li> <li>meeting {title, date, description, person in charge}</li> <li>workshop {title, date, location, description, person in charge}</li></ul>   |
 |Create an Event | creating an event with a type in {concert, meeting, workshop}  |
 |Update an Event | modifying the date of an existing event  |
 |ensemble related | |
