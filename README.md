@@ -81,3 +81,11 @@ BTU Music Club (**Domain name**: btu-musicclub)
 |Create an Ensemble | creating a new ensemble  |
 |Update an Ensemble | modifying the date of an existing ensemble  |
 |Delete an Ensemble | deleting the data of an existing ensemble  |
+
+
+## Domain Model ##
+![domain information model(2)](https://user-images.githubusercontent.com/74601338/123065703-b028e480-d40f-11eb-8ec2-419ca7c0f934.png)
+
+## Design Model ##
+![information design model(2)](https://user-images.githubusercontent.com/74601338/123065736-b9b24c80-d40f-11eb-89dc-13b4d2ec2417.png)
+
