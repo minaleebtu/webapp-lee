@@ -87,5 +87,6 @@ BTU Music Club (**Domain name**: btu-musicclub)
 ![domain information model(2)](https://user-images.githubusercontent.com/74601338/123065703-b028e480-d40f-11eb-8ec2-419ca7c0f934.png)
 
 ## Design Model based on [issue-#3](https://github.com/minaleebtu/webapp-lee/issues/3)
-![information design model(2)](https://user-images.githubusercontent.com/74601338/123065736-b9b24c80-d40f-11eb-89dc-13b4d2ec2417.png)
+![information_design_model3](https://user-images.githubusercontent.com/74371189/123155605-9c5d9c80-d468-11eb-934f-a1bed55dfade.png)
+
 
