@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Minimal Web App with JS and Firebase</title>
+  <meta name="description" content="A minimal effort web app with plain JS + Firebase."/>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+  <link rel="icon" type="image/png" href="favicon.ico"/>
+  <script src="js/c/initialize.js"></script>
+  <script src="js/m/Book.js"></script>
+  <script>
+    window.addEventListener("load", function () {
+      const clearButton = document.getElementById("clearData"),
+        generateTestDataButtons = document.querySelectorAll("button.generateTestData");
+      // set event handlers for the buttons "clearData" and "generateTestData"
+      clearButton.addEventListener("click", Book.clearData);
+      for (const btn of generateTestDataButtons) {
+        btn.addEventListener("click", Book.generateTestData);
+      }
+    });
+  </script>
+</head>
+<body>
+<main>
+<h1>Minimal App — Public Library</h1>
+<div class="subheading">A Minimal effort Web App built with Plain JS and Firebase</div>
+<figure style="float:right">
+  <img property="thumbnailUrl" src="machine-build.svg" alt="Web Engineering"
+       title="Icon made by Lorc under CC BY 3.0. Available on https://game-icons.net" width="120"/>
+</figure>
+<p>This app, which is accompanied by a <a href="https://web-engineering.info/tech/JsFirebaseApp/minimal-tutorial.html">tutorial</a>,
+  is the 1st example app of our incremental sequence of six examples of
+  <a href="https://web-engineering.info/JsFirebaseApp">Plain JavaScript and Firebase Web Apps</a>, which are also
+  discussed in the acompanying book <a href="https://web-engineering.info/JsFirebaseApp-Book">Building
+    Web Apps with Plain JS and Firebase</a>. This app supports the following operations:</p>
+<menu>
+  <li><a href="createBook.html">Create</a> a new book record</li>
+  <li><a href="retrieveAndListAllBooks.html">Retrieve</a> and list all book records</li>
+  <li><a href="updateBook.html">Update</a> a book record</li>
+  <li><a href="deleteBook.html">Delete</a> a book record</li>
+  <li style="margin-top: 1em"><button id="clearData" type="button">Clear database</button></li>
+  <li><button class="generateTestData" type="button">Generate test data</button></li>
+</menu>
+<p>For playing with the app, you may first want to
+  <button class="generateTestData" type="button">Generate test data</button> and then view it with
+  <a href="retrieveAndListAllBooks.html"><button type="button">Retrieve and list all books</button></a>.
+  For observing the internal status and error messages, turn on the JavaScript console.
+</p>
+<p>This minimal version of our JavaScript and Firebase data management application only includes a minimum of the overall
+  functionality required for a complete app. It takes care of only one object type ("books") and supports the four
+  standard data management operations (<strong>C</strong>reate / <strong>R</strong>etrieve / <strong>U</strong>pdate /
+  <strong>D</strong>elete), but it needs to be enhanced by styling the user interface with CSS rules and by adding further important parts
+  of the app's overall functionality, as explained in our other <a href="https://web-engineering.info/JsFrontendApp">Plain JS Front-End Web Apps with JavaScript</a> tutorials.</p>
+</main>
+<footer>
+  <hr/>
+    Copyright © 2015-2021 Gerd Wagner (<a href="https://www.tu-cottbus.de/fakultaet1/de/internet-technologie">Chair of Internet Technology</a>) and Juan-Francisco Reyes,
+    Brandenburg University of Technology, Germany. The code of this tutorial web app is licensed under
+    <a rel="license" href="https://www.codeproject.com/info/cpol10.aspx">The Code Project Open License (CPOL)</a>,
+    implying that the code is provided "as-is", can be modified to create derivative works,
+    can be redistributed, and can be used in commercial applications,	but the associated article
+    must not be distributed or republished without the copyright holder's consent.
+</footer>
+</body>
+</html>
