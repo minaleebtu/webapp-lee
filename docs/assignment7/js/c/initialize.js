@@ -9,7 +9,7 @@ const pl = {m:{}, v:{}, c:{}};
 // TODO: Replace the following with your app's Firebase project configuration
 if (!firebase.apps.length) {
   firebase.initializeApp({
-    apiKey: "",
+    apiKey: "AAAAA_Xzios:APA91bHiABRiWaIpS6MWKn2giXbefK_444eJqWcHjteR5Xv9IqN6eYV-gkBo5845s8WGOCA_D88uC_jgPeEIssmX7ys5Gvsmyhn3Mi4Sbn_DcKdoCWpdm6U7CA6sJDhFs3Uw_tS4KR2q",
     authDomain: "",
     projectId: ""
   });
