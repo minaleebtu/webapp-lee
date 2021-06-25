@@ -82,151 +82,116 @@ class Ensemble {
     }
 }
 
-/****************************************************
- *** Class-level ("static") properties ***************
- *****************************************************/
-// initially an empty collection (in the form of a map)
-Ensemble.instances = {};
-
-/**********************************************************
- ***  Class-level ("static") storage management methods ***
- **********************************************************/
+/********************************************************
+ *** Class-level ("static") storage management methods ***
+ *********************************************************/
 /**
- *  Create a new person record/object
+ *  Create a new movie record/object
  */
 Ensemble.add = function (slots) {
-
-    let ensemble;
-    try {
-        ensemble = new Ensemble(slots);
-    } catch (e) {
-        console.log(`${e.constructor.name}: ${e.message}`);
-        ensemble = null;
-    }
-    if (Ensemble) {
-        Ensemble.instances[Ensemble.ensembleId] = ensemble;
-        console.log(`Saved: ${ensemble.name}`);
-    }
+  const membersCollRef = db.collection("ensembles"),
+        memberDocRef = membersCollRef.doc( slots.ensembleId);
+  try {
+    await memberDocRef.set( slots);
+  } catch( e) {
+    console.error(`Error when adding book record: ${e}`);
+    return;
+  }
+  console.log(`Ensemble record ${slots.ensembleId} created.`);
 };
-
 /**
- *  Update an existing person record/object
+ *  Update an existing Movie record/object
+ *  properties are updated with implicit setters for making sure
+ *  that the new values are validated
  */
 Ensemble.update = function ({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
-
-    const ensemble = Ensemble.instances[String(ensembleId)],
-        objectBeforeUpdate = cloneObject(ensemble);
-    let ending = "", updatedProperties = [];
-    try {
-        if (ensembleType && ensemble.ensembleType !== namensembleType) {
-            ensemble.ensembleType = ensembleType;
-            updatedProperties.push("ensembleType");
+    const updSlots={};
+    const ensembleRec = await Ensemble.retrieve[ensembleId]    
+    
+    if (ensembleType && ensembleRec.ensembleType !== namensembleType) {
+        updSlots.ensembleType = ensembleType;
+    }
+    if (name && ensembleRec.name !== name) {
+        updSlots.name = name;
+    }
+    if (member && ensembleRec.member !== member) {
+        updSlots.member = member;
+    }
+    if (practicingLocation && ensembleRec.practicingLocation !== practicingLocation) {
+        updSlots.practicingLocation = practicingLocation;
+    }
+    if (practicingDate && ensembleRec.practicingDate !== practicingDate) {
+        updSlots.practicingDate = practicingDate;
+    }
+    
+    if (Object.keys( updSlots).length > 0) {
+        try {
+          await db.collection("ensembles").doc(ensembleId).update( updSlots);
+        } catch( e) {
+          console.error(`Error when updating member record: ${e}`);
+          return;
         }
-        if (name && ensemble.name !== name) {
-            ensemble.name = name;
-            updatedProperties.push("name");
-        }
-        if (member && ensemble.member !== member) {
-            ensemble.member = member;
-            updatedProperties.push("member");
-        }
-        if (practicingLocation && ensemble.practicingLocation !== practicingLocation) {
-            ensemble.practicingLocation = practicingLocation;
-            updatedProperties.push("practicingLocation");
-        }
-        if (practicingDate && ensemble.practicingDate !== practicingDate) {
-            ensemble.practicingDate = practicingDate;
-            updatedProperties.push("practicingDate");
-        }
-    } catch (e) {
-        console.log(`${e.constructor.name}: ${e.message}`);
-        // restore object to its state before updating
-        Ensemble.instances[ensembleId] = objectBeforeUpdate;
+        console.log(`Ensemble record ${ensembleId} modified.`);
     }
 };
 
 /**
- *  Delete an person object/record
- *  Since the movie-person association is unidirectional, a linear search on all
- *  movies is required for being able to delete the person from the movies' persons.
+ *  Delete an existing Movie record/object
  */
 Ensemble.destroy = function (ensembleId) {
-
-    const ensemble = Ensemble.instances[ensembleId];
-
-    if (!ensemble) {
-        console.log(`There is no ensemble with ID ${ensembleId} in the database!`);
-        return false;
-    }
-
-    // make sure person to delete is director of no movie anymore -> delete movies
-    /*for (const movieId of Object.keys(Movie.instances)) {
-        const movie = Movie.instances[movieId];
-
-        if (movie.about != undefined) {
-            if(movie.about == personId) {
-                Movie.destroy(movieId);
-            }
-        }
-        if (movie.directorId == personId) {
-            Movie.destroy(movieId);      
-        }
-    }
-
-    // delete all dependent movie records
-    for (const movieId of Object.keys(Movie.instances)) {
-        const movie = Movie.instances[movieId];
-
-        if (movie.actors[personId]) {
-
-            //delete movie.actors[personId];
-            movie.removeActor(personId);
-        }
-    }*/
-
-    delete Ensemble.instances[ensembleId];
-    console.log(`Ensemble ${Ensemble.ensembleId} deleted.`);
-
-    return true;
+      try {
+        await db.collection("ensembles").doc( ensembleId).delete();
+      } catch( e) {
+        console.error(`Error when deleting ensemble record: ${e}`);
+        return;
+      }
+      console.log(`Ensemble record ${ensembleId} deleted.`);
 };
 
-
 /**
- *  Load all person records and convert them to objects
+ *  Load all movie table rows and convert them to objects
+ *  Precondition: directors and people must be loaded first
  */
 Ensemble.retrieveAll = function () {
-
-    let ensembles;
-    if (!localStorage["ensembles"]) localStorage["ensembles"] = "{}";
-    try {
-        ensembles = JSON.parse(localStorage["ensembles"]);
-    } catch (e) {
-        console.log("Error when reading from Local Storage\n" + e);
-        ensembles = {};
-    }
-    for (const key of Object.keys(ensembles)) {
-        try {
-            // convert record to (typed) object
-            Ensemble.instances[key] = new Ensemble(ensembles[key]);
-        } catch (e) {
-            console.log(`${e.constructor.name} while deserializing ensemble ${key}: ${e.message}`);
-        }
-    }
-    console.log(`${Object.keys(ensembles).length} ensemble records loaded.`);
+  const ensemblesCollRef = db.collection("ensembles");
+  var ensemblesQuerySnapshot=null;
+  try {
+    ensemblesQuerySnapshot = await ensemblesCollRef.get();
+  } catch( e) {
+    console.error(`Error when retrieving ensemble records: ${e}`);
+    return null;
+  }
+  const ensembleDocs = ensemblesQuerySnapshot.docs,
+        ensembleRecords = ensembleDocs.map( d => d.data());
+  console.log(`${ensembleRecords.length} ensemble records retrieved.`);
+  return ensembleRecords;
 };
 
-/**
- *  Save all person objects as records
- */
-Ensemble.saveAll = function () {
+// Clear test data
+Ensemble.clearData = async function () {
+  if (confirm("Do you really want to delete all ensemble records?")) {
+    // retrieve all book documents from Firestore
+    const ensembleRecords = await Ensemble.retrieveAll();
+    // delete all documents
+    await Promise.all( ensembleRecords.map(
+      memberRec => db.collection("ensembles").doc( ensembleRec.ensembleId).delete()));
+    // ... and then report that they have been deleted
+    console.log(`${Object.values( ensembleRecords).length} events deleted.`);
+  }
+};
 
-    const nmrOfEnsembles = Object.keys(Ensemble.instances).length;
-    try {
-        localStorage["ensembles"] = JSON.stringify(Ensemble.instances);
-        console.log(`${nmrOfEnsembles} person records saved.`);
-    } catch (e) {
-        alert("Error when writing to Local Storage\n" + e);
-    }
+Ensemble.retrieve = async function (ensembleId) {
+  const ensemblesCollRef = db.collection("ensembles"),
+        ensembleDocRef = ensemblesCollRef.doc( ensembleId);
+  var ensembleDocSnapshot=null;
+  try {
+    ensembleDocSnapshot = await ensembleDocRef.get();
+  } catch( e) {
+    console.error(`Error when retrieving ensemble record: ${e}`);
+    return null;
+  }
+  const ensembleRecord = ensembleDocSnapshot.data();
+  return ensembleRecord;
 };
 
 export default Ensemble;

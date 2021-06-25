@@ -63,49 +63,7 @@ class Member {
     get instrument() {
         return this._instrument;
     }
-
-    // Serialize movie object
-    /*toString() {
-        let movieStr = `Movie{ ID: ${this.movieId}, title: ${this.title}, date: ${this.releaseDate}`;
-        if (this.directorId) movieStr += `, director: ${this.directorId}`;
-        return `${movieStr}, actors: ${Object.keys(this.actors).join(",")} }`;
-    }*/
-
-    // Convert object to record with ID references
-    /*toJSON() {  // is invoked by JSON.stringify
-        const rec = {};
-        for (const p of Object.keys(this)) {
-            // copy only property slots with underscore prefix
-            if (p.charAt(0) === "_") {
-                switch (p) {
-                    case "_directorId":
-                        // convert object reference to ID reference
-                        if (this._directorId) rec.directorId = this._directorId;
-                        break;
-
-                    case "_actors":
-                        // convert the map of object references to a list of ID references
-                        rec.actors = [];
-                        for (const personIdStr of Object.keys(this._actors)) {
-                            rec.actors.push(parseInt(personIdStr));
-                        }
-                        break;
-
-                    default:
-                        // remove underscore prefix
-                        rec[p.substr(1)] = this[p];
-                }
-            }
-        }
-        return rec;
-    }*/
 }
-
-/***********************************************
- *** Class-level ("static") properties **********
- ************************************************/
-// initially an empty collection (in the form of a map)
-Member.instances = {};
 
 /********************************************************
  *** Class-level ("static") storage management methods ***
@@ -114,17 +72,15 @@ Member.instances = {};
  *  Create a new movie record/object
  */
 Member.add = function (slots) {
-    let member;
-    try {
-        member = new Member(slots);
-    } catch (e) {
-        console.log(`${e.constructor.name}: ${e.message}`);
-        member = null;
-    }
-    if (member) {
-        Member.instances[member.memberId] = member;
-        console.log(`${member.toString()} created!`);
-    }
+  const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc( slots.memberId);
+  try {
+    await memberDocRef.set( slots);
+  } catch( e) {
+    console.error(`Error when adding book record: ${e}`);
+    return;
+  }
+  console.log(`Member record ${slots.memberId} created.`);
 };
 /**
  *  Update an existing Movie record/object
@@ -132,50 +88,51 @@ Member.add = function (slots) {
  *  that the new values are validated
  */
 Member.update = function ({memberId, role, name, instrument, mailAddress}) {
-    const member = Event.instances[memberId],
-        objectBeforeUpdate = cloneObject(member);  // save the current state of movie
-    try {
-        if (member.role !== role) {
-            member.role = role;
-            updatedProperties.push("role");
-        }
-
-        if (member.date !== date) {
-            member.date = date;
-            updatedProperties.push("date");
-        }
-
-        if (member.name !== name) {
-            member.name = name;
-            updatedProperties.push("name");
-        }
-
-        if (member.instrument !== instrument) {
-            member.instrument = instrument;
-            updatedProperties.push("instrument");
-        }
-
-        if (event.mailAddress !== mailAddress) {
-            event.mailAddress = mailAddress;
-            updatedProperties.push("mailAddress");
-        }
-
-    } catch (e) {
-        console.log(`${e.constructor.name}: ${e.message}`);
-        Member.instances[memberId] = objectBeforeUpdate;
+    const updSlots={};
+    const memberRec = await Member.retrieve[memberId]    
+    
+    if (memberRec.role !== role) {
+        updSlots.role = role;
     }
+
+    if (memberRec.date !== date) {
+        updSlots.date = date;
+    }
+
+    if (memberRec.name !== name) {
+        updSlots.name = name;
+    }
+
+    if (memberRec.instrument !== instrument) {
+        updSlots.instrument = instrument;
+    }
+
+    if (memberRec.mailAddress !== mailAddress) {
+        updSlots.mailAddress = mailAddress;
+    }
+    
+    if (Object.keys( updSlots).length > 0) {
+        try {
+          await db.collection("members").doc(memberId).update( updSlots);
+        } catch( e) {
+          console.error(`Error when updating member record: ${e}`);
+          return;
+        }
+        console.log(`Member record ${memberId} modified.`);
+      }
 };
 
 /**
  *  Delete an existing Movie record/object
  */
 Member.destroy = function (memberId) {
-    if (Member.instances[memberId]) {
-        console.log(`${Member.instances[memberId].toString()} deleted!`);
-        delete Member.instances[memberId];
-    } else {
-        console.log(`There is no event with ID ${memberId} in the database!`);
-    }
+      try {
+        await db.collection("members").doc( memberId).delete();
+      } catch( e) {
+        console.error(`Error when deleting member record: ${e}`);
+        return;
+      }
+      console.log(`Member record ${memberId} deleted.`);
 };
 
 /**
@@ -183,48 +140,45 @@ Member.destroy = function (memberId) {
  *  Precondition: directors and people must be loaded first
  */
 Member.retrieveAll = function () {
-    let members = {};
-    try {
-        if (!localStorage["members"]) localStorage["members"] = "{}";
-        else {
-            members = JSON.parse(localStorage["members"]);
-            console.log(`${Object.keys(members).length} member records loaded.`);
-        }
-    } catch (e) {
-        alert("Error when reading from Local Storage\n" + e);
-    }
-    for (const memberId of Object.keys(members)) {
-        try {
-            Member.instances[memberId] = Member.convertRec2Obj(members[memberId]);
-        } catch (e) {
-            console.log(`${e.constructor.name} while deserializing movie ${memberId}: ${e.message}`);
-        }
-    }
+  const membersCollRef = db.collection("members");
+  var membersQuerySnapshot=null;
+  try {
+    membersQuerySnapshot = await membersCollRef.get();
+  } catch( e) {
+    console.error(`Error when retrieving member records: ${e}`);
+    return null;
+  }
+  const memberDocs = membersQuerySnapshot.docs,
+        memberRecords = memberDocs.map( d => d.data());
+  console.log(`${memberRecords.length} member records retrieved.`);
+  return memberRecords;
 };
 
-// Convert record/row to object
-Member.convertRec2Obj = function (memberRec) {
-    let member = {};
-    try {
-        member = new Member(memberRec);
-    } catch (e) {
-        console.log(`${e.constructor.name} while deserializing a member record: ${e.message}`);
-
-    }
-    return member;
+// Clear test data
+Member.clearData = async function () {
+  if (confirm("Do you really want to delete all member records?")) {
+    // retrieve all book documents from Firestore
+    const memberRecords = await Member.retrieveAll();
+    // delete all documents
+    await Promise.all( memberRecords.map(
+      memberRec => db.collection("members").doc( memberRec.memberId).delete()));
+    // ... and then report that they have been deleted
+    console.log(`${Object.values( memberRecords).length} members deleted.`);
+  }
 };
 
-/**
- *  Save all movie objects
- */
-Member.saveAll = function () {
-    const nmrOfEvents = Object.keys(Member.instances).length;
-    try {
-        localStorage["members"] = JSON.stringify(Member.instances);
-        console.log(`${nmrOfEvents} event records saved.`);
-    } catch (e) {
-        alert("Error when writing to Local Storage\n" + e);
-    }
+Member.retrieve = async function (memberId) {
+  const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc( memberId);
+  var memberDocSnapshot=null;
+  try {
+    memberDocSnapshot = await memberDocRef.get();
+  } catch( e) {
+    console.error(`Error when retrieving member record: ${e}`);
+    return null;
+  }
+  const memberRecord = memberDocSnapshot.data();
+  return memberRecord;
 };
 
 export default Member;
