@@ -4,17 +4,17 @@
  */
 'use strict';
 // main namespace pl = "public library"
-const pl = {m:{}, v:{}, c:{}};
+const pl = {m: {}, v: {}, c: {}};
 // initialize Cloud Firestore through Firebase
 // TODO: Replace the following with your app's Firebase project configuration
 if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "AAAAA_Xzios:APA91bHiABRiWaIpS6MWKn2giXbefK_444eJqWcHjteR5Xv9IqN6eYV-gkBo5845s8WGOCA_D88uC_jgPeEIssmX7ys5Gvsmyhn3Mi4Sbn_DcKdoCWpdm6U7CA6sJDhFs3Uw_tS4KR2q",
-    authDomain: "",
-    projectId: ""
-  });
+    firebase.initializeApp({
+        apiKey: "AIzaSyA_QjC9lEIXw9UuFRBs_EUJSa22MzdcU4c",
+        authDomain: "btu-musicclub.firebaseapp.com",
+        projectId: "btu-musicclub"
+    });
 } else { // if already initialized
-  firebase.app();
+    firebase.app();
 }
 // initialize Firestore database interface
 const db = firebase.firestore();
