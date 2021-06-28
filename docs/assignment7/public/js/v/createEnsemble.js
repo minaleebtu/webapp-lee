@@ -15,6 +15,7 @@ pl.v.createEnsemble = {
         const slots = {
             ensembleId: formEl.ensembleId.value,
             ensembleType: formEl.ensembleType.value,
+            name: formEl.name.value,
             member: formEl.member.value,
             practicingLocation: formEl.practicingLocation.value,
             practicingDate: formEl.practicingDate.value
