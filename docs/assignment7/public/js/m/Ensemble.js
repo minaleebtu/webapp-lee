@@ -1,9 +1,3 @@
-/**
- * @fileOverview  The model class Ensemble with property definitions, (class-level)
- *                check methods, setter methods, and the special methods saveAll and retrieveAll
- * @person Gerd Wagner
- */
-import {cloneObject, isIntegerOrIntegerString} from "../../lib/util.mjs";
 
 /**
  * The class Ensemble
@@ -88,13 +82,13 @@ class Ensemble {
 /**
  *  Create a new movie record/object
  */
-Ensemble.add = function (slots) {
+Ensemble.add = async function (slots) {
   const membersCollRef = db.collection("ensembles"),
         memberDocRef = membersCollRef.doc( slots.ensembleId);
   try {
     await memberDocRef.set( slots);
   } catch( e) {
-    console.error(`Error when adding book record: ${e}`);
+    console.error(`Error when adding ensemble record: ${e}`);
     return;
   }
   console.log(`Ensemble record ${slots.ensembleId} created.`);
@@ -104,7 +98,7 @@ Ensemble.add = function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Ensemble.update = function ({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
+Ensemble.update = async function ({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
     const updSlots={};
     const ensembleRec = await Ensemble.retrieve[ensembleId]    
     
@@ -138,7 +132,7 @@ Ensemble.update = function ({ensembleId, ensembleType, name, member, practicingL
 /**
  *  Delete an existing Movie record/object
  */
-Ensemble.destroy = function (ensembleId) {
+Ensemble.destroy = async function (ensembleId) {
       try {
         await db.collection("ensembles").doc( ensembleId).delete();
       } catch( e) {
@@ -152,7 +146,7 @@ Ensemble.destroy = function (ensembleId) {
  *  Load all movie table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Ensemble.retrieveAll = function () {
+Ensemble.retrieveAll = async function () {
   const ensemblesCollRef = db.collection("ensembles");
   var ensemblesQuerySnapshot=null;
   try {
@@ -170,7 +164,7 @@ Ensemble.retrieveAll = function () {
 // Clear test data
 Ensemble.clearData = async function () {
   if (confirm("Do you really want to delete all ensemble records?")) {
-    // retrieve all book documents from Firestore
+    // retrieve all ensemble documents from Firestore
     const ensembleRecords = await Ensemble.retrieveAll();
     // delete all documents
     await Promise.all( ensembleRecords.map(
@@ -193,5 +187,3 @@ Ensemble.retrieve = async function (ensembleId) {
   const ensembleRecord = ensembleDocSnapshot.data();
   return ensembleRecord;
 };
-
-export default Ensemble;
