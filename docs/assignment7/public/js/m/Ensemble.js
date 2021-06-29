@@ -43,9 +43,9 @@ Ensemble.add = async function (slots) {
  */
 Ensemble.update = async function ({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
     const updSlots = {};
-    const ensembleRec = await Ensemble.retrieve[ensembleId];
+    const ensembleRec = await Ensemble.retrieve(ensembleId);
 
-    if (ensembleType && ensembleRec.ensembleType !== namensembleType) {
+    if (ensembleType && ensembleRec.ensembleType !== ensembleType) {
         updSlots.ensembleType = ensembleType;
     }
     if (name && ensembleRec.name !== name) {
