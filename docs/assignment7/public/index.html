@@ -9,17 +9,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
     <link rel="icon" type="image/png" href="../favicon.ico"/>
     <script src="../js/c/initialize.js"></script>
-    <script src="../js/m/Book.js"></script>
     <script src="../js/m/Ensemble.js"></script>
     <script>
         window.addEventListener("load", function () {
             const clearButton = document.getElementById("clearData"),
                 generateTestDataButtons = document.querySelectorAll("button.generateTestData");
             // set event handlers for the buttons "clearData" and "generateTestData"
-            clearButton.addEventListener("click", Book.clearData);
             clearButton.addEventListener("click", Ensemble.clearData);
             for (const btn of generateTestDataButtons) {
-                btn.addEventListener("click", Book.generateTestData);
                 btn.addEventListener("click", Ensemble.generateTestData);
             }
         });
@@ -40,10 +37,6 @@
         discussed in the acompanying book <a href="https://web-engineering.info/JsFirebaseApp-Book">Building
             Web Apps with Plain JS and Firebase</a>. This app supports the following operations:</p>
     <menu>
-        <li><a href="createBook.html">Create</a> a new book record</li>
-        <li><a href="retrieveAndListAllBooks.html">Retrieve</a> and list all book records</li>
-        <li><a href="updateBook.html">Update</a> a book record</li>
-        <li><a href="deleteBook.html">Delete</a> a book record</li>
         <li style="margin-top: 1em"><button id="clearData" type="button">Clear database</button></li>
         <li><button class="generateTestData" type="button">Generate test data</button></li>
 
