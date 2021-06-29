@@ -111,7 +111,7 @@ Ensemble.clearData = async function () {
         const ensembleRecords = await Ensemble.retrieveAll();
         // delete all documents
         await Promise.all(ensembleRecords.map(
-            memberRec => db.collection("ensembles").doc(ensembleRec.ensembleId).delete()));
+            ensembleRec => db.collection("ensembles").doc(ensembleRec.ensembleId).delete()));
         // ... and then report that they have been deleted
         console.log(`${Object.values(ensembleRecords).length} events deleted.`);
     }
@@ -129,4 +129,38 @@ Ensemble.retrieve = async function (ensembleId) {
     }
     const ensembleRecord = ensembleDocSnapshot.data();
     return ensembleRecord;
+};
+
+Ensemble.generateTestData = async function () {
+    let ensembleRecords = [
+        {
+            ensembleId: "0",
+            ensembleType: "flute choir",
+            name: "The Air Benders",
+            members: "",
+            practicingLocation: "Building A, Room 42",
+            practicingDate: "every Sunday at 8"
+        },
+        {
+            ensembleId: "1",
+            ensembleType: "saxophone ensemble",
+            name: "Epic Sax Guy and Friends",
+            members: "",
+            practicingLocation: "Building B, Room 69",
+            practicingDate: "every Wednesday at 7"
+        },
+        {
+            ensembleId: "2",
+            ensembleType: "saxophone ensemble",
+            name: "Cantina Band",
+            members: "",
+            practicingLocation: "Building C, Canteen",
+            practicingDate: "every Sunday, biweekly"
+        }
+    ];
+    // save all ensemble records
+    await Promise.all( ensembleRecords.map(
+        ensembleRec => db.collection("ensembles").doc( ensembleRec.ensembleId).set( ensembleRec)
+    ));
+    console.log(`${Object.keys( ensembleRecords).length} ensembles saved.`);
 };
