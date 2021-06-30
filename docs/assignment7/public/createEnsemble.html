@@ -9,15 +9,34 @@
     <script src="../js/c/initialize.js"></script>
     <script src="../js/m/Ensemble.js"></script>
     <script src="../js/v/createEnsemble.js"></script>
+
+    <style>
+        body {
+            background-image: url('matthew-kalapuch-sqJ4tLBiurw-unsplash.jpg');
+            background-color: black;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        main {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            text-align: left;
+            line-height: 30px;
+            color: black;
+            margin: 10 auto;
+        }
+    </style>
+
     <script>
         window.addEventListener("load", pl.v.createEnsemble.setupUserInterface);
     </script>
 </head>
 <body>
-<header>
-    <h1>Create a new ensemble record</h1>
-</header>
 <main>
+
+    <h1>Create a new ensemble record</h1>
     <form id="Ensemble">
         <div><label>EnsembleId: <input name="ensembleId"/></label></div>
         <div><label>Ensemble Type: <input name="ensembleType"/></label></div>
