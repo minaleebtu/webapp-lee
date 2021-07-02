@@ -10,6 +10,23 @@
 
     <link rel="icon" type="image/png" href="favicon.ico"/>
     <style>
+        html, body {
+            background-image: url('matthew-kalapuch-sqJ4tLBiurw-unsplash.jpg');
+            background-color: black;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+        }
+        main {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 30px;
+            text-align: left;
+            line-height: 30px;
+            color: black;
+            margin: 10 auto;
+        }
         #error {
             color: #ff3300;
             text-align: right;
@@ -34,9 +51,10 @@
 <body>
 <header>
     <div id="error" hidden="hidden"><small></small></div>
-    <h1>Welcome</h1>
+
 </header>
 <main>
+    <h1>Welcome</h1>
     <form id="User">
         <div>
             <label>Email: <input name="email" type="email"/></label>
