@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Minimal Web App with Plain JS and Firebase (with authentication): Verify Email</title>
+    <meta name="description" content="A minimal effort web app with plain JS and Firebase (with authentication)."/>
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+
+    <link rel="icon" type="image/png" href="favicon.ico"/>
+    <style>
+        h1 {
+            font-size: 32px;
+        }
+    </style>
+    <script src="js/c/initialize.js"></script>
+    <script src="js/v/authenticateUser.js"></script>
+    <script>
+        window.addEventListener("load", pl.v.authenticateUser.handleVerifyEmail);
+    </script>
+</head>
+<body>
+<main>
+    <h1></h1>
+    <p></p>
+</main>
+<footer>
+    <a></a>
+</footer>
+</body>
+</html>
