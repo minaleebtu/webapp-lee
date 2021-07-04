@@ -1,11 +1,35 @@
-.background-image {
+html, body {
     background-image: url('../matthew-kalapuch-sqJ4tLBiurw-unsplash.jpg');
+    background-color: black;
+    height: 100%;
+    background-position: center;
     background-repeat: no-repeat;
-    background-size: auto;
-
-    -webkit-filter: blur(5px);
-    -moz-filter: blur(5px);
-    -o-filter: blur(5px);
-    -ms-filter: blur(5px);
-    filter: blur(5px);
+    background-size: cover;
+    margin: 0;
+}
+main {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    text-align: left;
+    line-height: 30px;
+    color: black;
+    margin: 10 auto;
+}
+a.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    cursor: default;
+}
+div#login-management {
+    text-align: right;
+    padding: 1em;
+    background: #fffde9;
+    border: 1px solid #ffbb4c;
+}
+#error {
+    color: #ff3300;
+    text-align: right;
+    padding: 1em;
+    background: #fff4f4;
+    border: 1px solid #ff7653;
 }
