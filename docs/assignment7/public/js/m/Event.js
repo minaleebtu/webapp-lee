@@ -4,12 +4,12 @@
  *                and retrieveAll
  * @person Gerd Wagner
  */
-import {cloneObject, isIntegerOrIntegerString} from "../../lib/util.mjs";
 
-import {Enumeration} from "../../lib/Enumeration.mjs";
-import {ConstraintViolation, IntervalConstraintViolation} from "../../lib/errorTypes.mjs";
-
-const EventTypeEL = new Enumeration(["Concert", "Meeting", "Workshop"]);
+const EventTypeEL = {
+    concert: "Concert",
+    meeting: "Meeting",
+    workshop: "Workshop"
+}
 
 /**
  * The class Event
@@ -89,25 +89,25 @@ class Event {
 /**
  *  Create a new movie record/object
  */
-Event.add = function (slots) {
-  const eventsCollRef = db.collection("events"),
-        eventDocRef = eventsCollRef.doc( slots.eventId);
-  try {
-    await eventDocRef.set( slots);
-  } catch( e) {
-    console.error(`Error when adding event record: ${e}`);
-    return;
-  }
-  console.log(`Event record ${slots.eventId} created.`);
+Event.add = async function (slots) {
+    const eventsCollRef = db.collection("events"),
+        eventDocRef = eventsCollRef.doc(slots.eventId);
+    try {
+        await eventDocRef.set(slots);
+    } catch (e) {
+        console.error(`Error when adding event record: ${e}`);
+        return;
+    }
+    console.log(`Event record ${slots.eventId} created.`);
 };
 /**
  *  Update an existing Movie record/object
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Event.update = function ({eventId, eventType, title, date, description, personInCharge, participants}) {
-    const updSlots={};
-    const eventRec = await Member.retrieve[memberId]  
+Event.update = async function ({eventId, eventType, title, date, description, personInCharge, participants}) {
+    const updSlots = {};
+    const eventRec = await Event.retrieve[eventId]
     if (eventRec.eventType !== eventType) {
         updSlots.eventType = eventType;
     }
@@ -132,12 +132,12 @@ Event.update = function ({eventId, eventType, title, date, description, personIn
         updSlots.participants = participants;
     }
 
-    if (Object.keys( updSlots).length > 0) {
+    if (Object.keys(updSlots).length > 0) {
         try {
-          await db.collection("events").doc(eventId).update( updSlots);
-        } catch( e) {
-          console.error(`Error when updating event record: ${e}`);
-          return;
+            await db.collection("events").doc(eventId).update(updSlots);
+        } catch (e) {
+            console.error(`Error when updating event record: ${e}`);
+            return;
         }
         console.log(`Event record ${eventId} modified.`);
     }
@@ -146,61 +146,78 @@ Event.update = function ({eventId, eventType, title, date, description, personIn
 /**
  *  Delete an existing Movie record/object
  */
-Event.destroy = function (eventId) {
-      try {
-        await db.collection("events").doc( eventId).delete();
-      } catch( e) {
+Event.destroy = async function (eventId) {
+    try {
+        await db.collection("events").doc(eventId).delete();
+    } catch (e) {
         console.error(`Error when deleting event record: ${e}`);
         return;
-      }
-      console.log(`Event record ${eventId} deleted.`);
+    }
+    console.log(`Event record ${eventId} deleted.`);
 };
 
 /**
  *  Load all movie table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Event.retrieveAll = function () {
-  const eventsCollRef = db.collection("members");
-  var eventsQuerySnapshot=null;
-  try {
-    eventsQuerySnapshot = await eventsCollRef.get();
-  } catch( e) {
-    console.error(`Error when retrieving member records: ${e}`);
-    return null;
-  }
-  const eventDocs = eventsQuerySnapshot.docs,
-        eventRecords = eventDocs.map( d => d.data());
-  console.log(`${eventRecords.length} event records retrieved.`);
-  return eventRecords;
+Event.retrieveAll = async function () {
+    const eventsCollRef = db.collection("events");
+    var eventsQuerySnapshot = null;
+    try {
+        eventsQuerySnapshot = await eventsCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving event records: ${e}`);
+        return null;
+    }
+    const eventDocs = eventsQuerySnapshot.docs,
+        eventRecords = eventDocs.map(d => d.data());
+    console.log(`${eventRecords.length} event records retrieved.`);
+    return eventRecords;
 };
 
 // Clear test data
 Event.clearData = async function () {
-  if (confirm("Do you really want to delete all event records?")) {
-    // retrieve all events documents from Firestore
-    const eventRecords = await Event.retrieveAll();
-    // delete all documents
-    await Promise.all( eventRecords.map(
-      memberRec => db.collection("events").doc( eventRec.eventId).delete()));
-    // ... and then report that they have been deleted
-    console.log(`${Object.values( eventRecords).length} events deleted.`);
-  }
+    if (confirm("Do you really want to delete all event records?")) {
+        // retrieve all events documents from Firestore
+        const eventRecords = await Event.retrieveAll();
+        // delete all documents
+        await Promise.all(eventRecords.map(
+            eventRec => db.collection("events").doc(eventRec.eventId).delete()));
+        // ... and then report that they have been deleted
+        console.log(`${Object.values(eventRecords).length} events deleted.`);
+    }
 };
 
 Event.retrieve = async function (eventId) {
-  const eventsCollRef = db.collection("events"),
-        eventDocRef = membersCollRef.doc( eventId);
-  var eventDocSnapshot=null;
-  try {
-    eventDocSnapshot = await eventDocRef.get();
-  } catch( e) {
-    console.error(`Error when retrieving event record: ${e}`);
-    return null;
-  }
-  const eventRecord = eventDocSnapshot.data();
-  return eventRecord;
+    const eventsCollRef = db.collection("events"),
+        eventDocRef = eventsCollRef.doc(eventId);
+    var eventDocSnapshot = null;
+    try {
+        eventDocSnapshot = await eventDocRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving event record: ${e}`);
+        return null;
+    }
+    const eventRecord = eventDocSnapshot.data();
+    return eventRecord;
 };
 
-export default Event;
-export {EventTypeEL};
+Event.generateTestData = async function () {
+    let eventRecords = [
+        {
+            eventId: "0",
+            eventType: EventTypeEL.meeting,
+            title: "Big Party",
+            date: "tba",
+            description: "desc",
+            personInCharge: "Someone",
+            participants: ""
+        }
+    ];
+    // save all event records
+    await Promise.all(eventRecords.map(
+        eventRec => db.collection("events").doc(eventRec.eventId).set(eventRec)
+    ));
+    console.log(`${Object.keys(eventRecords).length} events saved.`);
+};
+

@@ -26,10 +26,10 @@ class Ensemble {
  *  Create a new movie record/object
  */
 Ensemble.add = async function (slots) {
-    const membersCollRef = db.collection("ensembles"),
-        memberDocRef = membersCollRef.doc(slots.ensembleId);
+    const ensemblesCollRef = db.collection("ensembles"),
+        ensembleDocRef = ensemblesCollRef.doc(slots.ensembleId);
     try {
-        await memberDocRef.set(slots);
+        await ensembleDocRef.set(slots);
     } catch (e) {
         console.error(`Error when adding ensemble record: ${e}`);
         return;
@@ -41,7 +41,7 @@ Ensemble.add = async function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Ensemble.update = async function ({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
+Ensemble.update = async function ({ensembleId, ensembleType, name, members, practicingLocation, practicingDate}) {
     const updSlots = {};
     const ensembleRec = await Ensemble.retrieve(ensembleId);
 
@@ -51,8 +51,8 @@ Ensemble.update = async function ({ensembleId, ensembleType, name, member, pract
     if (name && ensembleRec.name !== name) {
         updSlots.name = name;
     }
-    if (member && ensembleRec.member !== member) {
-        updSlots.member = member;
+    if (members && ensembleRec.members !== members) {
+        updSlots.members = members;
     }
     if (practicingLocation && ensembleRec.practicingLocation !== practicingLocation) {
         updSlots.practicingLocation = practicingLocation;
@@ -65,7 +65,7 @@ Ensemble.update = async function ({ensembleId, ensembleType, name, member, pract
         try {
             await db.collection("ensembles").doc(ensembleId).update(updSlots);
         } catch (e) {
-            console.error(`Error when updating member record: ${e}`);
+            console.error(`Error when updating ensemble record: ${e}`);
             return;
         }
         console.log(`Ensemble record ${ensembleId} modified.`);
@@ -113,7 +113,7 @@ Ensemble.clearData = async function () {
         await Promise.all(ensembleRecords.map(
             ensembleRec => db.collection("ensembles").doc(ensembleRec.ensembleId).delete()));
         // ... and then report that they have been deleted
-        console.log(`${Object.values(ensembleRecords).length} events deleted.`);
+        console.log(`${Object.values(ensembleRecords).length} ensembles deleted.`);
     }
 };
 

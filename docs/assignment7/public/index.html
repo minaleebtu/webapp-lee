@@ -10,9 +10,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
 
     <link rel="icon" type="image/png" href="../favicon.ico"/>
-    <script src="../js/c/initialize.js"></script>
-    <script src="../js/m/Ensemble.js"></script>
-    <script src="../js/m/Event.js"></script>
+    <script src="js/c/initialize.js"></script>
+    <script src="js/m/Ensemble.js"></script>
+    <script src="js/m/Event.js"></script>
+    <script src="js/m/Member.js"></script>
     <script src="js/v/authenticateUser.js"></script>
 
     <link rel="stylesheet" href="../css/main.css">
@@ -25,9 +26,12 @@
             // set event handlers for the buttons "clearData" and "generateTestData"
             clearButton.addEventListener("click", Ensemble.clearData);
             clearButton.addEventListener("click", Event.clearData);
+            clearButton.addEventListener("click", Member.clearData)
+
             for (const btn of generateTestDataButtons) {
                 btn.addEventListener("click", Ensemble.generateTestData);
                 btn.addEventListener("click", Event.generateTestData);
+                btn.addEventListener("click", Member.generateTestData);
             }
         });
     </script>

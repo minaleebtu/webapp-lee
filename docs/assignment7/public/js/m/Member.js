@@ -4,12 +4,15 @@
  *                and retrieveAll
  * @person Gerd Wagner
  */
-import {cloneObject, isIntegerOrIntegerString} from "../../lib/util.mjs";
 
-import {Enumeration} from "../../lib/Enumeration.mjs";
-import {ConstraintViolation, IntervalConstraintViolation} from "../../lib/errorTypes.mjs";
-
-const InstrumentEL = new Enumeration(["guitar", "bongo", "tone wood", "lute", "voice"]);
+const InstrumentEL = {
+    none : "None",
+    guitar : "Guitar",
+    bongo : "Bongo",
+    tone_wood : "Tone Wood",
+    lute : "Lute",
+    voice : "Voice"
+}
 
 /**
  * The class Member
@@ -71,7 +74,7 @@ class Member {
 /**
  *  Create a new movie record/object
  */
-Member.add = function (slots) {
+Member.add = async function (slots) {
   const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc( slots.memberId);
   try {
@@ -87,7 +90,7 @@ Member.add = function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Member.update = function ({memberId, role, name, instrument, mailAddress}) {
+Member.update = async function ({memberId, role, name, instrument, mailAddress}) {
     const updSlots={};
     const memberRec = await Member.retrieve[memberId]    
     
@@ -125,7 +128,7 @@ Member.update = function ({memberId, role, name, instrument, mailAddress}) {
 /**
  *  Delete an existing Movie record/object
  */
-Member.destroy = function (memberId) {
+Member.destroy = async function (memberId) {
       try {
         await db.collection("members").doc( memberId).delete();
       } catch( e) {
@@ -139,7 +142,7 @@ Member.destroy = function (memberId) {
  *  Load all movie table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Member.retrieveAll = function () {
+Member.retrieveAll = async function () {
   const membersCollRef = db.collection("members");
   var membersQuerySnapshot=null;
   try {
@@ -170,7 +173,7 @@ Member.clearData = async function () {
 Member.retrieve = async function (memberId) {
   const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc( memberId);
-  var memberDocSnapshot=null;
+  var memberDocSnapshot = null;
   try {
     memberDocSnapshot = await memberDocRef.get();
   } catch( e) {
@@ -181,5 +184,33 @@ Member.retrieve = async function (memberId) {
   return memberRecord;
 };
 
-export default Member;
-export {InstrumentEL};
+Member.generateTestData = async function () {
+    let memberRecords = [
+        {
+            memberId: "0",
+            name: "John Doe",
+            mailAddress: "bro@gmail.com",
+            role: "Artist",
+            instrument: InstrumentEL.Guitar
+        },
+        {
+            memberId: "1",
+            name: "Eminem",
+            mailAddress: "whiteboy@gmail.com",
+            role: "Artist",
+            instrument: InstrumentEL.Voice
+        },
+        {
+            memberId: "2",
+            name: "Mia Khalifa",
+            mailAddress: "stepsis@gmail.com",
+            role: "Manager",
+            instrument: InstrumentEL.None
+        }
+    ];
+    // save all member records
+    await Promise.all( memberRecords.map(
+        memberRec => db.collection("members").doc( memberRec.memberId).set( memberRec)
+    ));
+    console.log(`${Object.keys( membersRecords).length} members saved.`);
+};

@@ -2,7 +2,7 @@
  * @fileOverview  Contains various view functions for the use case listBooks
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
-pl.v.retrieveAndListAllEvent = {
+pl.v.retrieveAndListAllEvents = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#events>tbody");
         // load a list of all event records from Firestore
