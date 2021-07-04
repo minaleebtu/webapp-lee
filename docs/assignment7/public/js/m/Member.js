@@ -191,26 +191,26 @@ Member.generateTestData = async function () {
             name: "John Doe",
             mailAddress: "bro@gmail.com",
             role: "Artist",
-            instrument: InstrumentEL.Guitar
+            instrument: InstrumentEL.guitar
         },
         {
             memberId: "1",
             name: "Eminem",
             mailAddress: "whiteboy@gmail.com",
             role: "Artist",
-            instrument: InstrumentEL.Voice
+            instrument: InstrumentEL.voice
         },
         {
             memberId: "2",
             name: "Mia Khalifa",
             mailAddress: "stepsis@gmail.com",
             role: "Manager",
-            instrument: InstrumentEL.None
+            instrument: InstrumentEL.none
         }
     ];
     // save all member records
     await Promise.all( memberRecords.map(
         memberRec => db.collection("members").doc( memberRec.memberId).set( memberRec)
     ));
-    console.log(`${Object.keys( membersRecords).length} members saved.`);
+    console.log(`${Object.keys( memberRecords).length} members saved.`);
 };

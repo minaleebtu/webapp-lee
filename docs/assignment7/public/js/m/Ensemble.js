@@ -106,7 +106,10 @@ Ensemble.retrieveAll = async function () {
 
 // Clear test data
 Ensemble.clearData = async function () {
-    if (confirm("Do you really want to delete all ensemble records?")) {
+    if (
+        // confirm("Do you really want to delete all ensemble records?")
+        true
+    ) {
         // retrieve all ensemble documents from Firestore
         const ensembleRecords = await Ensemble.retrieveAll();
         // delete all documents

@@ -107,7 +107,8 @@ Event.add = async function (slots) {
  */
 Event.update = async function ({eventId, eventType, title, date, description, personInCharge, participants}) {
     const updSlots = {};
-    const eventRec = await Event.retrieve[eventId]
+    const eventRec = await Event.retrieve(eventId);
+
     if (eventRec.eventType !== eventType) {
         updSlots.eventType = eventType;
     }
@@ -177,7 +178,10 @@ Event.retrieveAll = async function () {
 
 // Clear test data
 Event.clearData = async function () {
-    if (confirm("Do you really want to delete all event records?")) {
+    if (
+        // confirm("Do you really want to delete all event records?")
+        true
+    ) {
         // retrieve all events documents from Firestore
         const eventRecords = await Event.retrieveAll();
         // delete all documents

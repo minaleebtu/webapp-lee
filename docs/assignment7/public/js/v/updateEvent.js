@@ -11,7 +11,7 @@ pl.v.updateEvent = {
         const eventRecords = await Event.retrieveAll();
         for (const eventRec of eventRecords) {
             const optionEl = document.createElement("option");
-            optionEl.text = eventRec.name;
+            optionEl.text = eventRec.title;
             optionEl.value = eventRec.eventId;
             selectEventEl.add(optionEl, null);
         }
