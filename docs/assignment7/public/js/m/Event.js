@@ -178,7 +178,7 @@ Event.retrieveAll = function () {
 // Clear test data
 Event.clearData = async function () {
   if (confirm("Do you really want to delete all event records?")) {
-    // retrieve all book documents from Firestore
+    // retrieve all events documents from Firestore
     const eventRecords = await Event.retrieveAll();
     // delete all documents
     await Promise.all( eventRecords.map(

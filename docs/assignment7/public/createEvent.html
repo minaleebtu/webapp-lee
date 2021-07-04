@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Minimal Web App with JS and Firebase: Create</title>
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+
+    <link rel="icon" type="image/png" href="../favicon.ico"/>
+    <script src="../js/c/initialize.js"></script>
+    <script src="../js/m/Event.js"></script>
+    <script src="../js/v/createEvent.js"></script>
+
+    <link rel="stylesheet" href="../css/main.css">
+
+    <script>
+        window.addEventListener("load", pl.v.createEvent.setupUserInterface);
+    </script>
+</head>
+<body>
+<main>
+    <h1>Create a new event record</h1>
+    <form id="Ensemble">
+        <div><label>EventID: <input name="eventId"/></label></div>
+        <div><label>Event Type: <input name="eventType"/></label></div>
+        <div><label>Title: <input name="title"/></label></div>
+        <div><label>Date: <input name="date"/></label></div>
+        <div><label>Description: <input name="description"/></label></div>
+        <div><label>Person In Charge: <input name="personInCharge"/></label></div>
+        <div><label>Participants: <input name="participants"/></label></div>
+        <div>
+            <button name="commit" type="button">Save</button>
+            <progress id="clearData" style="display:none"></progress>
+        </div>
+    </form>
+</main>
+<br>
+<footer>
+    <a href="../index.html">« Back to main menu</a>
+</footer>
+</body>
+</html>

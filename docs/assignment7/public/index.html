@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" href="../favicon.ico"/>
     <script src="../js/c/initialize.js"></script>
     <script src="../js/m/Ensemble.js"></script>
+    <script src="../js/m/Event.js"></script>
     <script src="js/v/authenticateUser.js"></script>
 
     <link rel="stylesheet" href="../css/main.css">
@@ -23,8 +24,10 @@
                 generateTestDataButtons = document.querySelectorAll("button.generateTestData");
             // set event handlers for the buttons "clearData" and "generateTestData"
             clearButton.addEventListener("click", Ensemble.clearData);
+            clearButton.addEventListener("click", Event.clearData);
             for (const btn of generateTestDataButtons) {
                 btn.addEventListener("click", Ensemble.generateTestData);
+                btn.addEventListener("click", Event.generateTestData);
             }
         });
     </script>
@@ -53,6 +56,11 @@
         <li><a href="retrieveAndListAllEnsembles.html">Retrieve</a> and list all ensembles</li>
         <li><a href="updateEnsemble.html" class="disabled">Update</a> an ensemble record</li>
         <li><a href="deleteEnsemble.html" class="disabled">Delete</a> an ensemble record</li>
+
+        <li><a href="createEvent.html" class="disabled">Create</a> a new event record</li>
+        <li><a href="retrieveAndListAllEvent.html">Retrieve</a> and list all events</li>
+        <li><a href="updateEvent.html" class="disabled">Update</a> an event record</li>
+        <li><a href="deleteEvent.html" class="disabled">Delete</a> an event record</li>
 
         <li style="margin-top: 1em"><button id="clearData" type="button" disabled="disabled">Clear database</button></li>
         <li><button class="generateTestData" type="button" disabled="disabled">Generate test data</button></li>
