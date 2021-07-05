@@ -92,16 +92,12 @@ Member.add = async function (slots) {
  */
 Member.update = async function ({memberId, role, name, instrument, mailAddress}) {
     const updSlots={};
-    const memberRec = await Member.retrieve[memberId]    
+    const memberRec = await Member.retrieve(memberId);    
     
     if (memberRec.role !== role) {
         updSlots.role = role;
     }
-
-    if (memberRec.date !== date) {
-        updSlots.date = date;
-    }
-
+    
     if (memberRec.name !== name) {
         updSlots.name = name;
     }

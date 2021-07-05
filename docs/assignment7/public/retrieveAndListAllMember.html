@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Retrieve Members</title>
+
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+
+    <link rel="icon" type="image/png" href="../favicon.ico"/>
+    <script src="../js/c/initialize.js"></script>
+    <script src="../js/m/Member.js"></script>
+    <script src="../js/v/retrieveAndListAllMember.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    <script>
+        window.addEventListener("load",
+            pl.v.retrieveAndListAllMember.setupUserInterface);
+    </script>
+</head>
+<body>
+<main>
+    <h1>Retrieve and list all Member records</h1>
+    <table id="members">
+        <thead>
+        <tr>
+            <th>MemberID</th>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Instrument</th>
+            <th>Mail Address</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</main>
+<br>
+<footer>
+    <a href="../index.html">« Back to main menu</a>
+</footer>
+</body>
+</html>

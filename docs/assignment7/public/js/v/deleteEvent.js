@@ -26,7 +26,7 @@ pl.v.deleteEvent = {
         if (eventId) {
             await Event.destroy(eventId);
             // remove deleted book from select options
-            selectEventEl.remove(selectEnsembleEl.selectedIndex);
+            selectEventEl.remove(selectEventEl.selectedIndex);
         }
     }
 }
