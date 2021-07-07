@@ -198,8 +198,8 @@ Member.generateTestData = async function () {
         },
         {
             memberId: "2",
-            name: "Mia Khalifa",
-            mailAddress: "stepsis@gmail.com",
+            name: "Maria Musterfrau",
+            mailAddress: "muster@gmail.com",
             role: "Manager",
             instrument: InstrumentEL.none
         }
