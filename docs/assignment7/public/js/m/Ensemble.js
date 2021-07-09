@@ -17,6 +17,38 @@ class Ensemble {
         if (practicingDate) this.practicingDate = practicingDate;
     }
 
+    /**
+     *  Getters / Setters
+     */
+
+    get ensembleId() {
+        return _ensembleId;
+    }
+
+    set ensembleId(id) {
+        console.log("setter called");
+        const validationResult = Ensamble.checkEnsembleId(id);
+        if (validationResult instanceof NoConstraintViolation) {
+            this._ensembleId = id;
+        } else {
+            throw validationResult;
+        }
+    }
+
+    static checkEnsembleId(id) {
+        if (id === undefined) {
+            return new MandatoryValueConstraintViolation(
+                "An ID must be provided!"
+            );
+        } else if (id == 42) {
+            return new MandatoryValueConstraintViolation(
+                "trolling"
+            );
+        } else {
+            return new NoConstraintViolation();
+        }
+    }
+
 }
 
 /********************************************************
@@ -167,3 +199,4 @@ Ensemble.generateTestData = async function () {
     ));
     console.log(`${Object.keys( ensembleRecords).length} ensembles saved.`);
 };
+
