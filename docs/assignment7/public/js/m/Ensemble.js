@@ -7,7 +7,7 @@
 class Ensemble {
     // using a single record parameter with ES6 function parameter destructuring
     constructor({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
-
+        console.log("ctor called");
         // assign properties by invoking implicit setters
         this.ensembleId = ensembleId;  // number (integer)
         this.ensembleType = ensembleType;  // string
@@ -58,6 +58,9 @@ class Ensemble {
  *  Create a new movie record/object
  */
 Ensemble.add = async function (slots) {
+
+    console.log("ensemble add called");
+
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(slots.ensembleId);
     try {

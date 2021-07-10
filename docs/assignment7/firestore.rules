@@ -1,8 +1,74 @@
+rules_version = '2';
 service cloud.firestore {
-  match /databases/{database}/documents {
-    // Allow anyone
-    match /{document=**} {
-      allow read, write; // or allow read, write: if true;
+    match /databases/{database}/documents { // {database} clause indicates that these rules apply to all databases in Firestore
+
+        match /{document=**} {
+            // allow write: if request.auth.token.email_verified == true;
+            allow read: if request.auth != null;
+
+            allow delete: if request.auth.token.email_verified == true;
+        }
+
+        /*
+         *  Ensembles
+         */
+        match /{ensembles}/{document=**} {
+            allow create: if request.auth.token.email_verified == true
+                 && request.resource.data.ensembleId != null ? checkEnsembleID(request.resource.data.ensembleId) : true;
+
+            allow update: if request.auth.token.email_verified == true
+                 && (request.resource.data.diff(resource.data).affectedKeys()
+                     .hasOnly(['ensembleType', 'name', 'members', 'practicingLocation', 'practicingDate']))
+                 && request.resource.data.ensembleType != null
+                 && request.resource.data.name != null;
+        }
+        function checkEnsembleID(id) {
+            return
+                !(exists(/databases/$(database)/documents/ensembles/$(ensembleId)))
+                && id > -1;
+        }
+
+        /*
+         *  Members
+         */
+        match /{members}/{document=**} {
+            allow create: if request.auth.token.email_verified == true
+                             && request.resource.data.memberId != null ? checkMemberID(request.resource.data.memberId) : true;
+
+            allow update: if request.auth.token.email_verified == true
+                             && (request.resource.data.diff(resource.data).affectedKeys()
+                                 .hasOnly(['role', 'name', 'instrument', 'mailAddress']))
+                             && request.resource.data.name != null
+                             && request.resource.data.mailAddress != null;
+        }
+        function checkMemberID(id) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(memberId)))
+                && id > -1;
+        }
+
+        /*
+         *  Events
+         */
+        match /{events}/{document=**} {
+            allow create: if request.auth.token.email_verified == true
+                             && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : true;
+
+            allow update: if request.auth.token.email_verified == true
+                             && (request.resource.data.diff(resource.data).affectedKeys()
+                                 .hasOnly(['eventType', 'title', 'date', 'description', 'personInCharge', 'participants']))
+                             && request.resource.data.title != null
+                             && request.resource.data.date != null ? checkDate(request.resource.data.date) : true;
+        }
+        function checkEventID(id) {
+            return
+                !(exists(/databases/$(database)/documents/events/$(eventId)))
+                && id > -1;
+        }
+        function checkDate(date) {
+            return true;
+        }
+
+
     }
-  }
 }
