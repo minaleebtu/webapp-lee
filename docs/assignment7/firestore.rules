@@ -14,18 +14,40 @@ service cloud.firestore {
          */
         match /{ensembles}/{document=**} {
             allow create: if request.auth.token.email_verified == true
-                 && request.resource.data.ensembleId != null ? checkEnsembleID(request.resource.data.ensembleId) : true;
+                 && request.resource.data.ensembleId != null ? checkEnsembleID(request.resource.data.ensembleId) : true
+                 && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
+                 && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : true;
 
             allow update: if request.auth.token.email_verified == true
                  && (request.resource.data.diff(resource.data).affectedKeys()
                      .hasOnly(['ensembleType', 'name', 'members', 'practicingLocation', 'practicingDate']))
-                 && request.resource.data.ensembleType != null
-                 && request.resource.data.name != null;
+                 && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
+                 && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
+                 && request.resource.data.practicingLocation != null ? checkPracticingLocation(request.resource.data.practicingLocation) : true;
         }
+
         function checkEnsembleID(id) {
             return
                 !(exists(/databases/$(database)/documents/ensembles/$(ensembleId)))
                 && id > -1;
+        }
+
+        function checkEnsembleType(type) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(type)))
+                && type.isString() && type.val().length > 0;
+        }
+
+        function checkEnsembleName(name) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(name)))
+                && name.isString() && name.val().length > 0;
+        }
+
+        function checkEnsemblePracticingLocation(practicingLocation) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(practicingLocation)))
+                && practicingLocation.isString() && practicingLocation.val().length > 0;
         }
 
         /*
@@ -33,13 +55,15 @@ service cloud.firestore {
          */
         match /{members}/{document=**} {
             allow create: if request.auth.token.email_verified == true
-                             && request.resource.data.memberId != null ? checkMemberID(request.resource.data.memberId) : true;
+                             && request.resource.data.memberId != null ? checkMemberID(request.resource.data.memberId) : true
+                             && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
+                             && request.resource.data.mailAddress != null ? checkMemberMail(request.resource.data.mailAddress) : false;
 
             allow update: if request.auth.token.email_verified == true
                              && (request.resource.data.diff(resource.data).affectedKeys()
                                  .hasOnly(['role', 'name', 'instrument', 'mailAddress']))
-                             && request.resource.data.name != null
-                             && request.resource.data.mailAddress != null;
+                             && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
+                             && request.resource.data.mailAddress != null  ? checkMemberMail(request.resource.data.mailAddress) : false;
         }
         function checkMemberID(id) {
             return
@@ -47,17 +71,33 @@ service cloud.firestore {
                 && id > -1;
         }
 
+        function checkMemberName(name) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(name)))
+                && name.isString() && name.val().length > 0;
+        }
+
+        function checkMemberMail(mail) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(mailAddress)))
+                && mail.isString() && mail.val().length > 0;
+        }
+
         /*
          *  Events
          */
         match /{events}/{document=**} {
             allow create: if request.auth.token.email_verified == true
-                             && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : true;
+                             && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : true
+                             && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
+                             && request.resource.data.personInCharge != null ? checkEventPersonInCharge(request.resource.data.personInCharge) : true
+                             && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false;
 
             allow update: if request.auth.token.email_verified == true
                              && (request.resource.data.diff(resource.data).affectedKeys()
                                  .hasOnly(['eventType', 'title', 'date', 'description', 'personInCharge', 'participants']))
-                             && request.resource.data.title != null
+                             && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false
+                             && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
                              && request.resource.data.date != null ? checkDate(request.resource.data.date) : true;
         }
         function checkEventID(id) {
@@ -65,10 +105,28 @@ service cloud.firestore {
                 !(exists(/databases/$(database)/documents/events/$(eventId)))
                 && id > -1;
         }
+
         function checkDate(date) {
             return true;
         }
 
+        function checkEventTitle(title) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(title)))
+                && title.isString() && title.val().length > 0;
+        }
+
+        function checkEventDescription(description) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(description)))
+                && description.isString() && description.val().length > 0;
+        }
+
+        function checkEventPersonInCharge(personInCharge) {
+            return
+                !(exists(/databases/$(database)/documents/members/$(personInCharge)))
+                && personInCharge.isString() && personInCharge.val().length > 0;
+        }
 
     }
 }
