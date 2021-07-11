@@ -24,6 +24,7 @@ service cloud.firestore {
                  && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
                  && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
                  && request.resource.data.practicingLocation != null ? checkPracticingLocation(request.resource.data.practicingLocation) : true;
+            allow delete: if request.auth.token.email_verified == true;
         }
 
         function checkEnsembleID(id) {
@@ -64,6 +65,7 @@ service cloud.firestore {
                                  .hasOnly(['role', 'name', 'instrument', 'mailAddress']))
                              && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
                              && request.resource.data.mailAddress != null  ? checkMemberMail(request.resource.data.mailAddress) : false;
+            allow delete: if request.auth.token.email_verified == true;
         }
         function checkMemberID(id) {
             return
@@ -99,6 +101,7 @@ service cloud.firestore {
                              && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false
                              && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
                              && request.resource.data.date != null ? checkDate(request.resource.data.date) : true;
+            allow delete: if request.auth.token.email_verified == true;
         }
         function checkEventID(id) {
             return
