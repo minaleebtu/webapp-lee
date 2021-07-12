@@ -21,21 +21,20 @@
 <main>
     <h1>Update a member record</h1>
     <form id="Member">
-        <div>
+        <div class="field">
             <label>Select member:
                 <select name="selectMember">
                     <option value=""> ---</option>
                 </select>
             </label>
         </div>
-        <div><label>MemberID:
+        <div class="field"><label>MemberID:
             <output name="memberId"/>
         </label></div>
-        role, name, instrument, mailAddress
-        <div><label>Role: <input name="role"/></label></div>
-        <div><label>Name: <input name="name"/></label></div>
-        <div><label>Instrument: <input name="instrument"/></label></div>
-        <div><label>Mail Address: <input name="mailAddress"/></label></div>
+        <div class="field"><label>Role: <input name="role"/></label></div>
+        <div class="field"><label>Name: <input name="name"/></label></div>
+        <div class="select-many"><label>Instrument: <input name="instrument"/></label></div>
+        <div class="field"><label>Mail Address: <input name="mailAddress"/></label></div>
         <div>
             <button name="commit" type="button">Save Changes</button>
         </div>
