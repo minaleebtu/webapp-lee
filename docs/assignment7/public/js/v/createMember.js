@@ -3,11 +3,22 @@
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.createMember = {
-    setupUserInterface: function () {
+    setupUserInterface: async function () {
         const saveButton = document.forms['Member'].commit;
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
             pl.v.createMember.handleSaveButtonClickEvent);
+
+        const formEl = document.forms['Member'];
+
+        formEl.memberId.addEventListener("input", async function() {
+            const validationResult = await Member.checkIDasID(
+                formEl.memberId.value
+            );
+            formEl.memberId.setCustomValidity(validationResult.message);
+        });
+
+
     },
     // save user input data
     handleSaveButtonClickEvent: async function () {

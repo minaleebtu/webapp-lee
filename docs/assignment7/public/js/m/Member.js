@@ -1,17 +1,10 @@
-/**
- * @fileOverview  The model class Movie with attribute definitions, (class-level)
- *                check methods, setter methods, and the special methods saveAll
- *                and retrieveAll
- * @person Gerd Wagner
- */
-
 const InstrumentEL = {
-    none : "None",
-    guitar : "Guitar",
-    bongo : "Bongo",
-    tone_wood : "Tone Wood",
-    lute : "Lute",
-    voice : "Voice"
+    none: "None",
+    guitar: "Guitar",
+    bongo: "Bongo",
+    tone_wood: "Tone Wood",
+    lute: "Lute",
+    voice: "Voice"
 }
 
 /**
@@ -19,16 +12,16 @@ const InstrumentEL = {
  * @class
  */
 class Member {
-    constructor({memberId, role, name, instrument, mailAddress}) {
+    constructor({memberId, roles, name, instrument, mailAddress}) {
         this.memberId = memberId;
         this.name = name;
         this.mailAddress = mailAddress;
-        if (role) this.role = role;
+        if (roles) this.roles = roles;
         if (instrument) this.instrument = instrument;
     }
 
     set memberId(c) {
-        const validationResult = Member.validateMemberID(c);
+        const validationResult = Member.checkID(c);
         if (validationResult instanceof NoConstraintViolation) {
             this._memberId = c;
         } else {
@@ -60,15 +53,15 @@ class Member {
         } else {
             throw validationResult;
         }
-        
+
     }
 
     get mailAddress() {
         return this._mailAddress;
     }
 
-    set role(a) {
-        this._role = {};
+    set roles(a) {
+        this._roles = {};
         if (Array.isArray(a)) {
             for (const idRef of a) {
                 this.addRole(idRef);
@@ -80,8 +73,8 @@ class Member {
         }
     }
 
-    get role() {
-        return this._role;
+    get roles() {
+        return this._roles;
     }
 
     set instrument(a) {
@@ -104,12 +97,12 @@ class Member {
     addRole(a) {
         const validationResult = Member.validateRole(a);
         if (a && validationResult instanceof NoConstraintViolation) {
-            if(!this._actors.includes(a)) {
-                this._actors.push(a);
+            if (!this._roles.includes(a)) {
+                this._roles.push(a);
             } else {
                 console.error(`Role ${a} is already included!`);
             }
-            
+
         } else {
             throw validationResult;
         }
@@ -118,7 +111,7 @@ class Member {
     addInstrument(a) {
         const validationResult = Member.checkInstrument(a);
         if (a && validationResult instanceof NoConstraintViolation) {
-            if(!this._instrument.includes(a)) {
+            if (!this._instrument.includes(a)) {
                 this._instrument.push(a);
             } else {
                 console.error(`Instrument ${a} is already added to this boi!`);
@@ -128,41 +121,61 @@ class Member {
         }
     }
 
-    static checkInstrument( r) {
+    static checkInstrument(r) {
         if (r === undefined) {
-          return new NoConstraintViolation(); //optional
-        } else if (!isIntegerOrIntegerString( r) || parseInt( r) < 0 ||
-            parseInt( r) > PersonRoleEL.MAX) {
-          return new RangeConstraintViolation(
-              `Invalid value for role: ${r}`);
+            return new NoConstraintViolation(); //optional
+        } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
+            parseInt(r) > PersonRoleEL.MAX) {
+            console.log(`Invalid value for instrument: ${r}`);
+            return new RangeConstraintViolation(
+                `Invalid value for instrument: ${r}`);
         } else {
-          return new NoConstraintViolation();
+            return new NoConstraintViolation();
         }
     }
 
-    //Validate movie id from param and a
-    static validateMemberID = function (memberId) {
+    // Validate member id from param and a
+    static checkID = function (memberId) {
         if (!isIntegerOrIntegerString(memberId)) {
+            console.log("ERROR: Member ID " + memberId + " is not a number!");
             return new RangeConstraintViolation(
                 "ERROR: Member ID " + memberId + " is not a number!");
         }
         if (memberId < 0) {
+            console.log("ERROR: Member ID is not positive!");
             return new RangeConstraintViolation(
                 "ERROR: Member ID is not positive!");
         }
-        if (isMovieIDEmpty(memberId)) {
+        if (isMemberIDEmpty(memberId)) {
+            console.log("ERROR: A value for the Member ID must be provided!");
             return new MandatoryValueConstraintViolation(
-                "ERROR: A value for the MemberID must be provided!");
+                "ERROR: A value for the Member ID must be provided!");
         }
-        if (isMovieIDUsed(memberId)) {
-            return new UniquenessConstraintViolation(
-                "ERROR: There is already a Member record with this Member ID!");
-        }
+
         return new NoConstraintViolation();
+    }
+
+    static checkIDasID = async function (memberId) {
+
+        const validationResult = Member.checkID(memberId);
+        if (!validationResult instanceof NoConstraintViolation) {
+            return validationResult
+        }
+
+        console.log("isMemberIDUsed 0");
+        var member = await db.collection("members").doc(memberId).get();
+        console.log("isMemberIDUsed 1");
+        if (member.exists) {
+            console.log("isMemberIDUsed 2");
+            return new UniquenessConstraintViolation("ERROR: Member ID already in use!");
+        }
+        console.log("isMemberIDUsed 3");
+        return validationResult;
     }
 
     static validateRole = function (role) {
         if (!isNonEmptyString(role)) {
+            console.log("ERROR: The role must be a non-empty string!");
             return new RangeConstraintViolation(
                 "ERROR: The role must be a non-empty string!");
         }
@@ -171,6 +184,7 @@ class Member {
 
     static validateMail = function (mail) {
         if (!isNonEmptyString(mail)) {
+            console.log("ERROR: The mail must be a non-empty string!");
             return new RangeConstraintViolation(
                 "ERROR: The mail must be a non-empty string!");
         }
@@ -179,6 +193,7 @@ class Member {
 
     static validateName = function (name) {
         if (!isNonEmptyString(name)) {
+            console.log("ERROR: The name must be a non-empty string!");
             return new RangeConstraintViolation(
                 "ERROR: The name must be a non-empty string!");
         }
@@ -191,33 +206,33 @@ class Member {
  *** Class-level ("static") storage management methods ***
  *********************************************************/
 /**
- *  Create a new movie record/object
+ *  Create a new member record/object
  */
 Member.add = async function (slots) {
-  const membersCollRef = db.collection("members"),
-        memberDocRef = membersCollRef.doc( slots.memberId);
-  try {
-    //todo: velidate slots
-    await memberDocRef.set( new Member(slots));
-  } catch( e) {
-    console.error(`Error when adding member record: ${e}`);
-    return;
-  }
-  console.log(`Member record ${slots.memberId} created.`);
+    const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc(slots.memberId);
+    try {
+        //todo: velidate slots
+        await memberDocRef.set(new Member(slots));
+    } catch (e) {
+        console.error(`Error when adding member record: ${e}`);
+        return;
+    }
+    console.log(`Member record ${slots.memberId} created.`);
 };
 /**
- *  Update an existing Movie record/object
+ *  Update an existing member record/object
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Member.update = async function ({memberId, role, name, instrument, mailAddress}) {
-    const updSlots={};
-    const memberRec = await Member.retrieve(memberId);    
-    
-    if (memberRec.role !== role) {
-        updSlots.role = role;
+Member.update = async function ({memberId, roles, name, instrument, mailAddress}) {
+    const updSlots = {};
+    const memberRec = await Member.retrieve(memberId);
+
+    if (memberRec.roles !== roles) {
+        updSlots.roles = roles;
     }
-    
+
     if (memberRec.name !== name) {
         updSlots.name = name;
     }
@@ -229,75 +244,75 @@ Member.update = async function ({memberId, role, name, instrument, mailAddress})
     if (memberRec.mailAddress !== mailAddress) {
         updSlots.mailAddress = mailAddress;
     }
-    
-    if (Object.keys( updSlots).length > 0) {
+
+    if (Object.keys(updSlots).length > 0) {
         try {
-          await db.collection("members").doc(memberId).update( updSlots);
-        } catch( e) {
-          console.error(`Error when updating member record: ${e}`);
-          return;
+            await db.collection("members").doc(memberId).update(updSlots);
+        } catch (e) {
+            console.error(`Error when updating member record: ${e}`);
+            return;
         }
         console.log(`Member record ${memberId} modified.`);
-      }
+    }
 };
 
 /**
- *  Delete an existing Movie record/object
+ *  Delete an existing member record/object
  */
 Member.destroy = async function (memberId) {
-      try {
-        await db.collection("members").doc( memberId).delete();
-      } catch( e) {
+    try {
+        await db.collection("members").doc(memberId).delete();
+    } catch (e) {
         console.error(`Error when deleting member record: ${e}`);
         return;
-      }
-      console.log(`Member record ${memberId} deleted.`);
+    }
+    console.log(`Member record ${memberId} deleted.`);
 };
 
 /**
- *  Load all movie table rows and convert them to objects
+ *  Load all member table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
 Member.retrieveAll = async function () {
-  const membersCollRef = db.collection("members");
-  var membersQuerySnapshot=null;
-  try {
-    membersQuerySnapshot = await membersCollRef.get();
-  } catch( e) {
-    console.error(`Error when retrieving member records: ${e}`);
-    return null;
-  }
-  const memberDocs = membersQuerySnapshot.docs,
-        memberRecords = memberDocs.map( d => d.data());
-  console.log(`${memberRecords.length} member records retrieved.`);
-  return memberRecords;
+    const membersCollRef = db.collection("members");
+    var membersQuerySnapshot = null;
+    try {
+        membersQuerySnapshot = await membersCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving member records: ${e}`);
+        return null;
+    }
+    const memberDocs = membersQuerySnapshot.docs,
+        memberRecords = memberDocs.map(d => d.data());
+    console.log(`${memberRecords.length} member records retrieved.`);
+    return memberRecords;
 };
 
 // Clear test data
 Member.clearData = async function () {
-  if (confirm("Do you really want to delete all member records?")) {
-    // retrieve all book documents from Firestore
-    const memberRecords = await Member.retrieveAll();
-    // delete all documents
-    await Promise.all( memberRecords.map(
-      memberRec => db.collection("members").doc( memberRec.memberId).delete()));
-    // ... and then report that they have been deleted
-    console.log(`${Object.values( memberRecords).length} members deleted.`);
-  }
+    if (confirm("Do you really want to delete all member records?")) {
+        // retrieve all book documents from Firestore
+        const memberRecords = await Member.retrieveAll();
+        // delete all documents
+        await Promise.all(memberRecords.map(
+            memberRec => db.collection("members").doc(memberRec.memberId).delete()));
+        // ... and then report that they have been deleted
+        console.log(`${Object.values(memberRecords).length} members deleted.`);
+    }
 };
 
 Member.retrieve = async function (memberId) {
-  const membersCollRef = db.collection("members"),
-        memberDocRef = membersCollRef.doc( memberId);
-  var memberDocSnapshot = null;
-  try {
-    memberDocSnapshot = await memberDocRef.get();
-  } catch( e) {
-    console.error(`Error when retrieving member record: ${e}`);
-    return null;
-  }
-  const memberRecord = memberDocSnapshot.data();
-  return memberRecord;
+    const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc(memberId);
+    var memberDocSnapshot = null;
+    try {
+        memberDocSnapshot = await memberDocRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving member record: ${e}`);
+        return null;
+    }
+    const memberRecord = memberDocSnapshot.data();
+    return memberRecord;
 };
 
 Member.generateTestData = async function () {
@@ -306,43 +321,35 @@ Member.generateTestData = async function () {
             memberId: "0",
             name: "John Doe",
             mailAddress: "bro@gmail.com",
-            role: "Artist",
+            roles: ["Artist"],
             instrument: InstrumentEL.guitar
         },
         {
             memberId: "1",
             name: "Eminem",
             mailAddress: "whiteboy@gmail.com",
-            role: "Artist",
+            roles: ["Artist"],
             instrument: InstrumentEL.voice
         },
         {
             memberId: "2",
             name: "Maria Musterfrau",
             mailAddress: "muster@gmail.com",
-            role: "Manager",
+            roles: ["Manager"],
             instrument: InstrumentEL.none
         }
     ];
     // save all member records
-    await Promise.all( memberRecords.map(
-        memberRec => db.collection("members").doc( memberRec.memberId).set( memberRec)
+    await Promise.all(memberRecords.map(
+        memberRec => db.collection("members").doc(memberRec.memberId).set(memberRec)
     ));
-    console.log(`${Object.keys( memberRecords).length} members saved.`);
+    console.log(`${Object.keys(memberRecords).length} members saved.`);
 };
-
-
 
 
 /*
 Copy Pasta Code inc
 */
-
-/**
- * @fileOverview  Defines utility procedures/functions
- * @person Gerd Wagner
- */
-
 
 /**
  * Verifies if a value represents an integer or integer string
@@ -354,6 +361,44 @@ function isIntegerOrIntegerString(x) {
         typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
 }
 
+function isMemberIDEmpty(memberId) {
+    return memberId == null;
+}
+
+async function isMemberIDUsed(memberId) {
+
+    const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc(memberId);
+    var memberDocSnapshot = null;
+    try {
+        memberDocSnapshot = await memberDocRef.get();
+    } catch (e) {
+        console.log("error");
+        // console.error(`Error when retrieving member record: ${e}`);
+        return false;
+    }
+    console.log("okay");
+    const memberRecord = memberDocSnapshot.data();
+    return true;
+
+
+    /*
+    console.log("isMemberIDUsed 0");
+    var member = await db.collection("members").doc(memberId).get();
+    console.log("isMemberIDUsed 1");
+    if (member.exists) {
+        console.log("isMemberIDUsed 2");
+        return true;
+    }
+    console.log("isMemberIDUsed 3");
+    return false;
+
+     */
+}
+
+function isNonEmptyString(s) {
+    return s != null;
+}
 
 // *************** D O M - Related ****************************************
 /**
@@ -522,7 +567,7 @@ function createMultipleChoiceWidget(widgetContainerEl, selection, selectionRange
             listItemEl = e.target.parentNode;
             listEl = listItemEl.parentNode;
             if (listEl.children.length <= minCard) {
-                alert("A movie must have at least one person!");
+                alert("A member must have at least one person!");
                 return;
             }
             if (listItemEl.classList.contains("removed")) {
