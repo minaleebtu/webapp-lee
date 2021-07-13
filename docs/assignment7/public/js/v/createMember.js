@@ -10,6 +10,18 @@ pl.v.createMember = {
             pl.v.createMember.handleSaveButtonClickEvent);
 
         const formEl = document.forms['Member'];
+        const selectInstrumentsEl = formEl.selectInstrument;
+
+        for(var i in InstrumentEL) {
+            console.log("s");
+            var opt = i;
+            var el = document.createElement("option");
+            el.textContent = InstrumentEL[opt];
+            el.value = InstrumentEL[opt];
+            //el.setAttribute('value', InstrumentEL[i].value);
+            //el.appendChild(document.createTextNode(InstrumentEL[i].value));
+            selectInstrumentsEl.appendChild(el);
+        }
 
         formEl.memberId.addEventListener("input", async function() {
             const validationResult = await Member.checkIDasID(
@@ -27,9 +39,15 @@ pl.v.createMember = {
             memberId: formEl.memberId.value,
             role: formEl.role.value,
             name: formEl.name.value,
-            instrument: formEl.instrument.value,
+            instrument: [],
             mailAddress: formEl.mailAddress.value
         };
+
+        const selInstrumentOptions = formEl.selectInstrument.selectedOptions;
+        for (const opt of selInstrumentOptions) {
+            var index = Object.values(InstrumentEL).indexOf(opt.value);
+            slots.instrument.push( index);
+        }
         await Member.add(slots);
         formEl.reset();
     }

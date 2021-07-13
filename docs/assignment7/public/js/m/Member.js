@@ -125,7 +125,7 @@ class Member {
         if (r === undefined) {
             return new NoConstraintViolation(); //optional
         } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
-            parseInt(r) > PersonRoleEL.MAX) {
+            parseInt(r) > InstrumentEL.MAX) {
             console.log(`Invalid value for instrument: ${r}`);
             return new RangeConstraintViolation(
                 `Invalid value for instrument: ${r}`);
@@ -202,18 +202,114 @@ class Member {
 
 }
 
+Member.validateSlots = async function (slots) {
+    //check memberid
+    var validationResult = Member.checkID(slots.memberId);
+    if (validationResult instanceof NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check name
+    validationResult = Member.validateName(slots.name);
+    if (validationResult instanceof NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check mail
+    validationResult = Member.validateMail(slots.mailAddress);
+    if (validationResult instanceof NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //validate roles
+    const tmp = [];
+    const a = slots.role;
+    console.log(a);
+    if (Array.isArray(a)) {
+        for (const idRef of a) {
+            validationResult = Member.validateRole(idRef);
+            if (a && validationResult instanceof NoConstraintViolation) {
+                if (!tmp.includes(idRef)) {
+                    tmp.push(idRef);
+                } else {
+                    console.error(`Role ${idRef} is already included!`);
+                }
+            } else {
+                throw validationResult;
+            }
+        }
+    } else {
+        for (const idRef of Object.keys(a)) {
+            validationResult = Member.validateRole(a[idRef]);
+            if (a && validationResult instanceof NoConstraintViolation) {
+                if (!this._roles.includes(a[idRef])) {
+                    this._roles.push(a[idRef]);
+                } else {
+                    console.error(`Role ${a[idRef]} is already included!`);
+                }
+
+            } else {
+                throw validationResult;
+            }
+        }
+    }
+
+    //validate instrument
+    const instrument = [];
+    const b = slots.instrument;
+    if (Array.isArray(b)) {
+        for (const idRef of b) {
+            validationResult = Member.checkInstrument(idRef);
+            if (idRef && validationResult instanceof NoConstraintViolation) {
+                if (!instrument.includes(idRef)) {
+                    instrument.push(idRef);
+                } else {
+                    console.error(`Instrument ${idRef} is already added to this boi!`);
+                }
+            } else {
+                throw validationResult;
+            }
+        }
+    } else {
+        for (const idRef of Object.keys(b)) {
+            validationResult = Member.checkInstrument(b[idRef]);
+            if (b[idRef] && validationResult instanceof NoConstraintViolation) {
+                if (!instrument.includes(b[idRef])) {
+                    instrument.push(b[idRef]);
+                } else {
+                    console.error(`Instrument ${b[idRef]} is already added to this boi!`);
+                }
+            } else {
+                throw validationResult;
+            }
+        }
+    }
+} 
+
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
 /**
  *  Create a new member record/object
  */
+
 Member.add = async function (slots) {
     const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc(slots.memberId);
     try {
+        console.log(slots);
+        //convert roles string
+        let str = slots.role;
+        slots.role = str.split(",");
         //todo: velidate slots
-        await memberDocRef.set(new Member(slots));
+        Member.validateSlots(slots);
+        await memberDocRef.set(slots);
     } catch (e) {
         console.error(`Error when adding member record: ${e}`);
         return;
