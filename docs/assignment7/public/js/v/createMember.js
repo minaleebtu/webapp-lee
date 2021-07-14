@@ -17,13 +17,10 @@ pl.v.createMember = {
 
         // fill menu with instument enum elements
         for(var i in InstrumentEL) {
-            // console.log("s");
             var opt = i;
             var el = document.createElement("option");
             el.textContent = InstrumentEL[opt];
             el.value = InstrumentEL[opt];
-            //el.setAttribute('value', InstrumentEL[i].value);
-            //el.appendChild(document.createTextNode(InstrumentEL[i].value));
             selectInstrumentsEl.appendChild(el);
         }
 

@@ -121,6 +121,22 @@ class Event {
         return new NoConstraintViolation();
     }
 
+    static checkIDasID = async function (eventId) {
+
+        const validationResult = Event.checkID(eventId);
+        if (!validationResult instanceof NoConstraintViolation) {
+            return validationResult;
+        }
+
+        var event = await db.collection("events").doc(eventId).get();
+
+        if (event.exists) {
+            return new UniquenessConstraintViolation("ERROR: Event ID already in use!");
+        }
+
+        return validationResult;
+    }
+
     static checkEventType(r) {
         if (r === undefined) {
             return new NoConstraintViolation(); //optional

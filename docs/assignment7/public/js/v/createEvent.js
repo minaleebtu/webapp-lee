@@ -4,17 +4,21 @@
  */
 pl.v.createEvent = {
     setupUserInterface: async function () {
-        const formEl = document.forms['Event'],
-            selectEventTypeEl = formEl.selectEventType;
-            selectParticipants = formEl.participants
-        const saveButton = document.forms['Event'].commit;
+        
+        const 
+            formEl = document.forms['Event'],
+            saveButton = document.forms['Event'].commit,
+            selectEventTypeEl = formEl.selectEventType,
+            selectParticipants = formEl.participants;
+        
+
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
             pl.v.createEvent.handleSaveButtonClickEvent);
 
         // fill menu with event enum elements
         for(var i in EventTypeEL) {
-            // console.log("s");
+
             var opt = i;
             var el = document.createElement("option");
             el.textContent = EventTypeEL[opt];
@@ -23,15 +27,61 @@ pl.v.createEvent = {
         }
 
         const ensembleRecords = await retrieveAllEnsembles();
-        // for each book, create a table row with a cell for each attribute
         for (const ensembleRec of ensembleRecords) {
-            // console.log("s");
             var opt = i;
             var el = document.createElement("option");
             el.textContent = ensembleRec.name;
             el.value = ensembleRec.ensembleId;
             selectParticipants.appendChild(el);
         }
+
+        /*
+         *  input validation on change
+         */
+
+        // eventId
+        formEl.eventId.addEventListener("input", async function() {
+            const validationResult = await Event.checkIDasID(
+                formEl.eventId.value
+            );
+            formEl.eventId.setCustomValidity(validationResult.message);
+        });
+
+        // eventType has implicit input validation
+
+        // title
+        formEl.title.addEventListener("input", async function() {
+            const validationResult = await Event.checkTitle(
+                formEl.title.value
+            );
+            formEl.title.setCustomValidity(validationResult.message);
+        });
+
+        // date has implicit input validation
+
+        // description - no validation needed
+        /*
+        formEl.description.addEventListener("input", async function() {
+
+            const validationResult = await Event.validateMail(
+                formEl.description.value
+            );
+            formEl.description.setCustomValidity(validationResult.message);
+        });
+        */
+
+        // person in charge - no validation needed
+        /*
+        formEl.mailAddress.addEventListener("input", async function() {
+            const validationResult = await Member.validateMail(
+                formEl.mailAddress.value
+            );
+            formEl.mailAddress.setCustomValidity(validationResult.message);
+        });
+        */
+
+        // participants have implicit input validation
+        
     },
     // save user input data
     handleSaveButtonClickEvent: async function () {
