@@ -146,7 +146,7 @@ class Member {
             return new RangeConstraintViolation(
                 "ERROR: Member ID is not positive!");
         }
-        if (isMemberIDEmpty(memberId)) {
+        if (memberId == null) {
             console.log("ERROR: A value for the Member ID must be provided!");
             return new MandatoryValueConstraintViolation(
                 "ERROR: A value for the Member ID must be provided!");
@@ -161,7 +161,7 @@ class Member {
         if (!validationResult instanceof NoConstraintViolation) {
             return validationResult
         }
-        console.log("isMemberIDUsed 0");
+
         var member = await db.collection("members").doc(memberId).get();
 
         if (member.exists) {
@@ -208,7 +208,7 @@ class Member {
 
 Member.validateSlots = async function (slots) {
 
-    bool debug = false;
+    const debug = false;
 
     //check memberid
     if (debug) console.log("checkID");
@@ -467,10 +467,6 @@ Copy Pasta Code inc
 function isIntegerOrIntegerString(x) {
     return typeof (x) === "number" && Number.isInteger(x) ||
         typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
-}
-
-function isMemberIDEmpty(memberId) {
-    return memberId == null;
 }
 
 async function isMemberIDUsed(memberId) {

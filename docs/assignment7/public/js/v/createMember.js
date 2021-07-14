@@ -5,7 +5,8 @@
 pl.v.createMember = {
     setupUserInterface: async function () {
 
-        const formEl = document.forms['Member']
+        const 
+            formEl = document.forms['Member']
             saveButton = formEl.commit,
             selectInstrumentsEl = formEl.selectInstrument;
 
@@ -29,6 +30,7 @@ pl.v.createMember = {
         /*
          *  input validation on change
          */
+        
         // memberId
         formEl.memberId.addEventListener("input", async function() {
             const validationResult = await Member.checkIDasID(

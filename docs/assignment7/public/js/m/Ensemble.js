@@ -17,14 +17,40 @@ class Ensemble {
         if (practicingDate) this.practicingDate = practicingDate;
     }
 
+    static checkName = function (name) {
+        if (!isNonEmptyString(name)) {
+            console.log("ERROR: The name must be a non-empty string!");
+            return new RangeConstraintViolation(
+                "ERROR: The name must be a non-empty string!");
+        }
+        return new NoConstraintViolation();
+    }
+
+    static checkType = function (type){
+        if (!isNonEmptyString(type)) {
+            console.log("ERROR: The type must be a non-empty string!");
+            return new RangeConstraintViolation(
+                "ERROR: The type must be a non-empty string!");
+        }
+        return new NoConstraintViolation();
+    }
     /**
      *  Getters / Setters
      */
 
+    static checkMembers = function (members){
+        // todo
+        return new NoConstraintViolation();
     get ensembleId() {
         return _ensembleId;
     }
 
+    static checkLocation = function (location){
+        return new NoConstraintViolation();
+    }
+
+    static checkPracticingDate = function (date){
+        return new NoConstraintViolation();
     set ensembleId(id) {
         console.log("setter called");
         const validationResult = Ensamble.checkEnsembleId(id);
@@ -35,9 +61,34 @@ class Ensemble {
         }
     }
 
+    // Validate ensemble id from param and a
+    static checkID = function (ensembleId) {
+        if (!isIntegerOrIntegerString(ensembleId)) {
+            console.log("ERROR: Ensemble ID " + ensembleId + " is not a number!");
+            return new RangeConstraintViolation(
+                "ERROR: Ensemble ID " + ensembleId + " is not a number!");
+        }
+        if (ensembleId < 0) {
+            console.log("ERROR: Ensemble ID is not positive!");
+            return new RangeConstraintViolation(
+                "ERROR: Ensemble ID is not positive!");
+        }
+        if (ensembleId == null) {
+            console.log("ERROR: A value for the Ensemble ID must be provided!");
     static checkEnsembleId(id) {
         if (id === undefined) {
             return new MandatoryValueConstraintViolation(
+                "ERROR: A value for the Ensemble ID must be provided!");
+        }
+
+        return new NoConstraintViolation();
+    }
+
+    static checkIDasID = async function (ensembleId) {
+
+        const validationResult = Ensemble.checkID(ensembleId);
+        if (!validationResult instanceof NoConstraintViolation) {
+            return validationResult
                 "An ID must be provided!"
             );
         } else if (id == 42) {
@@ -47,6 +98,14 @@ class Ensemble {
         } else {
             return new NoConstraintViolation();
         }
+
+        var ensemble = await db.collection("ensembles").doc(ensembleId).get();
+
+        if (ensemble.exists) {
+            return new UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
+        }
+
+        return validationResult;
     }
 
 }
@@ -203,3 +262,72 @@ Ensemble.generateTestData = async function () {
     console.log(`${Object.keys( ensembleRecords).length} ensembles saved.`);
 };
 
+function isIntegerOrIntegerString(x) {
+    return typeof (x) === "number" && Number.isInteger(x) ||
+        typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
+}
+
+/**
+ * @fileOverview  Defines error classes (also called "exception" classes)
+ * for property constraint violations
+ * @person Gerd Wagner
+ */
+
+class ConstraintViolation {
+    constructor(msg) {
+        this.message = msg;
+    }
+}
+
+class NoConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+        this.message = "";
+    }
+}
+
+class MandatoryValueConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class RangeConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class StringLengthConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class IntervalConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class PatternConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class UniquenessConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
+    constructor(msg) {
+        super(msg);
+    }
+}
+
+function isNonEmptyString(string) {
+    return typeof (string) === "string" && string.trim() !== "";
+}
