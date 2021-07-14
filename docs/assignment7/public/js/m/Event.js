@@ -315,12 +315,21 @@ Event.generateTestData = async function () {
     let eventRecords = [
         {
             eventId: "0",
-            eventType: EventTypeEL.meeting,
-            title: "Big Party",
-            date: "tba",
-            description: "desc",
-            personInCharge: "Someone",
-            participants: ""
+            eventType: 0,
+            title: "Biggest Party Ever",
+            date: "t. b. a.",
+            description: "This will be the biggest party ever!",
+            personInCharge: "Tony Stark, more info on the website",
+            participants: [0, 1, 2]
+        },
+        {
+            eventId: "1",
+            eventType: 2,
+            title: "Saxophone Saturday",
+            date: "every Saturday",
+            description: "usually in Moe's Tavern",
+            personInCharge: "the barkeeper",
+            participants: [1, 2]
         }
     ];
     // save all event records

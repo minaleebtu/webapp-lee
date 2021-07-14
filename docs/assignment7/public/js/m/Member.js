@@ -4,7 +4,8 @@ const InstrumentEL = {
     bongo: "Bongo",
     tone_wood: "Tone Wood",
     lute: "Lute",
-    voice: "Voice"
+    voice: "Voice",
+    saxophone: "Saxophone"
 }
 
 /**
@@ -416,21 +417,28 @@ Member.generateTestData = async function () {
             name: "John Doe",
             mailAddress: "bro@gmail.com",
             role: ["Artist"],
-            instrument: InstrumentEL.guitar
+            instrument: [2,3]
         },
         {
             memberId: "1",
             name: "Eminem",
             mailAddress: "whiteboy@gmail.com",
             role: ["Artist"],
-            instrument: InstrumentEL.voice
+            instrument: [5]
         },
         {
             memberId: "2",
             name: "Maria Musterfrau",
             mailAddress: "muster@gmail.com",
             role: ["Manager"],
-            instrument: InstrumentEL.none
+            instrument: [0]
+        },
+        {
+            memberId: "3",
+            name: "Epic Sax Guy",
+            mailAddress: "epic@gmail.com",
+            role: ["Artist"],
+            instrument: [6]
         }
     ];
     // save all member records

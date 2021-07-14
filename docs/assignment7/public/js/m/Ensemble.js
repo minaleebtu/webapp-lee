@@ -98,7 +98,7 @@ class Ensemble {
  */
 Ensemble.add = async function (slots) {
 
-    console.log("ensemble add called");
+    // console.log("ensemble add called");
 
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(slots.ensembleId);
@@ -215,7 +215,7 @@ Ensemble.generateTestData = async function () {
             ensembleId: "0",
             ensembleType: "flute choir",
             name: "The Air Benders",
-            members: "", // [1]
+            members: [0,1],
             practicingLocation: "Building A, Room 42",
             practicingDate: "every Sunday at 8"
         },
@@ -223,7 +223,7 @@ Ensemble.generateTestData = async function () {
             ensembleId: "1",
             ensembleType: "saxophone ensemble",
             name: "Epic Sax Guy and Friends",
-            members: "",
+            members: [3,2],
             practicingLocation: "Building B, Room 69",
             practicingDate: "every Wednesday at 7"
         },
@@ -231,7 +231,7 @@ Ensemble.generateTestData = async function () {
             ensembleId: "2",
             ensembleType: "saxophone ensemble",
             name: "Cantina Band",
-            members: "",
+            members: [2],
             practicingLocation: "Building C, Canteen",
             practicingDate: "every Sunday, biweekly"
         }
