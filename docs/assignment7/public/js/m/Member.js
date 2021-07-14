@@ -12,11 +12,11 @@ const InstrumentEL = {
  * @class
  */
 class Member {
-    constructor({memberId, roles, name, instrument, mailAddress}) {
+    constructor({memberId, role, name, instrument, mailAddress}) {
         this.memberId = memberId;
         this.name = name;
         this.mailAddress = mailAddress;
-        if (roles) this.roles = roles;
+        if (role) this.role = role;
         if (instrument) this.instrument = instrument;
     }
 
@@ -60,22 +60,6 @@ class Member {
         return this._mailAddress;
     }
 
-    set roles(a) {
-        this._roles = {};
-        if (Array.isArray(a)) {
-            for (const idRef of a) {
-                this.addRole(idRef);
-            }
-        } else {
-            for (const idRef of Object.keys(a)) {
-                this.addRole(a[idRef]);
-            }
-        }
-    }
-
-    get roles() {
-        return this._roles;
-    }
 
     set instrument(a) {
         this._instrument = {};
@@ -92,20 +76,6 @@ class Member {
 
     get instrument() {
         return this._instrument;
-    }
-
-    addRole(a) {
-        const validationResult = Member.validateRole(a);
-        if (a && validationResult instanceof M_NoConstraintViolation) {
-            if (!this._roles.includes(a)) {
-                this._roles.push(a);
-            } else {
-                console.error(`Role ${a} is already included!`);
-            }
-
-        } else {
-            throw validationResult;
-        }
     }
 
     addInstrument(a) {
@@ -237,8 +207,23 @@ Member.validateSlots = async function (slots) {
         throw validationResult;
     }
 
-    //validate roles
-    if (debug) console.log("checkRoles");
+    //validate role
+    if (!Array.isArray(slots.role)) {
+        if (debug) console.log("checkRole");
+        validationResult = Member.validateRole(slots.role);
+        if (!validationResult instanceof M_NoConstraintViolation) {
+            throw validationResult;
+        }
+    } else {
+        for (const r of slots.role) {
+            validationResult = Member.validateRole(r);
+            if (!validationResult instanceof M_NoConstraintViolation) {
+                throw validationResult;
+            }
+        }
+    }
+
+    /*
     const tmp = [];
     const a = slots.role;
     console.log(a);
@@ -270,6 +255,7 @@ Member.validateSlots = async function (slots) {
             }
         }
     }
+     */
 
     //validate instrument
     if (debug) console.log("checkInstrument");
@@ -315,8 +301,8 @@ Member.add = async function (slots) {
     const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc(slots.memberId);
     try {
-        console.log(slots);
-        //convert roles string
+        // console.log(slots);
+        //convert role string
         let str = slots.role;
         slots.role = str.split(",");
         //todo: velidate slots
@@ -333,12 +319,12 @@ Member.add = async function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Member.update = async function ({memberId, roles, name, instrument, mailAddress}) {
+Member.update = async function ({memberId, role, name, instrument, mailAddress}) {
     const updSlots = {};
     const memberRec = await Member.retrieve(memberId);
 
-    if (memberRec.roles !== roles) {
-        updSlots.roles = roles;
+    if (memberRec.role !== role) {
+        updSlots.role = role;
     }
 
     if (memberRec.name !== name) {
@@ -429,21 +415,21 @@ Member.generateTestData = async function () {
             memberId: "0",
             name: "John Doe",
             mailAddress: "bro@gmail.com",
-            roles: ["Artist"],
+            role: ["Artist"],
             instrument: InstrumentEL.guitar
         },
         {
             memberId: "1",
             name: "Eminem",
             mailAddress: "whiteboy@gmail.com",
-            roles: ["Artist"],
+            role: ["Artist"],
             instrument: InstrumentEL.voice
         },
         {
             memberId: "2",
             name: "Maria Musterfrau",
             mailAddress: "muster@gmail.com",
-            roles: ["Manager"],
+            role: ["Manager"],
             instrument: InstrumentEL.none
         }
     ];

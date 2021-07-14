@@ -40,7 +40,8 @@ pl.v.updateMember = {
                 formEl.memberId.value = memberRec.memberId;
                 formEl.role.value = memberRec.role;
                 formEl.name.value = memberRec.name;
-                formEl.selectInstrument.value = memberRec.instrument;
+                // formEl.selectInstrument.value = memberRec.instrument;
+                // formEl.selectInstrument.selectedOptions.add(memberRec.instrument); // = memberRec.instrument;
                 formEl.mailAddress.value = memberRec.mailAddress;
             } else {
                 formEl.reset();
@@ -107,9 +108,16 @@ pl.v.updateMember = {
             memberId: formEl.memberId.value,
             role: formEl.role.value,
             name: formEl.name.value,
-            instrument: formEl.selectInstrument.value,
+            instrument: [],
             mailAddress: formEl.mailAddress.value
         };
+
+        const selInstrumentOptions = formEl.selectInstrument.selectedOptions;
+        for (const opt of selInstrumentOptions) {
+            var index = Object.values(InstrumentEL).indexOf(opt.value);
+            slots.instrument.push( index);
+        }
+
         await Member.update(slots);
         // update the selection list option element
         selectMemberEl.options[selectMemberEl.selectedIndex].text = slots.title;
