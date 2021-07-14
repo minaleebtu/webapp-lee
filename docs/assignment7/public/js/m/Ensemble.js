@@ -12,7 +12,7 @@ class Ensemble {
         this.ensembleId = ensembleId;  // number (integer)
         this.ensembleType = ensembleType;  // string
         this.name = name;  // string
-        if (member) this.member = member;
+        if (members) this.members = members;
         if (practicingLocation) this.practicingLocation = practicingLocation;
         if (practicingDate) this.practicingDate = practicingDate;
     }
@@ -20,94 +20,74 @@ class Ensemble {
     static checkName = function (name) {
         if (!isNonEmptyString(name)) {
             console.log("ERROR: The name must be a non-empty string!");
-            return new RangeConstraintViolation(
+            return new E_RangeConstraintViolation(
                 "ERROR: The name must be a non-empty string!");
         }
-        return new NoConstraintViolation();
+        return new E_NoConstraintViolation();
     }
 
     static checkType = function (type){
         if (!isNonEmptyString(type)) {
             console.log("ERROR: The type must be a non-empty string!");
-            return new RangeConstraintViolation(
+            return new E_RangeConstraintViolation(
                 "ERROR: The type must be a non-empty string!");
         }
-        return new NoConstraintViolation();
+        return new E_NoConstraintViolation();
     }
     /**
      *  Getters / Setters
      */
 
-    static checkMembers = function (members){
+    static checkMembers = function (members) {
         // todo
-        return new NoConstraintViolation();
-    get ensembleId() {
-        return _ensembleId;
+        return new E_NoConstraintViolation();
     }
 
     static checkLocation = function (location){
-        return new NoConstraintViolation();
+        return new E_NoConstraintViolation();
     }
 
     static checkPracticingDate = function (date){
-        return new NoConstraintViolation();
-    set ensembleId(id) {
-        console.log("setter called");
-        const validationResult = Ensamble.checkEnsembleId(id);
-        if (validationResult instanceof NoConstraintViolation) {
-            this._ensembleId = id;
-        } else {
-            throw validationResult;
-        }
+        return new E_NoConstraintViolation();
     }
 
     // Validate ensemble id from param and a
     static checkID = function (ensembleId) {
+
+        if (ensembleId == null) {
+            console.log("ERROR: A value for the Ensemble ID must be provided!");
+            return new  E_MandatoryValueConstraintViolation(
+                "ERROR: A value for the Ensemble ID must be provided!");
+        }
         if (!isIntegerOrIntegerString(ensembleId)) {
             console.log("ERROR: Ensemble ID " + ensembleId + " is not a number!");
-            return new RangeConstraintViolation(
+            return new E_RangeConstraintViolation(
                 "ERROR: Ensemble ID " + ensembleId + " is not a number!");
         }
         if (ensembleId < 0) {
             console.log("ERROR: Ensemble ID is not positive!");
-            return new RangeConstraintViolation(
+            return new E_RangeConstraintViolation(
                 "ERROR: Ensemble ID is not positive!");
         }
-        if (ensembleId == null) {
-            console.log("ERROR: A value for the Ensemble ID must be provided!");
-    static checkEnsembleId(id) {
-        if (id === undefined) {
-            return new MandatoryValueConstraintViolation(
-                "ERROR: A value for the Ensemble ID must be provided!");
-        }
-
-        return new NoConstraintViolation();
+        
+        return new E_NoConstraintViolation();
     }
 
     static checkIDasID = async function (ensembleId) {
 
         const validationResult = Ensemble.checkID(ensembleId);
-        if (!validationResult instanceof NoConstraintViolation) {
-            return validationResult
-                "An ID must be provided!"
-            );
-        } else if (id == 42) {
-            return new MandatoryValueConstraintViolation(
-                "trolling"
-            );
-        } else {
-            return new NoConstraintViolation();
+        if (!validationResult instanceof E_NoConstraintViolation) {
+            return validationResult;
         }
 
         var ensemble = await db.collection("ensembles").doc(ensembleId).get();
 
         if (ensemble.exists) {
-            return new UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
+            return new E_UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
         }
 
         return validationResult;
     }
-
 }
 
 /********************************************************
@@ -130,11 +110,6 @@ Ensemble.add = async function (slots) {
     }
     console.log(`Ensemble record ${slots.ensembleId} created.`);
 };
-
-
-Ensemble.checkIDasID = async function (memberId) {
-    return await db.collection("ensembles").doc(memberId).get();
-}
 
 /**
  *  Update an existing Movie record/object
@@ -273,67 +248,70 @@ function isIntegerOrIntegerString(x) {
         typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
 }
 
+function isNonEmptyString(string) {
+    return typeof (string) === "string" && string.trim() !== "";
+}
+
 /**
  * @fileOverview  Defines error classes (also called "exception" classes)
  * for property constraint violations
  * @person Gerd Wagner
  */
 
-class ConstraintViolation {
+class E_ConstraintViolation {
     constructor(msg) {
         this.message = msg;
     }
 }
 
-class NoConstraintViolation extends ConstraintViolation {
+class E_NoConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
         this.message = "";
     }
 }
 
-class MandatoryValueConstraintViolation extends ConstraintViolation {
+class E_MandatoryValueConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class RangeConstraintViolation extends ConstraintViolation {
+class E_RangeConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class StringLengthConstraintViolation extends ConstraintViolation {
+class E_StringLengthConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class IntervalConstraintViolation extends ConstraintViolation {
+class E_IntervalConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class PatternConstraintViolation extends ConstraintViolation {
+class E_PatternConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class UniquenessConstraintViolation extends ConstraintViolation {
+class E_UniquenessConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
+class E_ReferentialIntegrityConstraintViolation extends E_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-function isNonEmptyString(string) {
-    return typeof (string) === "string" && string.trim() !== "";
-}
+
+

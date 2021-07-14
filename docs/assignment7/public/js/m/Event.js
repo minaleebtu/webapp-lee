@@ -112,7 +112,7 @@ class Event {
             return new RangeConstraintViolation(
                 "ERROR: Event ID is not positive!");
         }
-        if (isMemberIDEmpty(eventId)) {
+        if (eventId == null) {
             console.log("ERROR: A value for the Event ID must be provided!");
             return new MandatoryValueConstraintViolation(
                 "ERROR: A value for the Event ID must be provided!");
@@ -823,3 +823,5 @@ class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
         super(msg);
     }
 }
+
+

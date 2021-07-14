@@ -22,7 +22,7 @@ class Member {
 
     set memberId(c) {
         const validationResult = Member.checkID(c);
-        if (validationResult instanceof NoConstraintViolation) {
+        if (validationResult instanceof M_NoConstraintViolation) {
             this._memberId = c;
         } else {
             throw validationResult;
@@ -35,7 +35,7 @@ class Member {
 
     set name(c) {
         const validationResult = Member.validateName(c);
-        if (validationResult instanceof NoConstraintViolation) {
+        if (validationResult instanceof M_NoConstraintViolation) {
             this._name = c;
         } else {
             throw validationResult;
@@ -48,7 +48,7 @@ class Member {
 
     set mailAddress(c) {
         const validationResult = Member.validateMail(c);
-        if (validationResult instanceof NoConstraintViolation) {
+        if (validationResult instanceof M_NoConstraintViolation) {
             this._mailAddress = c;
         } else {
             throw validationResult;
@@ -96,7 +96,7 @@ class Member {
 
     addRole(a) {
         const validationResult = Member.validateRole(a);
-        if (a && validationResult instanceof NoConstraintViolation) {
+        if (a && validationResult instanceof M_NoConstraintViolation) {
             if (!this._roles.includes(a)) {
                 this._roles.push(a);
             } else {
@@ -110,7 +110,7 @@ class Member {
 
     addInstrument(a) {
         const validationResult = Member.checkInstrument(a);
-        if (a && validationResult instanceof NoConstraintViolation) {
+        if (a && validationResult instanceof M_NoConstraintViolation) {
             if (!this._instrument.includes(a)) {
                 this._instrument.push(a);
             } else {
@@ -123,49 +123,49 @@ class Member {
 
     static checkInstrument(r) {
         if (r === undefined) {
-            return new NoConstraintViolation(); //optional
+            return new M_NoConstraintViolation(); //optional
         } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
             parseInt(r) > InstrumentEL.MAX) {
             console.log(`Invalid value for instrument: ${r}`);
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 `Invalid value for instrument: ${r}`);
         } else {
-            return new NoConstraintViolation();
+            return new M_NoConstraintViolation();
         }
     }
 
     // Validate member id from param and a
     static checkID = function (memberId) {
+        if (memberId == null) {
+            console.log("ERROR: A value for the Member ID must be provided!");
+            return new M_MandatoryValueConstraintViolation(
+                "ERROR: A value for the Member ID must be provided!");
+        }
         if (!isIntegerOrIntegerString(memberId)) {
             console.log("ERROR: Member ID " + memberId + " is not a number!");
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 "ERROR: Member ID " + memberId + " is not a number!");
         }
         if (memberId < 0) {
             console.log("ERROR: Member ID is not positive!");
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 "ERROR: Member ID is not positive!");
         }
-        if (memberId == null) {
-            console.log("ERROR: A value for the Member ID must be provided!");
-            return new MandatoryValueConstraintViolation(
-                "ERROR: A value for the Member ID must be provided!");
-        }
-
-        return new NoConstraintViolation();
+        
+        return new M_NoConstraintViolation();
     }
 
     static checkIDasID = async function (memberId) {
 
         const validationResult = Member.checkID(memberId);
-        if (!validationResult instanceof NoConstraintViolation) {
-            return validationResult
+        if (!validationResult instanceof M_NoConstraintViolation) {
+            return validationResult;
         }
 
         var member = await db.collection("members").doc(memberId).get();
 
         if (member.exists) {
-            return new UniquenessConstraintViolation("ERROR: Member ID already in use!");
+            return new M_UniquenessConstraintViolation("ERROR: Member ID already in use!");
         }
 
         return validationResult;
@@ -174,34 +174,34 @@ class Member {
     static validateRole = function (role) {
         if (!isNonEmptyString(role)) {
             console.log("ERROR: The role must be a non-empty string!");
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 "ERROR: The role must be a non-empty string!");
         }
-        return new NoConstraintViolation();
+        return new M_NoConstraintViolation();
     }
 
     static validateMail = function (mail) {
         if (!isNonEmptyString(mail)) {
             console.log("ERROR: The mail must be a non-empty string!");
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 "ERROR: The mail must be a non-empty string!");
         }
         const mailRegex = RegExp(/^[A-Za-z0-9_]+(@)[A-Za-z0-9_]+(.)[A-Za-z0-9_]+$/);
 
         if (! mailRegex.test(mail)) {
-            return new PatternConstraintViolation("ERROR: Malformed mail address.");
+            return new M_PatternConstraintViolation("ERROR: Malformed mail address.");
         }
 
-        return new NoConstraintViolation();
+        return new M_NoConstraintViolation();
     }
 
     static validateName = function (name) {
         if (!isNonEmptyString(name)) {
             console.log("ERROR: The name must be a non-empty string!");
-            return new RangeConstraintViolation(
+            return new M_RangeConstraintViolation(
                 "ERROR: The name must be a non-empty string!");
         }
-        return new NoConstraintViolation();
+        return new M_NoConstraintViolation();
     }
 
 }
@@ -213,7 +213,7 @@ Member.validateSlots = async function (slots) {
     //check memberid
     if (debug) console.log("checkID");
     var validationResult = Member.checkID(slots.memberId);
-    if (validationResult instanceof NoConstraintViolation) {
+    if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
         throw validationResult;
@@ -222,7 +222,7 @@ Member.validateSlots = async function (slots) {
     //check name
     if (debug) console.log("checkName");
     validationResult = Member.validateName(slots.name);
-    if (validationResult instanceof NoConstraintViolation) {
+    if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
         throw validationResult;
@@ -231,7 +231,7 @@ Member.validateSlots = async function (slots) {
     //check mail
     if (debug) console.log("checkMail");
     validationResult = Member.validateMail(slots.mailAddress);
-    if (validationResult instanceof NoConstraintViolation) {
+    if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
         throw validationResult;
@@ -245,7 +245,7 @@ Member.validateSlots = async function (slots) {
     if (Array.isArray(a)) {
         for (const idRef of a) {
             validationResult = Member.validateRole(idRef);
-            if (a && validationResult instanceof NoConstraintViolation) {
+            if (a && validationResult instanceof M_NoConstraintViolation) {
                 if (!tmp.includes(idRef)) {
                     tmp.push(idRef);
                 } else {
@@ -258,7 +258,7 @@ Member.validateSlots = async function (slots) {
     } else {
         for (const idRef of Object.keys(a)) {
             validationResult = Member.validateRole(a[idRef]);
-            if (a && validationResult instanceof NoConstraintViolation) {
+            if (a && validationResult instanceof M_NoConstraintViolation) {
                 if (!this._roles.includes(a[idRef])) {
                     this._roles.push(a[idRef]);
                 } else {
@@ -278,7 +278,7 @@ Member.validateSlots = async function (slots) {
     if (Array.isArray(b)) {
         for (const idRef of b) {
             validationResult = Member.checkInstrument(idRef);
-            if (idRef && validationResult instanceof NoConstraintViolation) {
+            if (idRef && validationResult instanceof M_NoConstraintViolation) {
                 if (!instrument.includes(idRef)) {
                     instrument.push(idRef);
                 } else {
@@ -291,7 +291,7 @@ Member.validateSlots = async function (slots) {
     } else {
         for (const idRef of Object.keys(b)) {
             validationResult = Member.checkInstrument(b[idRef]);
-            if (b[idRef] && validationResult instanceof NoConstraintViolation) {
+            if (b[idRef] && validationResult instanceof M_NoConstraintViolation) {
                 if (!instrument.includes(b[idRef])) {
                     instrument.push(b[idRef]);
                 } else {
@@ -906,56 +906,56 @@ function createChoiceWidget(containerEl, fld, values,
  * @person Gerd Wagner
  */
 
-class ConstraintViolation {
+class M_ConstraintViolation {
     constructor(msg) {
         this.message = msg;
     }
 }
 
-class NoConstraintViolation extends ConstraintViolation {
+class M_NoConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
         this.message = "";
     }
 }
 
-class MandatoryValueConstraintViolation extends ConstraintViolation {
+class M_MandatoryValueConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class RangeConstraintViolation extends ConstraintViolation {
+class M_RangeConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class StringLengthConstraintViolation extends ConstraintViolation {
+class M_StringLengthConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class IntervalConstraintViolation extends ConstraintViolation {
+class M_IntervalConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class PatternConstraintViolation extends ConstraintViolation {
+class M_PatternConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class UniquenessConstraintViolation extends ConstraintViolation {
+class M_UniquenessConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
 }
 
-class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
+class M_ReferentialIntegrityConstraintViolation extends M_ConstraintViolation {
     constructor(msg) {
         super(msg);
     }
