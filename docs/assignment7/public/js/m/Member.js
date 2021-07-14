@@ -161,15 +161,13 @@ class Member {
         if (!validationResult instanceof NoConstraintViolation) {
             return validationResult
         }
-
         console.log("isMemberIDUsed 0");
         var member = await db.collection("members").doc(memberId).get();
-        console.log("isMemberIDUsed 1");
+
         if (member.exists) {
-            console.log("isMemberIDUsed 2");
             return new UniquenessConstraintViolation("ERROR: Member ID already in use!");
         }
-        console.log("isMemberIDUsed 3");
+
         return validationResult;
     }
 
@@ -188,6 +186,12 @@ class Member {
             return new RangeConstraintViolation(
                 "ERROR: The mail must be a non-empty string!");
         }
+        const mailRegex = RegExp(/^[A-Za-z0-9_]+(@)[A-Za-z0-9_]+(.)[A-Za-z0-9_]+$/);
+
+        if (! mailRegex.test(mail)) {
+            return new PatternConstraintViolation("ERROR: Malformed mail address.");
+        }
+
         return new NoConstraintViolation();
     }
 
@@ -492,8 +496,8 @@ async function isMemberIDUsed(memberId) {
      */
 }
 
-function isNonEmptyString(s) {
-    return s != null;
+function isNonEmptyString(string) {
+    return typeof (string) === "string" && string.trim() !== "";
 }
 
 // *************** D O M - Related ****************************************

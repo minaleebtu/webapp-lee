@@ -33,3 +33,8 @@ div#login-management {
     background: #fff4f4;
     border: 1px solid #ff7653;
 }
+
+form :invalid {
+    box-shadow: none; /* neutralizing FF */
+    outline: dotted red;
+}

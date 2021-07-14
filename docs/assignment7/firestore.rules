@@ -55,18 +55,23 @@ service cloud.firestore {
          *  Members
          */
         match /{members}/{document=**} {
-            allow create: if request.auth.token.email_verified == true
-                             && request.resource.data.memberId != null ? checkMemberID(request.resource.data.memberId) : false
-                             && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
-                             && request.resource.data.mailAddress != null ? checkMemberMail(request.resource.data.mailAddress) : false
-                             ;
+            allow create:
+                if request.auth.token.email_verified == true
+                && request.resource.data.memberId != null ? checkMemberID(request.resource.data.memberId) : false
+                && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
+                && request.resource.data.mailAddress != null ? checkMemberMail(request.resource.data.mailAddress) : false
+                ;
 
-            allow update: if request.auth.token.email_verified == true
-                             && (request.resource.data.diff(resource.data).affectedKeys()
-                                 .hasOnly(['role', 'name', 'instrument', 'mailAddress']))
-                             && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
-                             && request.resource.data.mailAddress != null  ? checkMemberMail(request.resource.data.mailAddress) : false;
-            allow delete: if request.auth.token.email_verified == true;
+            allow update:
+                if request.auth.token.email_verified == true
+                && (request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['role', 'name', 'instrument', 'mailAddress']))
+                && request.resource.data.name != null ? checkMemberName(request.resource.data.name) : false
+                && request.resource.data.mailAddress != null  ? checkMemberMail(request.resource.data.mailAddress) : false
+                ;
+
+            allow delete:
+                if request.auth.token.email_verified == true;
         }
         function checkMemberID(memberId) {
             return
