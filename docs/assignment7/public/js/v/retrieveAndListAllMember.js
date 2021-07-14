@@ -13,7 +13,13 @@ pl.v.retrieveAndListAllMember = {
             row.insertCell().textContent = memberRec.memberId;
             row.insertCell().textContent = memberRec.role;
             row.insertCell().textContent = memberRec.name;
-            row.insertCell().textContent = memberRec.instrument;
+            var i = "";
+            console.log(memberRec.instrument);
+            for(var a of memberRec.instrument) {
+                var meme = Object.values(InstrumentEL)[a];
+                i += meme + ', ';
+            }
+            row.insertCell().textContent = i;
             row.insertCell().textContent = memberRec.mailAddress;
         }
     }

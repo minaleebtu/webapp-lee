@@ -7,7 +7,8 @@ pl.v.createEnsemble = {
 
         const
             formEl = document.forms['Ensemble'],
-            saveButton = document.forms['Ensemble'].commit;
+            saveButton = document.forms['Ensemble'].commit,
+            selectMembers = formEl.members;
 
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
@@ -65,7 +66,14 @@ pl.v.createEnsemble = {
             formEl.practicingDate.setCustomValidity(validationResult.message);
         });
 
-
+        const membersRecords = await retrieveAllMembers();
+        for (const memberRec of membersRecords) {
+            var opt = memberRec;
+            var el = document.createElement("option");
+            el.textContent = memberRec.name;
+            el.value = memberRec.memberId;
+            selectMembers.appendChild(el);
+        }
     },
     // save user input data
     handleSaveButtonClickEvent: async function () {
@@ -74,11 +82,33 @@ pl.v.createEnsemble = {
             ensembleId: formEl.ensembleId.value,
             ensembleType: formEl.ensembleType.value,
             name: formEl.name.value,
-            member: formEl.member.value,
+            members: [],
             practicingLocation: formEl.practicingLocation.value,
             practicingDate: formEl.practicingDate.value
         };
+
+        const selMembersOptions = formEl.members.selectedOptions;
+        for (const opt of selMembersOptions) {
+            var index = opt.value;
+            slots.members.push( index);
+        }
+        console.log(slots.members);
         await Ensemble.add(slots);
         formEl.reset();
     }
 }
+
+async function retrieveAllMembers() {
+    const membersCollRef = db.collection("members");
+    var membersQuerySnapshot = null;
+    try {
+        membersQuerySnapshot = await membersCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving member records: ${e}`);
+        return null;
+    }
+    const memberDocs = membersQuerySnapshot.docs,
+        memberRecords = memberDocs.map(d => d.data());
+    console.log(`${memberRecords.length} member records retrieved.`);
+    return memberRecords;
+};

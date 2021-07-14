@@ -18,7 +18,7 @@ pl.v.retrieveAndListAllEvents = {
             row.insertCell().textContent = eventRec.personInCharge;
             var i = "";
             for(var a in eventRec.participants) {
-                var meme = await getMemberfromID(a);
+                var meme = await getEnsemblefromID(a);
                 i += meme.name + ', ';
             }
             row.insertCell().textContent = i;
@@ -26,7 +26,7 @@ pl.v.retrieveAndListAllEvents = {
     }
 }
 
-async function getMemberfromID(ensembleId) {
+async function getEnsemblefromID(ensembleId) {
     const ensemblesCollRef = db.collection("ensembles");
     var ensemblesQuerySnapshot = null;
     try {
