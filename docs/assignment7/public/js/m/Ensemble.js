@@ -130,6 +130,12 @@ Ensemble.add = async function (slots) {
     }
     console.log(`Ensemble record ${slots.ensembleId} created.`);
 };
+
+
+Ensemble.checkIDasID = async function (memberId) {
+    return await db.collection("ensembles").doc(memberId).get();
+}
+
 /**
  *  Update an existing Movie record/object
  *  properties are updated with implicit setters for making sure
