@@ -11,12 +11,37 @@ pl.v.retrieveAndListAllEvents = {
         for (const eventRec of eventRecords) {
             const row = tableBodyEl.insertRow();
             row.insertCell().textContent = eventRec.eventId;
-            row.insertCell().textContent = eventRec.eventType;
+            row.insertCell().textContent = Object.values(EventTypeEL)[eventRec.eventType];
             row.insertCell().textContent = eventRec.title;
             row.insertCell().textContent = eventRec.date;
             row.insertCell().textContent = eventRec.description;
             row.insertCell().textContent = eventRec.personInCharge;
-            row.insertCell().textContent = eventRec.participants;
+            var i = "";
+            for(var a in eventRec.participants) {
+                var meme = await getMemberfromID(a);
+                i += meme.name + ', ';
+            }
+            row.insertCell().textContent = i;
         }
     }
+}
+
+async function getMemberfromID(ensembleId) {
+    const ensemblesCollRef = db.collection("ensembles");
+    var ensemblesQuerySnapshot = null;
+    try {
+        ensemblesQuerySnapshot = await ensemblesCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving ensemble records: ${e}`);
+        return null;
+    }
+    const ensembleDocs = ensemblesQuerySnapshot.docs,
+        ensembleRecords = ensembleDocs.map(d => d.data());
+    console.log(`${ensembleRecords.length} ensemble records retrieved.`);
+    for( var i of ensembleRecords) {
+        if(i.ensembleId == ensembleId) {
+            return i;
+        }
+    };
+    return 0;
 }
