@@ -16,7 +16,7 @@ pl.v.createEvent = {
         saveButton.addEventListener("click",
             pl.v.createEvent.handleSaveButtonClickEvent);
 
-        // fill menu with event enum elements
+        // fill drop down menu with event enum elements
         for(var i in EventTypeEL) {
 
             var opt = i;
@@ -25,7 +25,8 @@ pl.v.createEvent = {
             el.value = EventTypeEL[opt];
             selectEventTypeEl.appendChild(el);
         }
-
+        
+        // fill other menu with possible participants
         const ensembleRecords = await retrieveAllEnsembles();
         for (const ensembleRec of ensembleRecords) {
             var opt = i;
@@ -86,6 +87,7 @@ pl.v.createEvent = {
     // save user input data
     handleSaveButtonClickEvent: async function () {
         const formEl = document.forms['Event'];
+
         const slots = {
             eventId: formEl.eventId.value,
             title: formEl.title.value,
@@ -94,16 +96,19 @@ pl.v.createEvent = {
             personInCharge: formEl.personInCharge.value,
             participants: []
         };
+
         let et = formEl.selectEventType.value;
         if (et) {
             slots.eventType = Object.values(EventTypeEL).indexOf(et);
             console.log(slots.eventType);
         }
+
         const selParticipantsOptions = formEl.participants.selectedOptions;
         for (const opt of selParticipantsOptions) {
             var index = opt.value;
             slots.participants.push( index);
         }
+
         await Event.add(slots);
         formEl.reset();
     }

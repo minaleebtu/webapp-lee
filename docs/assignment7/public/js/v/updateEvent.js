@@ -4,9 +4,13 @@
  */
 pl.v.updateEvent = {
     setupUserInterface: async function () {
+
         const formEl = document.forms["Event"],
             updateButton = formEl.commit,
-            selectEventEl = formEl.selectEvent;
+            selectEventEl = formEl.selectEvent,
+            selectEventTypeEl = formEl.selectEventType,
+            selectParticipants = formEl.participants;
+
         // load all event records
         const eventRecords = await Event.retrieveAll();
         for (const eventRec of eventRecords) {
@@ -15,14 +19,35 @@ pl.v.updateEvent = {
             optionEl.value = eventRec.eventId;
             selectEventEl.add(optionEl, null);
         }
-        // when a book is selected, fill the form with its data
+
+        // fill drop down menu with event enum elements
+        for(var i in EventTypeEL) {
+
+            var opt = i;
+            var el = document.createElement("option");
+            el.textContent = EventTypeEL[opt];
+            el.value = EventTypeEL[opt];
+            selectEventTypeEl.appendChild(el);
+        }
+
+        // fill other menu with possible participants
+        const ensembleRecords = await retrieveAllEnsembles();
+        for (const ensembleRec of ensembleRecords) {
+            var opt = i;
+            var el = document.createElement("option");
+            el.textContent = ensembleRec.name;
+            el.value = ensembleRec.ensembleId;
+            selectParticipants.appendChild(el);
+        }
+
+        // when an event is selected, fill the form with its data
         selectEventEl.addEventListener("change", async function () {
             const eventId = selectEventEl.value;
             if (eventId) {
                 // retrieve up-to-date book record
                 const eventRec = await Event.retrieve(eventId);
                 formEl.eventId.value = eventRec.eventId;
-                formEl.eventType.value = eventRec.eventType;
+                formEl.selectEventType.value = eventRec.eventType; // todo
                 formEl.title.value = eventRec.title;
                 formEl.date.value = eventRec.date;
                 formEl.description.value = eventRec.description;
@@ -46,7 +71,7 @@ pl.v.updateEvent = {
             selectEventEl = formEl.selectEvent;
         const slots = {
             eventId: formEl.eventId.value,
-            eventType: formEl.eventType.value,
+            eventType: formEl.selectEventType.value,
             title: formEl.title.value,
             date: formEl.date.value,
             description: formEl.description.value,
@@ -58,4 +83,19 @@ pl.v.updateEvent = {
         selectEventEl.options[selectEventEl.selectedIndex].text = slots.title;
         formEl.reset();
     }
+};
+
+async function retrieveAllEnsembles() {
+    const ensemblesCollRef = db.collection("ensembles");
+    var ensemblesQuerySnapshot = null;
+    try {
+        ensemblesQuerySnapshot = await ensemblesCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving ensemble records: ${e}`);
+        return null;
+    }
+    const ensembleDocs = ensemblesQuerySnapshot.docs,
+        ensembleRecords = ensembleDocs.map(d => d.data());
+    console.log(`${ensembleRecords.length} ensemble records retrieved.`);
+    return ensembleRecords;
 };
