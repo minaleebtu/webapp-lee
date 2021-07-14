@@ -207,7 +207,11 @@ class Member {
 }
 
 Member.validateSlots = async function (slots) {
+
+    bool debug = false;
+
     //check memberid
+    if (debug) console.log("checkID");
     var validationResult = Member.checkID(slots.memberId);
     if (validationResult instanceof NoConstraintViolation) {
 
@@ -216,6 +220,7 @@ Member.validateSlots = async function (slots) {
     }
 
     //check name
+    if (debug) console.log("checkName");
     validationResult = Member.validateName(slots.name);
     if (validationResult instanceof NoConstraintViolation) {
 
@@ -224,6 +229,7 @@ Member.validateSlots = async function (slots) {
     }
 
     //check mail
+    if (debug) console.log("checkMail");
     validationResult = Member.validateMail(slots.mailAddress);
     if (validationResult instanceof NoConstraintViolation) {
 
@@ -232,6 +238,7 @@ Member.validateSlots = async function (slots) {
     }
 
     //validate roles
+    if (debug) console.log("checkRoles");
     const tmp = [];
     const a = slots.role;
     console.log(a);
@@ -265,6 +272,7 @@ Member.validateSlots = async function (slots) {
     }
 
     //validate instrument
+    if (debug) console.log("checkInstrument");
     const instrument = [];
     const b = slots.instrument;
     if (Array.isArray(b)) {
