@@ -66,6 +66,7 @@ pl.v.createEnsemble = {
             formEl.practicingDate.setCustomValidity(validationResult.message);
         });
 
+        // fill list of possible members
         const membersRecords = await retrieveAllMembers();
         for (const memberRec of membersRecords) {
             var opt = memberRec;
@@ -92,7 +93,8 @@ pl.v.createEnsemble = {
             var index = opt.value;
             slots.members.push( index);
         }
-        console.log(slots.members);
+        // console.log(slots.members);
+        
         await Ensemble.add(slots);
         formEl.reset();
     }
