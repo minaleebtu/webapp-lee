@@ -145,10 +145,10 @@ service cloud.firestore {
             allow delete:
                 if request.auth.token.email_verified == true;
         }
-        function checkEventID(id) {
+        function checkEventID(eventId) {
             return
                 true
-                && title != null
+                && eventId != null
                 && !(exists(/databases/$(database)/documents/events/$(eventId)))
                 ;
         }

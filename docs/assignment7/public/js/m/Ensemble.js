@@ -215,7 +215,7 @@ Ensemble.generateTestData = async function () {
             ensembleId: "0",
             ensembleType: "flute choir",
             name: "The Air Benders",
-            members: "",
+            members: "", // [1]
             practicingLocation: "Building A, Room 42",
             practicingDate: "every Sunday at 8"
         },

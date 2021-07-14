@@ -9,18 +9,18 @@ pl.v.retrieveAndListAllEnsembles = {
         const ensembleRecords = await Ensemble.retrieveAll();
         // for each book, create a table row with a cell for each attribute
         for (const ensembleRec of ensembleRecords) {
-            console.log(ensembleRec);
+            // console.log(ensembleRec);
             const row = tableBodyEl.insertRow();
             row.insertCell().textContent = ensembleRec.ensembleId;
             row.insertCell().textContent = ensembleRec.ensembleType;
             row.insertCell().textContent = ensembleRec.name;
-            console.log(ensembleRec.members);
+            // console.log(ensembleRec.members);
             var i = "";
             for(var a of ensembleRec.members) {
                 var meme = await getMemberfromID(a);
                 i += meme.name + ', ';
             }
-            row.insertCell().textContent = i;
+            row.insertCell().textContent = i.slice(0, -2); // cut off last ', '
             row.insertCell().textContent = ensembleRec.member;
             row.insertCell().textContent = ensembleRec.practicingLocation;
             row.insertCell().textContent = ensembleRec.practicingDate;
@@ -41,7 +41,7 @@ async function getMemberfromID(memberId) {
         memberRecords = membersDocs.map(d => d.data());
     console.log(`${memberRecords.length} member records retrieved.`);
     for( var i of memberRecords) {
-        console.log(i.memberId + "vs." + memberId);
+        // console.log(i.memberId + "vs." + memberId);
         if(i.memberId == memberId) {
             return i;
         }

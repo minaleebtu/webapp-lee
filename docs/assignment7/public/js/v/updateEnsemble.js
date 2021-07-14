@@ -15,7 +15,7 @@ pl.v.updateEnsemble = {
             optionEl.value = ensembleRec.ensembleId;
             selectEnsembleEl.add(optionEl, null);
         }
-        // when a book is selected, fill the form with its data
+        // when an ensemble is selected, fill the form with its data
         selectEnsembleEl.addEventListener("change", async function () {
             const ensembleId = selectEnsembleEl.value;
             if (ensembleId) {
@@ -24,7 +24,15 @@ pl.v.updateEnsemble = {
                 formEl.ensembleId.value = ensembleRec.ensembleId;
                 formEl.ensembleType.value = ensembleRec.ensembleType;
                 formEl.name.value = ensembleRec.name;
-                formEl.member.value = ensembleRec.member;
+
+                // members
+                var i = "";
+                for(var a of ensembleRec.members) {
+                    var meme = await getMemberfromID(a);
+                    i += meme.name + ', ';
+                }
+                formEl.member.value = i.slice(0, -2); // cut off last ', '
+
                 formEl.practicingLocation.value = ensembleRec.practicingLocation;
                 formEl.practicingDate.value = ensembleRec.practicingDate;
             } else {
@@ -57,3 +65,24 @@ pl.v.updateEnsemble = {
         formEl.reset();
     }
 };
+
+async function getMemberfromID(memberId) {
+    const membersCollRef = db.collection("members");
+    var membersQuerySnapshot = null;
+    try {
+        membersQuerySnapshot = await membersCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving member records: ${e}`);
+        return null;
+    }
+    const membersDocs = membersQuerySnapshot.docs,
+        memberRecords = membersDocs.map(d => d.data());
+    console.log(`${memberRecords.length} member records retrieved.`);
+    for( var i of memberRecords) {
+        // console.log(i.memberId + "vs." + memberId);
+        if(i.memberId == memberId) {
+            return i;
+        }
+    };
+    return 0;
+}
