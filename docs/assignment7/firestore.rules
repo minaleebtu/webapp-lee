@@ -14,41 +14,58 @@ service cloud.firestore {
          */
         match /{ensembles}/{document=**} {
             allow create: if request.auth.token.email_verified == true
-                 && request.resource.data.ensembleId != null ? checkEnsembleID(request.resource.data.ensembleId) : true
-                 && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
-                 && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : true;
+                && request.resource.data.ensembleId != null ? checkEnsembleID(request.resource.data.ensembleId) : false
+                && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
+                && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
+                && request.resource.data.practicingLocation != null ? checkEnsemblePracticingLocation(request.resource.data.practicingLocation) : true
+                && request.resource.data.practicingDate != null ? checkEnsemblePracticingDate(request.resource.data.practicingDate) : true;
 
             allow update: if request.auth.token.email_verified == true
-                 && (request.resource.data.diff(resource.data).affectedKeys()
-                     .hasOnly(['ensembleType', 'name', 'members', 'practicingLocation', 'practicingDate']))
-                 && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
-                 && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
-                 && request.resource.data.practicingLocation != null ? checkPracticingLocation(request.resource.data.practicingLocation) : true;
+                && (request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['ensembleType', 'name', 'members', 'practicingLocation', 'practicingDate']))
+                && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
+                && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
+                && request.resource.data.practicingLocation != null ? checkEnsemblePracticingLocation(request.resource.data.practicingLocation) : true;
+
             allow delete: if request.auth.token.email_verified == true;
         }
 
-        function checkEnsembleID(id) {
+        function checkEnsembleID(ensembleId) {
             return
-                !(exists(/databases/$(database)/documents/ensembles/$(ensembleId)))
-                && id > -1;
+                true
+                && ensembleId != null
+                // && ensembleId is int
+                // && id > (-1)
+                && !(exists(/databases/$(database)/documents/ensembles/$(ensembleId)))
+                ;
         }
 
         function checkEnsembleType(type) {
             return
-                !(exists(/databases/$(database)/documents/members/$(type)))
-                && type.isString() && type.val().length > 0;
+                type != null
+                ;
         }
 
         function checkEnsembleName(name) {
             return
-                !(exists(/databases/$(database)/documents/members/$(name)))
-                && name.isString() && name.val().length > 0;
+                true
+                && name != null
+                && !(exists(/databases/$(database)/documents/members/$(name)))
+                ;
         }
 
         function checkEnsemblePracticingLocation(practicingLocation) {
             return
-                !(exists(/databases/$(database)/documents/members/$(practicingLocation)))
-                && practicingLocation.isString() && practicingLocation.val().length > 0;
+                true
+                // && !(exists(/databases/$(database)/documents/members/$(practicingLocation)))
+                ;
+        }
+
+        function checkEnsemblePracticingDate(practicingDate) {
+            return
+                true
+                // && !(exists(/databases/$(database)/documents/members/$(practicingDate)))
+                ;
         }
 
         /*
@@ -75,8 +92,11 @@ service cloud.firestore {
         }
         function checkMemberID(memberId) {
             return
-                !(exists(/databases/$(database)/documents/members/$(memberId)))
-                // && memberId > -1
+                true
+                && memberId != null
+                // && memberId is int
+                // && memberId > (-1)
+                && !(exists(/databases/$(database)/documents/members/$(memberId)))
                 ;
         }
 
@@ -98,46 +118,77 @@ service cloud.firestore {
          *  Events
          */
         match /{events}/{document=**} {
-            allow create: if request.auth.token.email_verified == true
-                             && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : true
-                             && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
-                             && request.resource.data.personInCharge != null ? checkEventPersonInCharge(request.resource.data.personInCharge) : true
-                             && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false;
+            allow create:
+                if request.auth.token.email_verified == true
+                && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : false
+                && request.resource.data.eventType != null ? checkEventType(request.resource.data.eventType) : false
+                && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false
+                && request.resource.data.date != null ? checkEventDate(request.resource.data.date) : false
+                && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
+                && request.resource.data.personInCharge != null ? checkEventPersonInCharge(request.resource.data.personInCharge) : true
+                && request.resource.data.participants != null ? checkEventParticipants(request.resource.data.participants) : true
+                ;
 
-            allow update: if request.auth.token.email_verified == true
-                             && (request.resource.data.diff(resource.data).affectedKeys()
-                                 .hasOnly(['eventType', 'title', 'date', 'description', 'personInCharge', 'participants']))
-                             && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false
-                             && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
-                             && request.resource.data.date != null ? checkDate(request.resource.data.date) : true;
-            allow delete: if request.auth.token.email_verified == true;
+            allow update:
+                if request.auth.token.email_verified == true
+                && (request.resource.data.diff(resource.data).affectedKeys()
+                    .hasOnly(['eventType', 'title', 'date', 'description', 'personInCharge', 'participants']))
+                && request.resource.data.eventId != null ? checkEventID(request.resource.data.eventId) : false
+                && request.resource.data.eventType != null ? checkEventType(request.resource.data.eventType) : false
+                && request.resource.data.title != null ? checkEventTitle(request.resource.data.title) : false
+                && request.resource.data.date != null ? checkEventDate(request.resource.data.date) : false
+                && request.resource.data.description != null ? checkEventDescription(request.resource.data.description) : true
+                && request.resource.data.personInCharge != null ? checkEventPersonInCharge(request.resource.data.personInCharge) : true
+                && request.resource.data.participants != null ? checkEventParticipants(request.resource.data.participants) : true
+                ;
+
+            allow delete:
+                if request.auth.token.email_verified == true;
         }
         function checkEventID(id) {
             return
-                !(exists(/databases/$(database)/documents/events/$(eventId)))
-                && id > -1;
+                true
+                && title != null
+                && !(exists(/databases/$(database)/documents/events/$(eventId)))
+                ;
         }
 
-        function checkDate(date) {
-            return true;
+        function checkEventType(type) {
+            return
+                true
+                && type != null
+                ;
         }
 
         function checkEventTitle(title) {
             return
                 !(exists(/databases/$(database)/documents/members/$(title)))
-                && title.isString() && title.val().length > 0;
+                && title != null
+                ;
+        }
+
+        function checkEventDate(date) {
+            return
+                true
+                ;
         }
 
         function checkEventDescription(description) {
             return
-                !(exists(/databases/$(database)/documents/members/$(description)))
-                && description.isString() && description.val().length > 0;
+                true
+                ;
         }
 
         function checkEventPersonInCharge(personInCharge) {
             return
-                !(exists(/databases/$(database)/documents/members/$(personInCharge)))
-                && personInCharge.isString() && personInCharge.val().length > 0;
+                true
+                ;
+        }
+
+        function checkEventParticipants(participants) {
+            return
+                true
+                ;
         }
 
     }
