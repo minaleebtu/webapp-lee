@@ -8,7 +8,7 @@ pl.v.deleteEnsemble = {
             deleteButton = formEl.commit,
             selectEnsembleEl = formEl.selectEnsemble;
         // load all ensemble records
-        const ensembleRecords = await Ensemble.retrieveAll();
+        const ensembleRecords = await retrieveAllEnsembles();
         for (const ensembleRec of ensembleRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = ensembleRec.name;
@@ -24,7 +24,7 @@ pl.v.deleteEnsemble = {
         const selectEnsembleEl = document.forms['Ensemble'].selectEnsemble;
         const ensembleId = selectEnsembleEl.value;
         if (ensembleId) {
-            await Ensemble.destroy(ensembleId);
+            await destroyEnsemble(ensembleId);
             // remove deleted book from select options
             selectEnsembleEl.remove(selectEnsembleEl.selectedIndex);
         }

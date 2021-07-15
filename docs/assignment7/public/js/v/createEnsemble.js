@@ -21,21 +21,21 @@ pl.v.createEnsemble = {
 
         // ensembleId
         formEl.ensembleId.addEventListener("input", async function() {
-            const validationResult = await Ensemble.checkIDasID(
+            const validationResult = await checkEnsembleIDasID(
                 formEl.ensembleId.value
             );
             formEl.ensembleId.setCustomValidity(validationResult.message);
         });
         // ensembleType
         formEl.ensembleType.addEventListener("input", async function() {
-            const validationResult = await Ensemble.checkType(
+            const validationResult = await checkEnsembleType(
                 formEl.ensembleType.value
             );
             formEl.ensembleType.setCustomValidity(validationResult.message);
         });
         // name
         formEl.name.addEventListener("input", async function() {
-            const validationResult = await Ensemble.checkName(
+            const validationResult = await checkEnsembleName(
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
@@ -44,7 +44,7 @@ pl.v.createEnsemble = {
         // members
         formEl.members.addEventListener("input", async function() {
 
-            const validationResult = await Ensemble.checkMembers(
+            const validationResult = await checkEnsembleMembers(
                 formEl.members.value
             );
             formEl.members.setCustomValidity(validationResult.message);
@@ -52,7 +52,7 @@ pl.v.createEnsemble = {
 
         // practicing location
         formEl.practicingLocation.addEventListener("input", async function() {
-            const validationResult = await Ensemble.checkLocation(
+            const validationResult = await checkEnsembleLocation(
                 formEl.practicingLocation.value
             );
             formEl.practicingLocation.setCustomValidity(validationResult.message);
@@ -60,7 +60,7 @@ pl.v.createEnsemble = {
 
         // practicing date
         formEl.practicingDate.addEventListener("input", async function() {
-            const validationResult = await Ensemble.checkPracticingDate(
+            const validationResult = await checkEnsemblePracticingDate(
                 formEl.practicingDate.value
             );
             formEl.practicingDate.setCustomValidity(validationResult.message);
@@ -95,7 +95,7 @@ pl.v.createEnsemble = {
         }
         // console.log(slots.members);
         
-        await Ensemble.add(slots);
+        await addEnsemble(slots);
         formEl.reset();
     }
 }

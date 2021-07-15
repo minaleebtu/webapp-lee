@@ -11,7 +11,7 @@ pl.v.updateEnsemble = {
             selectMembers = formEl.members;
         
         // load all ensemble records
-        const ensembleRecords = await Ensemble.retrieveAll();
+        const ensembleRecords = await retrieveAllEnsembles();
         for (const ensembleRec of ensembleRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = ensembleRec.name;
@@ -34,7 +34,7 @@ pl.v.updateEnsemble = {
             const ensembleId = selectEnsembleEl.value;
             if (ensembleId) {
                 // retrieve up-to-date book record
-                const ensembleRec = await Ensemble.retrieve(ensembleId);
+                const ensembleRec = await retrieveEnsemble(ensembleId);
                 formEl.ensembleId.value = ensembleRec.ensembleId;
                 formEl.ensembleType.value = ensembleRec.ensembleType;
                 formEl.name.value = ensembleRec.name;
@@ -82,7 +82,7 @@ pl.v.updateEnsemble = {
             slots.members.push( index);
         }
 
-        await Ensemble.update(slots);
+        await updateEnsemble(slots);
         // update the selection list option element
         selectEnsembleEl.options[selectEnsembleEl.selectedIndex].text = slots.name;
         formEl.reset();

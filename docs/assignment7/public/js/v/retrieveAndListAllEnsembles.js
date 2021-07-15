@@ -6,7 +6,7 @@ pl.v.retrieveAndListAllEnsembles = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#ensembles>tbody");
         // load a list of all book records from Firestore
-        const ensembleRecords = await Ensemble.retrieveAll();
+        const ensembleRecords = await retrieveAllEnsembles();
         // for each book, create a table row with a cell for each attribute
         for (const ensembleRec of ensembleRecords) {
             // console.log(ensembleRec);

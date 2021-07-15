@@ -4,99 +4,85 @@
  * @param {object} slots - Object creation slots.
  */
 
-class Ensemble {
-    // using a single record parameter with ES6 function parameter destructuring
-    constructor({ensembleId, ensembleType, name, member, practicingLocation, practicingDate}) {
-        console.log("ctor called");
-        // assign properties by invoking implicit setters
-        this.ensembleId = ensembleId;  // number (integer)
-        this.ensembleType = ensembleType;  // string
-        this.name = name;  // string
-        if (members) this.members = members;
-        if (practicingLocation) this.practicingLocation = practicingLocation;
-        if (practicingDate) this.practicingDate = practicingDate;
+
+function checkEnsembleName(name) {
+    if (!isNonEmptyString(name)) {
+        console.log("ERROR: The name must be a non-empty string!");
+        return new E_RangeConstraintViolation(
+            "ERROR: The name must be a non-empty string!");
     }
-
-    static checkName = function (name) {
-        if (!isNonEmptyString(name)) {
-            console.log("ERROR: The name must be a non-empty string!");
-            return new E_RangeConstraintViolation(
-                "ERROR: The name must be a non-empty string!");
-        }
-        return new E_NoConstraintViolation();
-    }
-
-    static checkType = function (type){
-        if (!isNonEmptyString(type)) {
-            console.log("ERROR: The type must be a non-empty string!");
-            return new E_RangeConstraintViolation(
-                "ERROR: The type must be a non-empty string!");
-        }
-        return new E_NoConstraintViolation();
-    }
-    /**
-     *  Getters / Setters
-     */
-
-    static checkMembers = function (members) {
-        // todo
-        return new E_NoConstraintViolation();
-    }
-
-    static checkLocation = function (location){
-        return new E_NoConstraintViolation();
-    }
-
-    static checkPracticingDate = function (date){
-        return new E_NoConstraintViolation();
-    }
-
-    // Validate ensemble id from param and a
-    static checkID = function (ensembleId) {
-
-        if (ensembleId == null) {
-            console.log("ERROR: A value for the Ensemble ID must be provided!");
-            return new  E_MandatoryValueConstraintViolation(
-                "ERROR: A value for the Ensemble ID must be provided!");
-        }
-        if (!isIntegerOrIntegerString(ensembleId)) {
-            console.log("ERROR: Ensemble ID " + ensembleId + " is not a number!");
-            return new E_RangeConstraintViolation(
-                "ERROR: Ensemble ID " + ensembleId + " is not a number!");
-        }
-        if (ensembleId < 0) {
-            console.log("ERROR: Ensemble ID is not positive!");
-            return new E_RangeConstraintViolation(
-                "ERROR: Ensemble ID is not positive!");
-        }
-        
-        return new E_NoConstraintViolation();
-    }
-
-    static checkIDasID = async function (ensembleId) {
-
-        const validationResult = Ensemble.checkID(ensembleId);
-        if (!validationResult instanceof E_NoConstraintViolation) {
-            return validationResult;
-        }
-
-        var ensemble = await db.collection("ensembles").doc(ensembleId).get();
-
-        if (ensemble.exists) {
-            return new E_UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
-        }
-
-        return validationResult;
-    }
+    return new E_NoConstraintViolation();
 }
 
+function checkEnsembleType(type){
+    if (!isNonEmptyString(type)) {
+        console.log("ERROR: The type must be a non-empty string!");
+        return new E_RangeConstraintViolation(
+            "ERROR: The type must be a non-empty string!");
+    }
+    return new E_NoConstraintViolation();
+}
+/**
+ *  Getters / Setters
+ */
+
+function checkEnsembleMembers(members) {
+    // todo
+    return new E_NoConstraintViolation();
+}
+
+function checkEnsembleLocation(location){
+    return new E_NoConstraintViolation();
+}
+
+function checkEnsemblePracticingDate(date){
+    return new E_NoConstraintViolation();
+}
+
+// Validate ensemble id from param and a
+function checkEnsembleID(ensembleId) {
+
+    if (ensembleId == null) {
+        console.log("ERROR: A value for the Ensemble ID must be provided!");
+        return new  E_MandatoryValueConstraintViolation(
+            "ERROR: A value for the Ensemble ID must be provided!");
+    }
+    if (!isIntegerOrIntegerString(ensembleId)) {
+        console.log("ERROR: Ensemble ID " + ensembleId + " is not a number!");
+        return new E_RangeConstraintViolation(
+            "ERROR: Ensemble ID " + ensembleId + " is not a number!");
+    }
+    if (ensembleId < 0) {
+        console.log("ERROR: Ensemble ID is not positive!");
+        return new E_RangeConstraintViolation(
+            "ERROR: Ensemble ID is not positive!");
+    }
+    
+    return new E_NoConstraintViolation();
+}
+
+async function checkEnsembleIDasID(ensembleId) {
+
+    const validationResult = checkEnsembleID(ensembleId);
+    if (!validationResult instanceof E_NoConstraintViolation) {
+        return validationResult;
+    }
+
+    var ensemble = await db.collection("ensembles").doc(ensembleId).get();
+
+    if (ensemble.exists) {
+        return new E_UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
+    }
+
+    return validationResult;
+}
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
 /**
  *  Create a new movie record/object
  */
-Ensemble.add = async function (slots) {
+async function addEnsemble(slots) {
 
     // console.log("ensemble add called");
 
@@ -116,9 +102,9 @@ Ensemble.add = async function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Ensemble.update = async function ({ensembleId, ensembleType, name, members, practicingLocation, practicingDate}) {
+async function updateEnsemble({ensembleId, ensembleType, name, members, practicingLocation, practicingDate}) {
     const updSlots = {};
-    const ensembleRec = await Ensemble.retrieve(ensembleId);
+    const ensembleRec = await retrieveEnsemble(ensembleId);
 
     if (ensembleType && ensembleRec.ensembleType !== ensembleType) {
         updSlots.ensembleType = ensembleType;
@@ -150,7 +136,7 @@ Ensemble.update = async function ({ensembleId, ensembleType, name, members, prac
 /**
  *  Delete an existing Movie record/object
  */
-Ensemble.destroy = async function (ensembleId) {
+async function destroyEnsemble(ensembleId) {
     try {
         await db.collection("ensembles").doc(ensembleId).delete();
     } catch (e) {
@@ -164,7 +150,7 @@ Ensemble.destroy = async function (ensembleId) {
  *  Load all movie table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Ensemble.retrieveAll = async function () {
+async function retrieveAllEnsembles() {
     const ensemblesCollRef = db.collection("ensembles");
     var ensemblesQuerySnapshot = null;
     try {
@@ -180,13 +166,13 @@ Ensemble.retrieveAll = async function () {
 };
 
 // Clear test data
-Ensemble.clearData = async function () {
+async function clearEnsembleData() {
     if (
         // confirm("Do you really want to delete all ensemble records?")
         true
     ) {
         // retrieve all ensemble documents from Firestore
-        const ensembleRecords = await Ensemble.retrieveAll();
+        const ensembleRecords = await retrieveAllEnsembles();
         // delete all documents
         await Promise.all(ensembleRecords.map(
             ensembleRec => db.collection("ensembles").doc(ensembleRec.ensembleId).delete()));
@@ -195,7 +181,7 @@ Ensemble.clearData = async function () {
     }
 };
 
-Ensemble.retrieve = async function (ensembleId) {
+async function retrieveEnsemble(ensembleId) {
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(ensembleId);
     var ensembleDocSnapshot = null;
@@ -209,7 +195,7 @@ Ensemble.retrieve = async function (ensembleId) {
     return ensembleRecord;
 };
 
-Ensemble.generateTestData = async function () {
+async function generateEnsembleTestData() {
     let ensembleRecords = [
         {
             ensembleId: "0",
