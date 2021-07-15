@@ -30,21 +30,21 @@ pl.v.createMember = {
         
         // memberId
         formEl.memberId.addEventListener("input", async function() {
-            const validationResult = await Member.checkIDasID(
+            const validationResult = await checkMemberIDasID(
                 formEl.memberId.value
             );
             formEl.memberId.setCustomValidity(validationResult.message);
         });
         // name
         formEl.name.addEventListener("input", async function() {
-            const validationResult = await Member.validateName(
+            const validationResult = await validateMemberName(
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
         });
         // mailAddress
         formEl.mailAddress.addEventListener("input", async function() {
-            const validationResult = await Member.validateMail(
+            const validationResult = await validateMail(
                 formEl.mailAddress.value
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
@@ -90,7 +90,7 @@ pl.v.createMember = {
             var index = Object.values(InstrumentEL).indexOf(opt.value);
             slots.instrument.push( index);
         }
-        await Member.add(slots);
+        await addMember(slots);
         formEl.reset();
     }
 }

@@ -12,178 +12,111 @@ const InstrumentEL = {
  * The class Member
  * @class
  */
-class Member {
-    constructor({memberId, role, name, instrument, mailAddress}) {
-        this.memberId = memberId;
-        this.name = name;
-        this.mailAddress = mailAddress;
-        if (role) this.role = role;
-        if (instrument) this.instrument = instrument;
-    }
 
-    set memberId(c) {
-        const validationResult = Member.checkID(c);
-        if (validationResult instanceof M_NoConstraintViolation) {
-            this._memberId = c;
+
+function addInstrument(a) {
+    const validationResult = checkInstrument(a);
+    if (a && validationResult instanceof M_NoConstraintViolation) {
+        if (!this._instrument.includes(a)) {
+            this._instrument.push(a);
         } else {
-            throw validationResult;
+            console.error(`Instrument ${a} is already added to this boi!`);
         }
+    } else {
+        throw validationResult;
     }
+}
 
-    get memberId() {
-        return this._memberId;
-    }
-
-    set name(c) {
-        const validationResult = Member.validateName(c);
-        if (validationResult instanceof M_NoConstraintViolation) {
-            this._name = c;
-        } else {
-            throw validationResult;
-        }
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    set mailAddress(c) {
-        const validationResult = Member.validateMail(c);
-        if (validationResult instanceof M_NoConstraintViolation) {
-            this._mailAddress = c;
-        } else {
-            throw validationResult;
-        }
-
-    }
-
-    get mailAddress() {
-        return this._mailAddress;
-    }
-
-
-    set instrument(a) {
-        this._instrument = {};
-        if (Array.isArray(a)) {
-            for (const idRef of a) {
-                this.addInstrument(idRef);
-            }
-        } else {
-            for (const idRef of Object.keys(a)) {
-                this.addInstrument(a[idRef]);
-            }
-        }
-    }
-
-    get instrument() {
-        return this._instrument;
-    }
-
-    addInstrument(a) {
-        const validationResult = Member.checkInstrument(a);
-        if (a && validationResult instanceof M_NoConstraintViolation) {
-            if (!this._instrument.includes(a)) {
-                this._instrument.push(a);
-            } else {
-                console.error(`Instrument ${a} is already added to this boi!`);
-            }
-        } else {
-            throw validationResult;
-        }
-    }
-
-    static checkInstrument(r) {
-        if (r === undefined) {
-            return new M_NoConstraintViolation(); //optional
-        } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
-            parseInt(r) > InstrumentEL.MAX) {
-            console.log(`Invalid value for instrument: ${r}`);
-            return new M_RangeConstraintViolation(
-                `Invalid value for instrument: ${r}`);
-        } else {
-            return new M_NoConstraintViolation();
-        }
-    }
-
-    // Validate member id from param and a
-    static checkID = function (memberId) {
-        if (memberId == null) {
-            console.log("ERROR: A value for the Member ID must be provided!");
-            return new M_MandatoryValueConstraintViolation(
-                "ERROR: A value for the Member ID must be provided!");
-        }
-        if (!isIntegerOrIntegerString(memberId)) {
-            console.log("ERROR: Member ID " + memberId + " is not a number!");
-            return new M_RangeConstraintViolation(
-                "ERROR: Member ID " + memberId + " is not a number!");
-        }
-        if (memberId < 0) {
-            console.log("ERROR: Member ID is not positive!");
-            return new M_RangeConstraintViolation(
-                "ERROR: Member ID is not positive!");
-        }
-        
+function checkInstrument(r) {
+    if (r === undefined) {
+        return new M_NoConstraintViolation(); //optional
+    } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
+        parseInt(r) > InstrumentEL.MAX) {
+        console.log(`Invalid value for instrument: ${r}`);
+        return new M_RangeConstraintViolation(
+            `Invalid value for instrument: ${r}`);
+    } else {
         return new M_NoConstraintViolation();
     }
+}
 
-    static checkIDasID = async function (memberId) {
+// Validate member id from param and a
+function checkMemberID(memberId) {
+    if (memberId == null) {
+        console.log("ERROR: A value for the Member ID must be provided!");
+        return new M_MandatoryValueConstraintViolation(
+            "ERROR: A value for the Member ID must be provided!");
+    }
+    if (!isIntegerOrIntegerString(memberId)) {
+        console.log("ERROR: Member ID " + memberId + " is not a number!");
+        return new M_RangeConstraintViolation(
+            "ERROR: Member ID " + memberId + " is not a number!");
+    }
+    if (memberId < 0) {
+        console.log("ERROR: Member ID is not positive!");
+        return new M_RangeConstraintViolation(
+            "ERROR: Member ID is not positive!");
+    }
+    
+    return new M_NoConstraintViolation();
+}
 
-        const validationResult = Member.checkID(memberId);
-        if (!validationResult instanceof M_NoConstraintViolation) {
-            return validationResult;
-        }
+async function checkMemberIDasID(memberId) {
 
-        var member = await db.collection("members").doc(memberId).get();
-
-        if (member.exists) {
-            return new M_UniquenessConstraintViolation("ERROR: Member ID already in use!");
-        }
-
+    const validationResult = checkMemberID(memberId);
+    if (!validationResult instanceof M_NoConstraintViolation) {
         return validationResult;
     }
 
-    static validateRole = function (role) {
-        if (!isNonEmptyString(role)) {
-            console.log("ERROR: The role must be a non-empty string!");
-            return new M_RangeConstraintViolation(
-                "ERROR: The role must be a non-empty string!");
-        }
-        return new M_NoConstraintViolation();
+    var member = await db.collection("members").doc(memberId).get();
+
+    if (member.exists) {
+        return new M_UniquenessConstraintViolation("ERROR: Member ID already in use!");
     }
 
-    static validateMail = function (mail) {
-        if (!isNonEmptyString(mail)) {
-            console.log("ERROR: The mail must be a non-empty string!");
-            return new M_RangeConstraintViolation(
-                "ERROR: The mail must be a non-empty string!");
-        }
-        const mailRegex = RegExp(/^[A-Za-z0-9_]+(@)[A-Za-z0-9_]+(.)[A-Za-z0-9_]+$/);
-
-        if (! mailRegex.test(mail)) {
-            return new M_PatternConstraintViolation("ERROR: Malformed mail address.");
-        }
-
-        return new M_NoConstraintViolation();
-    }
-
-    static validateName = function (name) {
-        if (!isNonEmptyString(name)) {
-            console.log("ERROR: The name must be a non-empty string!");
-            return new M_RangeConstraintViolation(
-                "ERROR: The name must be a non-empty string!");
-        }
-        return new M_NoConstraintViolation();
-    }
-
+    return validationResult;
 }
 
-Member.validateSlots = async function (slots) {
+function validateRole(role) {
+    if (!isNonEmptyString(role)) {
+        console.log("ERROR: The role must be a non-empty string!");
+        return new M_RangeConstraintViolation(
+            "ERROR: The role must be a non-empty string!");
+    }
+    return new M_NoConstraintViolation();
+}
+
+function validateMail(mail) {
+    if (!isNonEmptyString(mail)) {
+        console.log("ERROR: The mail must be a non-empty string!");
+        return new M_RangeConstraintViolation(
+            "ERROR: The mail must be a non-empty string!");
+    }
+    const mailRegex = RegExp(/^[A-Za-z0-9_]+(@)[A-Za-z0-9_]+(.)[A-Za-z0-9_]+$/);
+
+    if (! mailRegex.test(mail)) {
+        return new M_PatternConstraintViolation("ERROR: Malformed mail address.");
+    }
+
+    return new M_NoConstraintViolation();
+}
+
+function validateMemberName(name) {
+    if (!isNonEmptyString(name)) {
+        console.log("ERROR: The name must be a non-empty string!");
+        return new M_RangeConstraintViolation(
+            "ERROR: The name must be a non-empty string!");
+    }
+    return new M_NoConstraintViolation();
+}
+
+async function validateMemberSlots(slots) {
 
     const debug = false;
 
     //check memberid
     if (debug) console.log("checkID");
-    var validationResult = Member.checkID(slots.memberId);
+    var validationResult = checkMemberID(slots.memberId);
     if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
@@ -192,7 +125,7 @@ Member.validateSlots = async function (slots) {
 
     //check name
     if (debug) console.log("checkName");
-    validationResult = Member.validateName(slots.name);
+    validationResult = validateMemberName(slots.name);
     if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
@@ -201,7 +134,7 @@ Member.validateSlots = async function (slots) {
 
     //check mail
     if (debug) console.log("checkMail");
-    validationResult = Member.validateMail(slots.mailAddress);
+    validationResult = validateMail(slots.mailAddress);
     if (validationResult instanceof M_NoConstraintViolation) {
 
     } else {
@@ -211,13 +144,13 @@ Member.validateSlots = async function (slots) {
     //validate role
     if (!Array.isArray(slots.role)) {
         if (debug) console.log("checkRole");
-        validationResult = Member.validateRole(slots.role);
+        validationResult = validateRole(slots.role);
         if (!validationResult instanceof M_NoConstraintViolation) {
             throw validationResult;
         }
     } else {
         for (const r of slots.role) {
-            validationResult = Member.validateRole(r);
+            validationResult = validateRole(r);
             if (!validationResult instanceof M_NoConstraintViolation) {
                 throw validationResult;
             }
@@ -264,7 +197,7 @@ Member.validateSlots = async function (slots) {
     const b = slots.instrument;
     if (Array.isArray(b)) {
         for (const idRef of b) {
-            validationResult = Member.checkInstrument(idRef);
+            validationResult = checkInstrument(idRef);
             if (idRef && validationResult instanceof M_NoConstraintViolation) {
                 if (!instrument.includes(idRef)) {
                     instrument.push(idRef);
@@ -277,7 +210,7 @@ Member.validateSlots = async function (slots) {
         }
     } else {
         for (const idRef of Object.keys(b)) {
-            validationResult = Member.checkInstrument(b[idRef]);
+            validationResult = checkInstrument(b[idRef]);
             if (b[idRef] && validationResult instanceof M_NoConstraintViolation) {
                 if (!instrument.includes(b[idRef])) {
                     instrument.push(b[idRef]);
@@ -298,7 +231,7 @@ Member.validateSlots = async function (slots) {
  *  Create a new member record/object
  */
 
-Member.add = async function (slots) {
+async function addMember(slots) {
     const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc(slots.memberId);
     try {
@@ -307,7 +240,7 @@ Member.add = async function (slots) {
         let str = slots.role;
         slots.role = str.split(",");
         //todo: velidate slots
-        Member.validateSlots(slots);
+        validateMemberSlots(slots);
         await memberDocRef.set(slots);
     } catch (e) {
         console.error(`Error when adding member record: ${e}`);
@@ -320,9 +253,9 @@ Member.add = async function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Member.update = async function ({memberId, role, name, instrument, mailAddress}) {
+async function updateMember ({memberId, role, name, instrument, mailAddress}) {
     const updSlots = {};
-    const memberRec = await Member.retrieve(memberId);
+    const memberRec = await retrieveMember(memberId);
 
     if (memberRec.role !== role) {
         updSlots.role = role;
@@ -354,7 +287,7 @@ Member.update = async function ({memberId, role, name, instrument, mailAddress})
 /**
  *  Delete an existing member record/object
  */
-Member.destroy = async function (memberId) {
+async function destroyMember (memberId) {
     try {
         await db.collection("members").doc(memberId).delete();
     } catch (e) {
@@ -368,7 +301,7 @@ Member.destroy = async function (memberId) {
  *  Load all member table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Member.retrieveAll = async function () {
+async function retrieveAllMembers() {
     const membersCollRef = db.collection("members");
     var membersQuerySnapshot = null;
     try {
@@ -384,10 +317,10 @@ Member.retrieveAll = async function () {
 };
 
 // Clear test data
-Member.clearData = async function () {
+async function clearMemberData() {
     if (confirm("Do you really want to delete all member records?")) {
         // retrieve all book documents from Firestore
-        const memberRecords = await Member.retrieveAll();
+        const memberRecords = await retrieveAllMembers();
         // delete all documents
         await Promise.all(memberRecords.map(
             memberRec => db.collection("members").doc(memberRec.memberId).delete()));
@@ -396,7 +329,7 @@ Member.clearData = async function () {
     }
 };
 
-Member.retrieve = async function (memberId) {
+async function retrieveMember(memberId) {
     const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc(memberId);
     var memberDocSnapshot = null;
@@ -410,7 +343,7 @@ Member.retrieve = async function (memberId) {
     return memberRecord;
 };
 
-Member.generateTestData = async function () {
+async function generateMemberTestData() {
     let memberRecords = [
         {
             memberId: "0",

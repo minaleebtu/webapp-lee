@@ -11,7 +11,7 @@ pl.v.updateMember = {
             selectInstrumentsEl = formEl.selectInstrument;
 
         // load all member records
-        const memberRecords = await Member.retrieveAll();
+        const memberRecords = await retrieveAllMembers();
         for (const memberRec of memberRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = memberRec.name;
@@ -36,7 +36,7 @@ pl.v.updateMember = {
             const memberId = selectMemberEl.value;
             if (memberId) {
                 // retrieve up-to-date member record
-                const memberRec = await Member.retrieve(memberId);
+                const memberRec = await retrieveMember(memberId);
                 formEl.memberId.value = memberRec.memberId;
                 formEl.role.value = memberRec.role;
                 formEl.name.value = memberRec.name;
@@ -54,14 +54,14 @@ pl.v.updateMember = {
         // memberId can't be changed
         // name
         formEl.name.addEventListener("input", async function() {
-            const validationResult = await Member.validateName(
+            const validationResult = await validateMemberName(
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
         });
         // mailAddress
         formEl.mailAddress.addEventListener("input", async function() {
-            const validationResult = await Member.validateMail(
+            const validationResult = await validateMail(
                 formEl.mailAddress.value
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
@@ -118,7 +118,7 @@ pl.v.updateMember = {
             slots.instrument.push( index);
         }
 
-        await Member.update(slots);
+        await updateMember(slots);
         // update the selection list option element
         selectMemberEl.options[selectMemberEl.selectedIndex].text = slots.title;
         formEl.reset();

@@ -6,7 +6,7 @@ pl.v.retrieveAndListAllMember = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#members>tbody");
         // load a list of all member records from Firestore
-        const memberRecords = await Member.retrieveAll();
+        const memberRecords = await retrieveAllMembers();
         // for each member, create a table row with a cell for each attribute
         for (const memberRec of memberRecords) {
             const row = tableBodyEl.insertRow();

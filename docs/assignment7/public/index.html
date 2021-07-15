@@ -25,13 +25,13 @@
                 generateTestDataButtons = document.querySelectorAll("button.generateTestData");
             // set event handlers for the buttons "clearData" and "generateTestData"
             clearButton.addEventListener("click", Ensemble.clearData);
-            clearButton.addEventListener("click", Event.clearData);
-            clearButton.addEventListener("click", Member.clearData)
+            clearButton.addEventListener("click", clearEventData);
+            clearButton.addEventListener("click", clearMemberData)
 
             for (const btn of generateTestDataButtons) {
                 btn.addEventListener("click", Ensemble.generateTestData);
-                btn.addEventListener("click", Event.generateTestData);
-                btn.addEventListener("click", Member.generateTestData);
+                btn.addEventListener("click", generateEventTestData);
+                btn.addEventListener("click", generateMemberTestData);
             }
         });
     </script>

@@ -8,7 +8,7 @@ pl.v.deleteMember = {
             deleteButton = formEl.commit,
             selectMemberEl = formEl.selectMember;
         // load all ensemble records
-        const memberRecords = await Member.retrieveAll();
+        const memberRecords = await retrieveAllMembers();
         for (const memberRec of memberRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = memberRec.name;
@@ -24,7 +24,7 @@ pl.v.deleteMember = {
         const selectMemberEl = document.forms['Member'].selectMember;
         const memberId = selectMemberEl.value;
         if (memberId) {
-            await Member.destroy(memberId);
+            await destroyMember(memberId);
             // remove deleted book from select options
             selectMemberEl.remove(selectMemberEl.selectedIndex);
         }
