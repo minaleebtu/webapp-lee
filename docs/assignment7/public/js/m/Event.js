@@ -11,145 +11,72 @@ const EventTypeEL = {
     workshop: "Workshop"
 }
 
-/**
- * The class Event
- * @class
- */
-class Event {
-    constructor({eventId, eventType, title, date, description, personInCharge, participants}) {
-        this.eventId = eventId;
-        this.eventType = eventType;
-        this.title = title;
-        this.date = date;
-        if (description) this.description = description;
-        if (personInCharge) this.personInCharge = personInCharge;
-        if (participants) this.participants = participants;
+function checkEventTitle(title) {
+    if (!isNonEmptyString(title)) {
+        console.log("ERROR: The title must be a non-empty string!");
+        return new RangeConstraintViolation(
+            "ERROR: The title must be a non-empty string!");
     }
+    return new NoConstraintViolation();
+}
 
-    set eventId(c) {
-        this._eventId = eventId;
-    }
-
-    get eventId() {
-        return this._eventId;
-    }
-
-    set eventType(c) {
-        this._eventType = eventType;
-    }
-
-    get eventType() {
-        return this._eventType;
-    }
-
-    set title(c) {
-        this._title = title;
-    }
-
-    get title() {
-        return this._title;
-    }
-
-    set date(c) {
-        this._date = date;
-    }
-
-    get date() {
-        return this._date;
-    }
-
-    set description(c) {
-        this._description = description;
-    }
-
-    get description() {
-        return this._description;
-    }
-
-    set personInCharge(c) {
-        this._personInCharge = personInCharge;
-    }
-
-    get personInCharge() {
-        return this._personInCharge;
-    }
-
-    set participants(c) {
-        this._participants = participants;
-    }
-
-    get participants() {
-        return this._participants;
-    }
-
-    static checkTitle = function (title) {
-        if (!isNonEmptyString(title)) {
-            console.log("ERROR: The title must be a non-empty string!");
-            return new RangeConstraintViolation(
-                "ERROR: The title must be a non-empty string!");
-        }
+function checkEventDate(rd) {
+    if (!rd || rd === "") return new MandatoryValueConstraintViolation(
+        "A value for the release date must be provided!"
+    );
+    else {
         return new NoConstraintViolation();
     }
+}
 
-    static checkDate(rd) {
-        if (!rd || rd === "") return new MandatoryValueConstraintViolation(
-            "A value for the release date must be provided!"
-        );
-        else {
-            return new NoConstraintViolation();
-        }
+// Validate event id from param and a
+function checkEventID(eventId) {
+    if (!isIntegerOrIntegerString(eventId)) {
+        console.log("ERROR: Event ID " + eventId + " is not a number!");
+        return new RangeConstraintViolation(
+            "ERROR: Event ID " + eventId + " is not a number!");
+    }
+    if (eventId < 0) {
+        console.log("ERROR: Event ID is not positive!");
+        return new RangeConstraintViolation(
+            "ERROR: Event ID is not positive!");
+    }
+    if (eventId == null) {
+        console.log("ERROR: A value for the Event ID must be provided!");
+        return new MandatoryValueConstraintViolation(
+            "ERROR: A value for the Event ID must be provided!");
     }
 
-    // Validate event id from param and a
-    static checkID = function (eventId) {
-        if (!isIntegerOrIntegerString(eventId)) {
-            console.log("ERROR: Event ID " + eventId + " is not a number!");
-            return new RangeConstraintViolation(
-                "ERROR: Event ID " + eventId + " is not a number!");
-        }
-        if (eventId < 0) {
-            console.log("ERROR: Event ID is not positive!");
-            return new RangeConstraintViolation(
-                "ERROR: Event ID is not positive!");
-        }
-        if (eventId == null) {
-            console.log("ERROR: A value for the Event ID must be provided!");
-            return new MandatoryValueConstraintViolation(
-                "ERROR: A value for the Event ID must be provided!");
-        }
+    return new NoConstraintViolation();
+}
 
-        return new NoConstraintViolation();
-    }
+async function checkEventIDasID(eventId) {
 
-    static checkIDasID = async function (eventId) {
-
-        const validationResult = Event.checkID(eventId);
-        if (!validationResult instanceof NoConstraintViolation) {
-            return validationResult;
-        }
-
-        var event = await db.collection("events").doc(eventId).get();
-
-        if (event.exists) {
-            return new UniquenessConstraintViolation("ERROR: Event ID already in use!");
-        }
-
+    const validationResult = checkEventID(eventId);
+    if (!validationResult instanceof NoConstraintViolation) {
         return validationResult;
     }
 
-    static checkEventType(r) {
-        if (r === undefined) {
-            return new NoConstraintViolation(); //optional
-        } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
-            parseInt(r) > EventTypeEL.MAX) {
-            console.log(`Invalid value for event type: ${r}`);
-            return new RangeConstraintViolation(
-                `Invalid value for event type: ${r}`);
-        } else {
-            return new NoConstraintViolation();
-        }
+    var event = await db.collection("events").doc(eventId).get();
+
+    if (event.exists) {
+        return new UniquenessConstraintViolation("ERROR: Event ID already in use!");
     }
 
+    return validationResult;
+}
+
+function checkEventType(r) {
+    if (r === undefined) {
+        return new NoConstraintViolation(); //optional
+    } else if (!isIntegerOrIntegerString(r) || parseInt(r) < 0 ||
+        parseInt(r) > EventTypeEL.MAX) {
+        console.log(`Invalid value for event type: ${r}`);
+        return new RangeConstraintViolation(
+            `Invalid value for event type: ${r}`);
+    } else {
+        return new NoConstraintViolation();
+    }
 }
 
 /********************************************************
@@ -158,8 +85,8 @@ class Event {
 /**
  *  Create a new movie record/object
  */
-Event.add = async function (slots) {
-    Event.validateSlots(slots);
+async function addEvent(slots) {
+    validateEventSlots(slots);
     const eventsCollRef = db.collection("events"),
         eventDocRef = eventsCollRef.doc(slots.eventId);
     try {
@@ -175,9 +102,9 @@ Event.add = async function (slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-Event.update = async function ({eventId, eventType, title, date, description, personInCharge, participants}) {
+async function updateEvent({eventId, eventType, title, date, description, personInCharge, participants}) {
     const updSlots = {};
-    const eventRec = await Event.retrieve(eventId);
+    const eventRec = await retrieveEvent(eventId);
 
     if (eventRec.eventType !== eventType) {
         updSlots.eventType = eventType;
@@ -217,9 +144,9 @@ Event.update = async function ({eventId, eventType, title, date, description, pe
 /**
  *  Delete an existing Movie record/object
  */
-Event.destroy = async function (eventId) {
+async function destroyEvent(eventId) {
     try {
-        Event.validateSlots(slots);
+        validateEventSlots(slots);
         await db.collection("events").doc(eventId).delete();
     } catch (e) {
         console.error(`Error when deleting event record: ${e}`);
@@ -232,7 +159,7 @@ Event.destroy = async function (eventId) {
  *  Load all movie table rows and convert them to objects
  *  Precondition: directors and people must be loaded first
  */
-Event.retrieveAll = async function () {
+async function retrieveAllEvents() {
     const eventsCollRef = db.collection("events");
     var eventsQuerySnapshot = null;
     try {
@@ -248,13 +175,13 @@ Event.retrieveAll = async function () {
 };
 
 // Clear test data
-Event.clearData = async function () {
+async function clearEventData() {
     if (
         // confirm("Do you really want to delete all event records?")
         true
     ) {
         // retrieve all events documents from Firestore
-        const eventRecords = await Event.retrieveAll();
+        const eventRecords = await retrieveAllEvents();
         // delete all documents
         await Promise.all(eventRecords.map(
             eventRec => db.collection("events").doc(eventRec.eventId).delete()));
@@ -263,7 +190,7 @@ Event.clearData = async function () {
     }
 };
 
-Event.retrieve = async function (eventId) {
+async function retrieveEvent(eventId) {
     const eventsCollRef = db.collection("events"),
         eventDocRef = eventsCollRef.doc(eventId);
     var eventDocSnapshot = null;
@@ -277,9 +204,9 @@ Event.retrieve = async function (eventId) {
     return eventRecord;
 };
 
-Event.validateSlots = async function (slots) {
+async function validateEventSlots(slots) {
     //check title
-    var validationResult = Event.checkID(slots.eventId);
+    var validationResult = checkEventID(slots.eventId);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
@@ -287,7 +214,7 @@ Event.validateSlots = async function (slots) {
     }
 
     //check title
-    var validationResult = Event.checkTitle(slots.title);
+    var validationResult = checkEventTitle(slots.title);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
@@ -295,7 +222,7 @@ Event.validateSlots = async function (slots) {
     }
 
     //check eventtype
-    var validationResult = Event.checkEventType(slots.eventType);
+    var validationResult = checkEventType(slots.eventType);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
@@ -303,7 +230,7 @@ Event.validateSlots = async function (slots) {
     }
 
     //check date
-    var validationResult = Event.checkDate(slots.date);
+    var validationResult = checkEventDate(slots.date);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
@@ -311,7 +238,7 @@ Event.validateSlots = async function (slots) {
     }
 }
 
-Event.generateTestData = async function () {
+async function generateEventTestData() {
     let eventRecords = [
         {
             eventId: "0",

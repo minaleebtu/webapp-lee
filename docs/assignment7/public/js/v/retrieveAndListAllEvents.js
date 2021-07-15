@@ -6,7 +6,7 @@ pl.v.retrieveAndListAllEvents = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#events>tbody");
         // load a list of all event records from Firestore
-        const eventRecords = await Event.retrieveAll();
+        const eventRecords = await retrieveAllEvents();
         // for each event, create a table row with a cell for each attribute
         for (const eventRec of eventRecords) {
             const row = tableBodyEl.insertRow();

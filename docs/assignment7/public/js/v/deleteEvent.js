@@ -8,7 +8,7 @@ pl.v.deleteEvent = {
             deleteButton = formEl.commit,
             selectEventEl = formEl.selectEvent;
         // load all ensemble records
-        const eventRecords = await Event.retrieveAll();
+        const eventRecords = await retrieveAllEvents();
         for (const eventRec of eventRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = eventRec.title;
@@ -24,7 +24,7 @@ pl.v.deleteEvent = {
         const selectEventEl = document.forms['Event'].selectEvent;
         const eventId = selectEventEl.value;
         if (eventId) {
-            await Event.destroy(eventId);
+            await destroyEvent(eventId);
             // remove deleted book from select options
             selectEventEl.remove(selectEventEl.selectedIndex);
         }

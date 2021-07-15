@@ -12,7 +12,7 @@ pl.v.updateEvent = {
             selectParticipants = formEl.participants;
 
         // load all event records
-        const eventRecords = await Event.retrieveAll();
+        const eventRecords = await retrieveAllEvents();
         for (const eventRec of eventRecords) {
             const optionEl = document.createElement("option");
             optionEl.text = eventRec.title;
@@ -45,7 +45,7 @@ pl.v.updateEvent = {
             const eventId = selectEventEl.value;
             if (eventId) {
                 // retrieve up-to-date book record
-                const eventRec = await Event.retrieve(eventId);
+                const eventRec = await retrieveEvent(eventId);
                 formEl.eventId.value = eventRec.eventId;
                 formEl.selectEventType.value = eventRec.eventType; // todo
                 formEl.title.value = eventRec.title;
@@ -78,7 +78,7 @@ pl.v.updateEvent = {
             personInCharge: formEl.personInCharge.value,
             participants: formEl.participants.value
         };
-        await Event.update(slots);
+        await updateEvent(slots);
         // update the selection list option element
         selectEventEl.options[selectEventEl.selectedIndex].text = slots.title;
         formEl.reset();

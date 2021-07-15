@@ -42,7 +42,7 @@ pl.v.createEvent = {
 
         // eventId
         formEl.eventId.addEventListener("input", async function() {
-            const validationResult = await Event.checkIDasID(
+            const validationResult = await checkEventIDasID(
                 formEl.eventId.value
             );
             formEl.eventId.setCustomValidity(validationResult.message);
@@ -52,7 +52,7 @@ pl.v.createEvent = {
 
         // title
         formEl.title.addEventListener("input", async function() {
-            const validationResult = await Event.checkTitle(
+            const validationResult = await checkEventTitle(
                 formEl.title.value
             );
             formEl.title.setCustomValidity(validationResult.message);
@@ -109,7 +109,7 @@ pl.v.createEvent = {
             slots.participants.push( index);
         }
 
-        await Event.add(slots);
+        await addEvent(slots);
         formEl.reset();
     }
 }
