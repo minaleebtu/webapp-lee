@@ -21,7 +21,7 @@ pl.v.retrieveAndListAllEvents = {
                 var meme = await getEnsemblefromID(a);
                 i += meme.name + ', ';
             }
-            row.insertCell().textContent = i;
+            row.insertCell().textContent = i.slice(0, -2);
         }
     }
 }
