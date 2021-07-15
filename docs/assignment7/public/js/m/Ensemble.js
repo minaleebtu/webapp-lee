@@ -6,6 +6,7 @@
 
 
 function checkEnsembleName(name) {
+    console.log(name);
     if (!isNonEmptyString(name)) {
         console.log("ERROR: The name must be a non-empty string!");
         return new E_RangeConstraintViolation(
@@ -28,6 +29,9 @@ function checkEnsembleType(type){
 
 function checkEnsembleMembers(members) {
     // todo
+    for(var i of members) {
+        
+    }
     return new E_NoConstraintViolation();
 }
 
@@ -85,7 +89,7 @@ async function checkEnsembleIDasID(ensembleId) {
 async function addEnsemble(slots) {
 
     // console.log("ensemble add called");
-
+    validateEnsembleSlots(slots);
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(slots.ensembleId);
     try {
@@ -144,6 +148,9 @@ async function destroyEnsemble(ensembleId) {
         return;
     }
     console.log(`Ensemble record ${ensembleId} deleted.`);
+
+    //check event participants for removed ensembles
+
 };
 
 /**
@@ -228,6 +235,56 @@ async function generateEnsembleTestData() {
     ));
     console.log(`${Object.keys( ensembleRecords).length} ensembles saved.`);
 };
+
+async function validateEnsembleSlots(slots) {
+    //check id
+    var validationResult = checkEnsembleID(slots.ensembleId);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check type
+    var validationResult = checkEnsembleType(slots.ensembleType);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check name
+    var validationResult = checkEnsembleName(slots.name);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check date
+    var validationResult = checkEnsemblePracticingDate(slots.practicingDate);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check location
+    var validationResult = checkEnsembleLocation(slots.practicingLocation);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+
+    //check members
+    var validationResult = checkEnsembleMembers(slots.members);
+    if (validationResult instanceof E_NoConstraintViolation) {
+
+    } else {
+        throw validationResult;
+    }
+}
 
 function isIntegerOrIntegerString(x) {
     return typeof (x) === "number" && Number.isInteger(x) ||

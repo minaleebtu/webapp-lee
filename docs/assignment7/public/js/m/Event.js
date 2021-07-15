@@ -146,7 +146,6 @@ async function updateEvent({eventId, eventType, title, date, description, person
  */
 async function destroyEvent(eventId) {
     try {
-        validateEventSlots(slots);
         await db.collection("events").doc(eventId).delete();
     } catch (e) {
         console.error(`Error when deleting event record: ${e}`);
