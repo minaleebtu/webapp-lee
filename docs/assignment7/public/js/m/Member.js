@@ -294,6 +294,7 @@ async function destroyMember (memberId) {
         console.error(`Error when deleting member record: ${e}`);
         return;
     }
+    checkEnsemblesValidity();
     console.log(`Member record ${memberId} deleted.`);
 };
 

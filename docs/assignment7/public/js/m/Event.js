@@ -79,6 +79,31 @@ function checkEventType(r) {
     }
 }
 
+async function checkEventValidity() {
+    var er = await retrieveAllEvents();
+    for (const eventRec of er) {
+        updateEventParticipants(eventRec.eventId);
+    }
+}
+
+async function updateEventParticipants(eventId) {
+    var eventRec = await retrieveEvent(eventId);
+    var newParticipants = [];
+    for(var i of eventRec.participants) {
+        var ensembleRec = retrieveEnsemble(i);
+        if(ensembleRec) {
+            if (!newParticipants.includes(ensembleRec.ensembleId)) {
+                newParticipants.push(ensembleRec.ensembleId);
+            }
+        }
+    }
+    const slots = {
+        eventId: eventId,
+        participants: newParticipants
+    };
+    updateEnsemble(slots);
+}
+
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/

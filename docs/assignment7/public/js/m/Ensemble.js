@@ -23,14 +23,13 @@ function checkEnsembleType(type){
     }
     return new E_NoConstraintViolation();
 }
-/**
- *  Getters / Setters
- */
 
 function checkEnsembleMembers(members) {
-    // todo
     for(var i of members) {
-        
+        var memberRec = retrieveMember(i);
+        if(!memberRec) {
+            return new E_RangeConstraintViolation("Member " + i + " does not exist!");
+        }
     }
     return new E_NoConstraintViolation();
 }
@@ -80,6 +79,32 @@ async function checkEnsembleIDasID(ensembleId) {
 
     return validationResult;
 }
+
+async function checkEnsemblesValidity() {
+    var er = await retrieveAllEnsembles();
+    for (const ensembleRec of er) {
+        updateEnsembleMembers(ensembleRec.ensembleId);
+    }
+}
+
+async function updateEnsembleMembers(ensembleId) {
+    var ensembleRec = await retrieveEnsemble(ensembleId);
+    var newMembers = [];
+    for(var i of ensembleRec.members) {
+        var memberRec = retrieveMember(i);
+        if(memberRec) {
+            if (!newMembers.includes(memberRec.memberId)) {
+                newMembers.push(memberRec.memberId);
+            }
+        }
+    }
+    const slots = {
+        ensembleId: ensembleId,
+        members: newMembers
+    };
+    updateEnsemble(slots);
+}
+
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
@@ -147,6 +172,7 @@ async function destroyEnsemble(ensembleId) {
         console.error(`Error when deleting ensemble record: ${e}`);
         return;
     }
+    checkEventValidity();
     console.log(`Ensemble record ${ensembleId} deleted.`);
 
     //check event participants for removed ensembles
