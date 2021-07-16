@@ -13,7 +13,7 @@ main {
     text-align: left;
     line-height: 30px;
     color: black;
-    margin: 10 auto;
+    margin: 10px auto;
 }
 a.disabled {
     opacity: 0.4;

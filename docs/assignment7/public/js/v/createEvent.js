@@ -8,7 +8,7 @@ pl.v.createEvent = {
         const 
             formEl = document.forms['Event'],
             saveButton = document.forms['Event'].commit,
-            selectEventTypeEl = formEl.selectEventType,
+            selectEventTypeEl = formEl.selectEventTyp,
             selectParticipants = formEl.participants;
         
 
