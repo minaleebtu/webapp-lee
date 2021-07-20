@@ -116,4 +116,8 @@ BTU Music Club (**Domain name**: btu-musicclub)
 
 ![information_design_model3](https://user-images.githubusercontent.com/74371189/123155605-9c5d9c80-d468-11eb-934f-a1bed55dfade.png)
 
+## Division of work
 
+Fabian - Member Class, Event Class, Enumerations, other Data Validation
+
+Tobias - Ensemble Class, Firebase Backend, Firebase Rules Data Validation, DB-UI synchronization
