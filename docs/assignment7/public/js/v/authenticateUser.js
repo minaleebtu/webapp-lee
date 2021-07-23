@@ -11,7 +11,7 @@ pl.v.authenticateUser = {
         const page = window.location.pathname,
             allowedPages = ["/", "/index.html",
                 "/authenticateUser.html", "/retrieveAndListAllBooks.html"],
-            loginMngEls = document.querySelectorAll("header > div#login-management > small");
+            loginMngEls = document.querySelectorAll("div#login-management > small");
         // reset (hide) all login management elements: [0]sign in/up , [1]sign out
         if (page !== "/authenticateUser.html") {
             loginMngEls[0].hidden = loginMngEls[1].hidden = true;
