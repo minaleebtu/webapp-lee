@@ -11,7 +11,7 @@ pl.v.authenticateUser = {
         const page = window.location.pathname,
             allowedPages = ["/", "/index.html",
                 "/authenticateUser.html", "/retrieveAndListAllBooks.html"],
-            loginMngEls = document.querySelectorAll("div#login-management > small");
+            loginMngEls = document.querySelectorAll("div#login-management");
         // reset (hide) all login management elements: [0]sign in/up , [1]sign out
         if (page !== "/authenticateUser.html") {
             loginMngEls[0].hidden = loginMngEls[1].hidden = true;
@@ -32,7 +32,7 @@ pl.v.authenticateUser = {
                     if (!user.emailVerified) {
                         spanEl.textContent = `Check your email '${user.email}' for instructions to verify your account before using any operation `;
                     } else {
-                        spanEl.textContent = `${user.email} `;
+                        spanEl.textContent = `Signed in as ${user.email} `;
                     }
                     loginMngEls[1].prepend(spanEl);
                     loginMngEls[1].hidden = false; // show 'sign out'

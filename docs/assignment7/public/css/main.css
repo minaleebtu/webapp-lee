@@ -21,10 +21,12 @@ a.disabled {
     cursor: default;
 }
 div#login-management {
+    /*
     text-align: right;
     padding: 1em;
     background: #fffde9;
     border: 1px solid #ffbb4c;
+    */
 }
 #error {
     color: #ff3300;

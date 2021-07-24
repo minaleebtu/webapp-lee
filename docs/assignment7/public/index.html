@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="slick/slick.css">
     <link rel="stylesheet" href="slick/slick-theme.css">
     <link rel="stylesheet" href="magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/tooplate-infinite-loop.css"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
 
     <!--
     DESIGN TEMPLATE MADE BY:
@@ -62,11 +62,6 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md tm-navbar" id="tmNav">
 
-        <div id="login-management">
-            <small><a href="authenticateUser.html">Sign in or Sign up</a> for using the disabled operations</small>
-            <small><button type="button">Sign out</button></small>
-        </div>
-
         <div class="container">
 
             <div class="tm-next">
@@ -100,7 +95,10 @@
                 </ul>
             </div>
         </div>
+
     </nav>
+
+
 
     <div class="text-center tm-hero-text-container">
         <div class="tm-hero-text-container-inner">
@@ -108,10 +106,28 @@
             <p class="tm-hero-subtitle">
                 to enhance the enjoyment for music to the students
             </p>
+
+            <p class="text-center tm-hero-subtitle">
+            <div id="login-management" hidden="hidden">
+                <a href="authenticateUser.html">Sign in or Sign up</a> for using the disabled operations
+            </div>
+            </p>
+
+            <p class="tm-hero-subtitle">
+            <div class="text-center col-sm-12 col-md-6">
+                <div id="login-management" hidden="hidden">
+                    <button type="button" class="btn tm-btn-submit">Sign out</button>
+                </div>
+        </div>
+            </p>
+
+
         </div>
     </div>
 
+
     <div class="tm-next tm-intro-next">
+
         <a href="#whatwedo" class="text-center tm-down-arrow-link">
             <i class="fas fa-2x fa-arrow-down tm-down-arrow"></i>
         </a>
@@ -119,9 +135,7 @@
 </section>
 
 <section id="whatwedo" class="tm-section-pad-top">
-
     <div class="container">
-
         <div class="row tm-content-box"><!-- first row -->
             <div class="col-lg-12 col-xl-12">
                 <div class="tm-intro-text-container">
@@ -370,9 +384,9 @@
 
         <div class="row">
 
-            <div class="text-center col-12">
-                <h2 class="tm-section-title mb-4">Contact Us</h2>
-                <p class="mb-5">
+            <div class="col-lg-12 tm-content-box">
+                <h2 class="tm-text-primary mb-4 tm-section-title">Ensembles</h2>
+                <p class="mb-4 tm-intro-text">
                     Proin enim orci, tincidunt quis suscipit in, placerat nec est. Vestibulum posuere faucibus posuere.
                     Quisque aliquam velit eget leo blandit egestas. Nulla id posuere felis, quis tristique nulla.
                 </p><br>
@@ -388,6 +402,7 @@
                 </form>
             </div>
 
+            <!--
             <div class="col-sm-12 col-md-6">
 
                 <div class="contact-item">
@@ -420,10 +435,11 @@
 
                 <div class="contact-item">&nbsp;</div>
 
+
             </div>
+            -->
 
             <!-- Ensemble links -->
-
             <div class="text-center col-lg-3">
                 <div class="tm-intro-text-container">
                     <h2 class="tm-text-primary mb-4">Create</h2>
@@ -462,6 +478,7 @@
 
         </div><!-- row ending -->
 
+        <!-- testdata -->
         <div class="row tm-content-box">
             <div class="text-center col-sm-12 col-md-6">
                 <button class="btn tm-btn-submit" type="button" disabled="disabled">Generate test data</button>
