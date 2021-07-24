@@ -1,3 +1,4 @@
+/*
 html, body {
     background-image: url('../matthew-kalapuch-sqJ4tLBiurw-unsplash.jpg');
     background-color: black;
@@ -15,6 +16,7 @@ main {
     color: black;
     margin: 10px auto;
 }
+*/
 a.disabled {
     opacity: 0.4;
     pointer-events: none;

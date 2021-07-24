@@ -6,7 +6,7 @@
 
 
 function checkEnsembleName(name) {
-    console.log(name);
+    // console.log(name);
     if (!isNonEmptyString(name)) {
         console.log("ERROR: The name must be a non-empty string!");
         return new E_RangeConstraintViolation(
@@ -33,6 +33,20 @@ function checkEnsembleMembers(members) {
     }
     return new E_NoConstraintViolation();
 }
+
+async function retrieveMember(memberId) {
+    const membersCollRef = db.collection("members"),
+        memberDocRef = membersCollRef.doc(memberId);
+    var memberDocSnapshot = null;
+    try {
+        memberDocSnapshot = await memberDocRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving member record: ${e}`);
+        return null;
+    }
+    const memberRecord = memberDocSnapshot.data();
+    return memberRecord;
+};
 
 function checkEnsembleLocation(location){
     return new E_NoConstraintViolation();
@@ -177,6 +191,28 @@ async function destroyEnsemble(ensembleId) {
 
     //check event participants for removed ensembles
 
+};
+
+async function checkEventValidity() {
+    var er = await retrieveAllEvents();
+    for (const eventRec of er) {
+        updateEventParticipants(eventRec.eventId);
+    }
+}
+
+async function retrieveAllEvents() {
+    const eventsCollRef = db.collection("events");
+    var eventsQuerySnapshot = null;
+    try {
+        eventsQuerySnapshot = await eventsCollRef.get();
+    } catch (e) {
+        console.error(`Error when retrieving event records: ${e}`);
+        return null;
+    }
+    const eventDocs = eventsQuerySnapshot.docs,
+        eventRecords = eventDocs.map(d => d.data());
+    console.log(`${eventRecords.length} event records retrieved.`);
+    return eventRecords;
 };
 
 /**

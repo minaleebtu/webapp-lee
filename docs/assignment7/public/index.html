@@ -35,17 +35,16 @@
         window.addEventListener("load", function () {
             pl.v.authenticateUser.setupUiByUserStatus();
             const clearButton = document.getElementById("clearData"),
-                generateTestDataButtons = document.querySelectorAll("button.generateTestData");
+                generateTestDataButton = document.getElementById("generateData");
             // set event handlers for the buttons "clearData" and "generateTestData"
             clearButton.addEventListener("click", clearEnsembleData);
             clearButton.addEventListener("click", clearEventData);
             clearButton.addEventListener("click", clearMemberData)
 
-            for (const btn of generateTestDataButtons) {
-                btn.addEventListener("click", generateEnsembleTestData);
-                btn.addEventListener("click", generateEventTestData);
-                btn.addEventListener("click", generateMemberTestData);
-            }
+            generateTestDataButton.addEventListener("click", generateEnsembleTestData);
+            generateTestDataButton.addEventListener("click", generateEventTestData);
+            generateTestDataButton.addEventListener("click", generateMemberTestData);
+
         });
     </script>
 
@@ -106,23 +105,19 @@
             <p class="tm-hero-subtitle">
                 to enhance the enjoyment for music to the students
             </p>
+        </div>
+    </div>
 
-            <p class="text-center tm-hero-subtitle">
+    <div class="tm-hero-text-container-inner">
+
             <div id="login-management" hidden="hidden">
                 <a href="authenticateUser.html">Sign in or Sign up</a> for using the disabled operations
             </div>
-            </p>
 
-            <p class="tm-hero-subtitle">
-            <div class="text-center col-sm-12 col-md-6">
-                <div id="login-management" hidden="hidden">
-                    <button type="button" class="btn tm-btn-submit">Sign out</button>
-                </div>
-        </div>
-            </p>
+            <div id="login-management" hidden="hidden">
+                <button type="button" class="btn tm-btn-submit">Sign out</button>
+            </div>
 
-
-        </div>
     </div>
 
 
@@ -481,7 +476,7 @@
         <!-- testdata -->
         <div class="row tm-content-box">
             <div class="text-center col-sm-12 col-md-6">
-                <button class="btn tm-btn-submit" type="button" disabled="disabled">Generate test data</button>
+                <button class="btn tm-btn-submit" id="generateData" type="button" disabled="disabled">Generate test data</button>
             </div>
             <div class="text-center col-sm-12 col-md-6">
                 <button class="btn tm-btn-submit" id="clearData" type="button" disabled="disabled">Clear database</button>

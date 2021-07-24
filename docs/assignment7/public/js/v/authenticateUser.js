@@ -46,12 +46,10 @@ pl.v.authenticateUser = {
                         for (const el of linkEls) {
                             el.classList.remove("disabled");
                         }
+
                         document.getElementById("clearData").disabled = false;
-                        const generateDataButtons =
-                            document.querySelectorAll(".generateTestData");
-                        for (const btn of generateDataButtons) {
-                            btn.disabled = false;
-                        }
+                        document.getElementById("generateData").disabled = false;
+
                     }
                     // set and event handler for 'sign out' button
                     const signOutButton = loginMngEls[1].querySelector("button");
