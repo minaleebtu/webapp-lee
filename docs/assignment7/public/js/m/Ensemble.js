@@ -17,7 +17,7 @@ function checkEnsembleName(name) {
     return new E_NoConstraintViolation();
 }
 
-function checkEnsembleType(type){
+function checkEnsembleType(type) {
     if (!isNonEmptyString(type)) {
         console.log("ERROR: The type must be a non-empty string!");
         return new E_RangeConstraintViolation(
@@ -27,9 +27,9 @@ function checkEnsembleType(type){
 }
 
 function checkEnsembleMembers(members) {
-    for(var i of members) {
+    for (var i of members) {
         var memberRec = retrieveMember(i);
-        if(!memberRec) {
+        if (!memberRec) {
             return new E_RangeConstraintViolation("Member " + i + " does not exist!");
         }
     }
@@ -50,11 +50,11 @@ async function retrieveMember(memberId) {
     return memberRecord;
 };
 
-function checkEnsembleLocation(location){
+function checkEnsembleLocation(location) {
     return new E_NoConstraintViolation();
 }
 
-function checkEnsemblePracticingDate(date){
+function checkEnsemblePracticingDate(date) {
     return new E_NoConstraintViolation();
 }
 
@@ -63,7 +63,7 @@ function checkEnsembleID(ensembleId) {
 
     if (ensembleId == null) {
         console.log("ERROR: A value for the Ensemble ID must be provided!");
-        return new  E_MandatoryValueConstraintViolation(
+        return new E_MandatoryValueConstraintViolation(
             "ERROR: A value for the Ensemble ID must be provided!");
     }
     if (!isIntegerOrIntegerString(ensembleId)) {
@@ -76,7 +76,7 @@ function checkEnsembleID(ensembleId) {
         return new E_RangeConstraintViolation(
             "ERROR: Ensemble ID is not positive!");
     }
-    
+
     return new E_NoConstraintViolation();
 }
 
@@ -106,9 +106,9 @@ async function checkEnsemblesValidity() {
 async function updateEnsembleMembers(ensembleId) {
     var ensembleRec = await retrieveEnsemble(ensembleId);
     var newMembers = [];
-    for(var i of ensembleRec.members) {
+    for (var i of ensembleRec.members) {
         var memberRec = retrieveMember(i);
-        if(memberRec) {
+        if (memberRec) {
             if (!newMembers.includes(memberRec.memberId)) {
                 newMembers.push(memberRec.memberId);
             }
@@ -182,21 +182,38 @@ async function updateEnsemble({ensembleId, ensembleType, name, members, practici
  *  Delete an existing Movie record/object
  */
 async function destroyEnsemble(ensembleId) {
+
+    /*
+     *  implementation of deletion policy
+     *  was before: checkEventValidity
+     *  retrieve all events, filter events, remove ref of this ensemble from events
+     */
     try {
-        await db.collection("ensembles").doc(ensembleId).delete();
+        const
+            allEnsembles = db.collection("ensembles"),
+            allEvents = db.collection("events"),
+            eventQuery = allEvents.where("participants", "array-contains", ensembleId),
+            associatedEvents = (await eventQuery.get()).docs,
+            ensembleToDelete = allEnsembles.doc(ensembleId);
+        // initiate batch write
+        const batch = db.batch();
+        for (const ev of associatedEvents) {
+            const eventRef = allEvents.doc(ev.eventId);
+            // remove associated publisher from each book record
+            batch.update(
+                eventRef,
+                {
+                // publisher_id: firebase.firestore.FieldValue.delete()
+                participants: FieldValue.arrayRemove(ensembleId)
+            });
+        }
+        // delete publisher record
+        batch.delete(ensembleToDelete);
+        batch.commit(); // finish batch write
+        console.log(`Ensemble record ${ensembleId} deleted.`);
     } catch (e) {
-        console.error(`Error when deleting ensemble record: ${e}`);
-        return;
+        console.error(`Error deleting ensemble record: ${e}`);
     }
-
-
-    // window['checkEventValidity']();
-
-
-
-    console.log(`Ensemble record ${ensembleId} deleted.`);
-
-    //check event participants for removed ensembles
 
 };
 
@@ -270,7 +287,7 @@ async function generateEnsembleTestData() {
             ensembleId: "0",
             ensembleType: "flute choir",
             name: "The Air Benders",
-            members: [0,1],
+            members: [0, 1],
             practicingLocation: "Building A, Room 42",
             practicingDate: "every Sunday at 8"
         },
@@ -278,7 +295,7 @@ async function generateEnsembleTestData() {
             ensembleId: "1",
             ensembleType: "saxophone ensemble",
             name: "Epic Sax Guy and Friends",
-            members: [3,2],
+            members: [3, 2],
             practicingLocation: "Building B, Room 69",
             practicingDate: "every Wednesday at 7"
         },
@@ -292,10 +309,10 @@ async function generateEnsembleTestData() {
         }
     ];
     // save all ensemble records
-    await Promise.all( ensembleRecords.map(
-        ensembleRec => db.collection("ensembles").doc( ensembleRec.ensembleId).set( ensembleRec)
+    await Promise.all(ensembleRecords.map(
+        ensembleRec => db.collection("ensembles").doc(ensembleRec.ensembleId).set(ensembleRec)
     ));
-    console.log(`${Object.keys( ensembleRecords).length} ensembles saved.`);
+    console.log(`${Object.keys(ensembleRecords).length} ensembles saved.`);
 };
 
 async function validateEnsembleSlots(slots) {

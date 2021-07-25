@@ -79,15 +79,16 @@ function checkEventType(r) {
     }
 }
 
- async function checkEventValidity() {
-        var er = await retrieveAllEvents();
-        for (const eventRec of er) {
-            updateEventParticipants(eventRec.eventId);
-        }
+/*
+async function checkEventValidity() {
+    var er = await retrieveAllEvents();
+    for (const eventRec of er) {
+        updateEventParticipants(eventRec.eventId);
     }
+}
+*/
 
-
-
+/*
 async function updateEventParticipants(eventId) {
     var eventRec = await retrieveEvent(eventId);
     var newParticipants = [];
@@ -105,6 +106,8 @@ async function updateEventParticipants(eventId) {
     };
     updateEnsemble(slots);
 }
+*/
+
 
 /********************************************************
  *** Class-level ("static") storage management methods ***
@@ -124,6 +127,7 @@ async function addEvent(slots) {
     }
     console.log(`Event record ${slots.eventId} created.`);
 };
+
 /**
  *  Update an existing Movie record/object
  *  properties are updated with implicit setters for making sure

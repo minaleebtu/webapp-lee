@@ -19,7 +19,10 @@ pl.v.retrieveAndListAllEvents = {
             var i = "";
             for(var a in eventRec.participants) {
                 var meme = await getEnsemblefromID(a);
-                i += meme.name + ', ';
+                if (meme) {
+                    i += meme.name + ', ';
+                }
+
             }
             row.insertCell().textContent = i.slice(0, -2);
         }
