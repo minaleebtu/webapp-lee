@@ -5,6 +5,8 @@
  */
 
 
+
+
 function checkEnsembleName(name) {
     // console.log(name);
     if (!isNonEmptyString(name)) {
@@ -186,19 +188,17 @@ async function destroyEnsemble(ensembleId) {
         console.error(`Error when deleting ensemble record: ${e}`);
         return;
     }
-    checkEventValidity();
+
+
+    // window['checkEventValidity']();
+
+
+
     console.log(`Ensemble record ${ensembleId} deleted.`);
 
     //check event participants for removed ensembles
 
 };
-
-async function checkEventValidity() {
-    var er = await retrieveAllEvents();
-    for (const eventRec of er) {
-        updateEventParticipants(eventRec.eventId);
-    }
-}
 
 async function retrieveAllEvents() {
     const eventsCollRef = db.collection("events");

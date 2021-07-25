@@ -79,12 +79,14 @@ function checkEventType(r) {
     }
 }
 
-async function checkEventValidity() {
-    var er = await retrieveAllEvents();
-    for (const eventRec of er) {
-        updateEventParticipants(eventRec.eventId);
+ async function checkEventValidity() {
+        var er = await retrieveAllEvents();
+        for (const eventRec of er) {
+            updateEventParticipants(eventRec.eventId);
+        }
     }
-}
+
+
 
 async function updateEventParticipants(eventId) {
     var eventRec = await retrieveEvent(eventId);
