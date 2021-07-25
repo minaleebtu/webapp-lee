@@ -12,49 +12,51 @@
     <script src="../js/c/initialize.js"></script>
     <script src="../js/m/Event.js"></script>
     <script src="../js/v/updateEvent.js"></script>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
     <script>
         window.addEventListener("load", pl.v.updateEvent.setupUserInterface);
     </script>
 </head>
 <body>
-<main>
-    <h1>Update a event record</h1>
-    <form id="Event">
-        <div>
-            <label>Select event:
-                <select name="selectEvent">
-                    <option value=""> ---</option>
-                </select>
-            </label>
-        </div>
-        <div><label>EventID:
-            <output name="eventId"></output>
-        </label></div>
-        <div class="select-one">
-            <label>Event Type: <select name="selectEventType"></select></label>
-        </div>
+<div class="text-center tm-hero-text-container">
+    <div class="tm-hero-text-container-inner">
+        <section id="contact" class="text-white tm-font-big tm-parallax">
+            <h1>Update a event record</h1>
+            <div class="col-sm-12 col-md-6">
+                <form id="Event">
+                    <div>
+                        <label>Select event:
+                            <select name="selectEvent">
+                                <option value=""> ---</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div><output name="eventId" placeholder="Event ID" class="tm-input"/></div>
+                    <div class="select-one">
+                        <label>Event Type: <select id="selectEventType" name="selectEventType"></select></label>
+                    </div>
 
-        <div><label>Title: <input name="title"/></label></div>
+                    <div><input name="title" placeholder="Title" class="tm-input"/></div>
 
-        <div class="field">
-            <label>Date: <input type="date" name="date" /></label>
-        </div>
+                    <div class="field">
+                        <input type="date" placeholder="Date" name="date"  class="tm-input"/>
+                    </div>
+                    <div><input name="description" placeholder="Description" class="tm-input"/></div>
+                    <div><input name="personInCharge" placeholder="Person In Charge" class="tm-input"/></div>
 
-        <div><label>Description: <input name="description"/></label></div>
-        <div><label>Person In Charge: <input name="personInCharge"/></label></div>
-
-        <div class="select-many">
-            <label>Participants: <select id="participants" name="participants" multiple="multiple"></select></label>
-        </div>
-        <div>
-            <button name="commit" type="button">Save Changes</button>
-        </div>
-    </form>
-</main>
-<br>
-<footer>
-    <a href="../index.html">« Back to main menu</a>
-</footer>
+                    <div class="select-many">
+                        <label>Participants: <select id="participants" name="participants" multiple="multiple"></select></label>
+                    </div>
+                    <div>
+                        <button name="commit" type="button" class="btn tm-btn-submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        <br>
+        <footer>
+            <a href="../index.html">« Back to main menu</a>
+        </footer>
 </body>
 </html>

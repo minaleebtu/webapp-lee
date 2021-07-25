@@ -5,13 +5,12 @@
 pl.v.createEvent = {
     setupUserInterface: async function () {
         
-        const 
-            formEl = document.forms['Event'],
+        const formEl = document.forms['Event'],
             saveButton = document.forms['Event'].commit,
-            selectEventTypeEl = formEl.selectEventTyp,
+            selectEventTypeEl = formEl.selectEventType,
             selectParticipants = formEl.participants;
         
-
+        console.log(formEl);
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
             pl.v.createEvent.handleSaveButtonClickEvent);
