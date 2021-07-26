@@ -12,27 +12,35 @@
     <script src="../js/c/initialize.js"></script>
     <script src="../js/m/Member.js"></script>
     <script src="../js/v/retrieveAndListAllMember.js"></script>
-    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
     <script>
         window.addEventListener("load",
             pl.v.retrieveAndListAllMember.setupUserInterface);
     </script>
 </head>
 <body>
-<main>
-    <h1>Retrieve and list all Member records</h1>
-    <table id="members">
-        <thead>
-        <tr>
-            <th>MemberID</th>
-            <th>Role</th>
-            <th>Name</th>
-            <th>Instrument</th>
-            <th>Mail Address</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+<div class="text-center tm-hero-text-container">
+    <div class="tm-hero-text-container-inner">
+        <section id="contact" class="text-white tm-font-big tm-parallax">
+            <h1>Retrieve and list all Member records</h1>
+            <div class="col-sm-12 col-md-12 offset-md-1">
+                <table id="members">
+                    <thead>
+                    <tr>
+                        <th>MemberID</th>
+                        <th>Role</th>
+                        <th>Name</th>
+                        <th>Instrument</th>
+                        <th>Mail Address</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</div>
 </main>
 <br>
 <footer>
