@@ -25,7 +25,6 @@ pl.v.retrieveAndListAllEvents = {
                 if (meme) {
                     i += meme.name + ', ';
                 }
-
             }
             row.insertCell().textContent = i.slice(0, -2);
         }

@@ -2,7 +2,7 @@
  * @fileOverview  Contains various view functions for the use case listBooks
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
-pl.v.retrieveAndListAllMember = {
+pl.v.retrieveAndListAllMembers = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#members>tbody");
         // load a list of all member records from Firestore
@@ -15,9 +15,12 @@ pl.v.retrieveAndListAllMember = {
             row.insertCell().textContent = memberRec.name;
             var i = "";
             // console.log(memberRec.name + " " + memberRec.instrument + " " + memberRec.instrument.length);
-            for(var a of memberRec.instrument) { // a should be an int here!!!
+            for(var a of memberRec.instrument) {
                 var meme = Object.values(InstrumentEL)[a];
-                i += meme + ', ';
+                if (meme) {
+
+                    i += meme + ', ';
+                }
             }
             row.insertCell().textContent = i.slice(0, -2); // cut off last ', '
             row.insertCell().textContent = memberRec.mailAddress;
