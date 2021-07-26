@@ -7,6 +7,9 @@ pl.v.retrieveAndListAllEvents = {
         const tableBodyEl = document.querySelector("table#events>tbody");
         // load a list of all event records from Firestore
         const eventRecords = await retrieveAllEvents();
+
+        const ensembleRecords = await getEnsembleRecords();
+
         // for each event, create a table row with a cell for each attribute
         for (const eventRec of eventRecords) {
             const row = tableBodyEl.insertRow();
@@ -17,8 +20,8 @@ pl.v.retrieveAndListAllEvents = {
             row.insertCell().textContent = eventRec.description;
             row.insertCell().textContent = eventRec.personInCharge;
             var i = "";
-            for(var a in eventRec.participants) {
-                var meme = await getEnsemblefromID(a);
+            for(var ensembleId in eventRec.participants) {
+                var meme = await getEnsembleFromRecords(ensembleId, ensembleRecords)
                 if (meme) {
                     i += meme.name + ', ';
                 }
@@ -29,7 +32,7 @@ pl.v.retrieveAndListAllEvents = {
     }
 }
 
-async function getEnsemblefromID(ensembleId) {
+async function getEnsembleRecords() {
     const ensemblesCollRef = db.collection("ensembles");
     var ensemblesQuerySnapshot = null;
     try {
@@ -38,13 +41,16 @@ async function getEnsemblefromID(ensembleId) {
         console.error(`Error when retrieving ensemble records: ${e}`);
         return null;
     }
-    const ensembleDocs = ensemblesQuerySnapshot.docs,
-        ensembleRecords = ensembleDocs.map(d => d.data());
+    const ensemblesDocs = ensemblesQuerySnapshot.docs,
+        ensembleRecords = ensemblesDocs.map(d => d.data());
     console.log(`${ensembleRecords.length} ensemble records retrieved.`);
-    for( var i of ensembleRecords) {
+    return ensembleRecords;
+}
+
+async function getEnsembleFromRecords(ensembleId, rec) {
+    for( var i of rec) {
         if(i.ensembleId == ensembleId) {
             return i;
         }
     };
-    return 0;
 }

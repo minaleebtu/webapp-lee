@@ -8,6 +8,9 @@ pl.v.retrieveAndListAllEnsembles = {
         // load a list of all book records from Firestore
         const ensembleRecords = await retrieveAllEnsembles();
         // for each book, create a table row with a cell for each attribute
+
+        const memberRecords = await getMemberRecords();
+
         for (const ensembleRec of ensembleRecords) {
             // console.log(ensembleRec);
             const row = tableBodyEl.insertRow();
@@ -16,8 +19,8 @@ pl.v.retrieveAndListAllEnsembles = {
             row.insertCell().textContent = ensembleRec.name;
             // console.log(ensembleRec.members);
             var i = "";
-            for(var a of ensembleRec.members) {
-                var meme = await getMemberfromID(a);
+            for(var memberId of ensembleRec.members) {
+                var meme = await getMemberFromRecords(memberId, memberRecords);
                 if (meme) {
                     i += meme.name + ', ';
                 }
@@ -31,7 +34,7 @@ pl.v.retrieveAndListAllEnsembles = {
     }
 }
 
-async function getMemberfromID(memberId) {
+async function getMemberRecords() {
     const membersCollRef = db.collection("members");
     var membersQuerySnapshot = null;
     try {
@@ -43,11 +46,13 @@ async function getMemberfromID(memberId) {
     const membersDocs = membersQuerySnapshot.docs,
         memberRecords = membersDocs.map(d => d.data());
     console.log(`${memberRecords.length} member records retrieved.`);
-    for( var i of memberRecords) {
-        // console.log(i.memberId + "vs." + memberId);
+    return memberRecords;
+}
+
+async function getMemberFromRecords(memberId, rec) {
+    for( var i of rec) {
         if(i.memberId == memberId) {
             return i;
         }
     };
-    return 0;
 }

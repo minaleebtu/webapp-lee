@@ -14,7 +14,7 @@ pl.v.retrieveAndListAllMember = {
             row.insertCell().textContent = memberRec.role;
             row.insertCell().textContent = memberRec.name;
             var i = "";
-            console.log(memberRec.name + " " + memberRec.instrument + " " + memberRec.instrument.length);
+            // console.log(memberRec.name + " " + memberRec.instrument + " " + memberRec.instrument.length);
             for(var a of memberRec.instrument) { // a should be an int here!!!
                 var meme = Object.values(InstrumentEL)[a];
                 i += meme + ', ';
