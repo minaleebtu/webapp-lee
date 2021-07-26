@@ -18,9 +18,12 @@ pl.v.retrieveAndListAllEnsembles = {
             var i = "";
             for(var a of ensembleRec.members) {
                 var meme = await getMemberfromID(a);
-                i += meme.name + ', ';
+                if (meme) {
+                    i += meme.name + ', ';
+                }
             }
             row.insertCell().textContent = i.slice(0, -2); // cut off last ', '
+
             row.insertCell().textContent = ensembleRec.member;
             row.insertCell().textContent = ensembleRec.practicingLocation;
             row.insertCell().textContent = ensembleRec.practicingDate;

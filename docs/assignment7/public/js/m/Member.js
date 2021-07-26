@@ -288,15 +288,40 @@ async function updateMember ({memberId, role, name, instrument, mailAddress}) {
  *  Delete an existing member record/object
  */
 async function destroyMember (memberId) {
+    /*
+     *  implementation of deletion policy
+     *  retrieve all ensembles, filter ensembles, remove ref of this member from ensembles
+     */
     try {
-        await db.collection("members").doc(memberId).delete();
+        const
+            allMembers = db.collection("members"),
+            allEnsembles = db.collection("ensembles"),
+            ensembleQuery = allEnsembles.where("members", "array-contains", memberId),
+            associatedEnsembles = (await ensembleQuery.get()).docs,
+            memberToDelete = allMembers.doc(memberId);
+        // initiate batch write
+        const batch = db.batch();
+        for (const en of associatedEnsembles) {
+            const ensembleRef = allEnsembles.doc(en.ensembleId);
+            // remove associated publisher from each book record
+            batch.update(
+                ensembleRef,
+                {
+                    // publisher_id: firebase.firestore.FieldValue.delete()
+                    members: FieldValue.arrayRemove(memberId)
+                });
+        }
+        // delete publisher record
+        batch.delete(memberToDelete);
+        batch.commit(); // finish batch write
+        console.log(`Member record ${memberId} deleted.`);
     } catch (e) {
-        console.error(`Error when deleting member record: ${e}`);
-        return;
+        console.error(`Error deleting member record: ${e}`);
     }
-    checkEnsemblesValidity();
-    console.log(`Member record ${memberId} deleted.`);
+
 };
+
+
 
 /**
  *  Load all member table rows and convert them to objects

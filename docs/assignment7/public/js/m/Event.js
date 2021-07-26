@@ -173,7 +173,7 @@ async function updateEvent({eventId, eventType, title, date, description, person
 };
 
 /**
- *  Delete an existing Movie record/object
+ *  Delete an existing event record/object
  */
 async function destroyEvent(eventId) {
     try {
