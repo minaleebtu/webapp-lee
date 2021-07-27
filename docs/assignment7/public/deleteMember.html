@@ -12,8 +12,11 @@
     <script src="../js/c/initialize.js"></script>
     <script src="../js/m/Member.js"></script>
     <script src="../js/v/deleteMember.js"></script>
+
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
+    <link rel="stylesheet" href="../css/main.css">
+
     <script>
         window.addEventListener("load", pl.v.deleteMember.setupUserInterface);
     </script>
@@ -22,27 +25,25 @@
 <div class="text-center tm-hero-text-container">
     <div class="tm-hero-text-container-inner">
         <section id="contact" class="text-white tm-font-big tm-parallax">
-            <h1>Delete a Member record</h1>
+            <h1>Delete a member record</h1>
             <div class="col-sm-12 col-md-6">
                 <form id="Member">
-                    <div class="select-one">
                         <label>Select Member:
                             <select name="selectMember">
                                 <option value=""> ---</option>
                             </select>
                         </label>
-                    </div>
                     <div>
                         <button name="commit" type="button" class="btn tm-btn-submit">Delete</button>
                     </div>
                 </form>
+                <footer>
+                    <a href="../index.html">« Back to main menu</a>
+                </footer>
             </div>
         </section>
     </div>
 </div>
 <br>
-<footer>
-    <a href="../index.html">« Back to main menu</a>
-</footer>
 </body>
 </html>

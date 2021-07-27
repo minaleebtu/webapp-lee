@@ -182,10 +182,8 @@ async function updateEnsemble({ensembleId, ensembleType, name, members, practici
  *  Delete an existing Movie record/object
  */
 async function destroyEnsemble(ensembleId) {
-
     /*
      *  implementation of deletion policy
-     *  was before: checkEventValidity
      *  retrieve all events, filter events, remove ref of this ensemble from events
      */
     try {

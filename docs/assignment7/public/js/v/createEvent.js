@@ -10,7 +10,7 @@ pl.v.createEvent = {
             selectEventTypeEl = formEl.selectEventType,
             selectParticipants = formEl.participants;
         
-        console.log(formEl);
+        // console.log(formEl);
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
             pl.v.createEvent.handleSaveButtonClickEvent);
