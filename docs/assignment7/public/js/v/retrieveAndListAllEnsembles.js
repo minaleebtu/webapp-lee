@@ -12,12 +12,10 @@ pl.v.retrieveAndListAllEnsembles = {
         const memberRecords = await getMemberRecords();
 
         for (const ensembleRec of ensembleRecords) {
-            // console.log(ensembleRec);
             const row = tableBodyEl.insertRow();
             row.insertCell().textContent = ensembleRec.ensembleId;
             row.insertCell().textContent = ensembleRec.ensembleType;
             row.insertCell().textContent = ensembleRec.name;
-            // console.log(ensembleRec.members);
             var i = "";
             for(var memberId of ensembleRec.members) {
                 var meme = await getMemberFromRecords(memberId, memberRecords);

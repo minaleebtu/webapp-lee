@@ -4,7 +4,7 @@
  */
 pl.v.retrieveAndListAllMembers = {
     setupUserInterface: async function () {
-        const tableBodyEl = document.querySelector("table#members>tbody");
+        const tableBodyEl = document.querySelector("table#tableMembers>tbody");
         // load a list of all member records from Firestore
         const memberRecords = await retrieveAllMembers();
         // for each member, create a table row with a cell for each attribute
@@ -14,7 +14,6 @@ pl.v.retrieveAndListAllMembers = {
             row.insertCell().textContent = memberRec.role;
             row.insertCell().textContent = memberRec.name;
             var i = "";
-            // console.log(memberRec.name + " " + memberRec.instrument + " " + memberRec.instrument.length);
             for(var a of memberRec.instrument) {
                 var meme = Object.values(InstrumentEL)[a];
                 if (meme) {
