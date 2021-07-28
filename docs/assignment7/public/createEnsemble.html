@@ -28,9 +28,8 @@
     <div class="tm-hero-text-container-inner">
         <section id="contact" class="text-white tm-font-big tm-parallax">
             <h1>Create a new ensemble record</h1>
-            <div class="col-sm-12 col-md-6">
-
-                <form id="Ensemble">
+            <form id="Ensemble">
+                <div class="bigcenter">
                     <div><label>
                         <input name="ensembleId" placeholder="Ensemble ID" class="tm-input"/>
                     </label></div>
@@ -41,7 +40,8 @@
                         <input name="name" placeholder="Name" class="tm-input"/>
                     </label></div>
                     <div class="select-many">
-                        <label>Members: <select id="members" name="members" multiple="multiple"></select></label>
+                        <label>Members: <select id="allMembers" name="allMembers" multiple="multiple"></select></label>
+                        <br><br>
                     </div>
 
                     <div><label>
@@ -54,12 +54,12 @@
                         <button name="commit" type="button" class="btn tm-btn-submit">Save</button>
                         <progress id="clearData" style="display:none"></progress>
                     </div>
-                </form>
-                <br>
-                <footer>
-                    <a href="../index.html">« Back to main menu</a>
-                </footer>
-            </div>
+                </div>
+            </form>
+            <br>
+            <footer>
+                <a href="../index.html">« Back to main menu</a>
+            </footer>
         </section>
     </div>
 </div>

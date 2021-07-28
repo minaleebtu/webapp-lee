@@ -8,7 +8,7 @@ pl.v.createEnsemble = {
         const
             formEl = document.forms['Ensemble'],
             saveButton = document.forms['Ensemble'].commit,
-            selectMembers = formEl.members;
+            selectMembers = formEl.allMembers;
 
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
@@ -42,12 +42,12 @@ pl.v.createEnsemble = {
         });
 
         // members
-        formEl.members.addEventListener("input", async function() {
+        formEl.allMembers.addEventListener("input", async function() {
 
             const validationResult = await checkEnsembleMembers(
-                formEl.members.value
+                formEl.allMembers.value
             );
-            formEl.members.setCustomValidity(validationResult.message);
+            formEl.allMembers.setCustomValidity(validationResult.message);
         });
 
         // fill list of possible members
