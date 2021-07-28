@@ -20,14 +20,11 @@ pl.v.updateMember = {
         }
 
         // fill menu with instument enum elements
-        for(var i in InstrumentEL) {
-            // console.log("s");
-            var opt = i;
-            var el = document.createElement("option");
+        for(let i in InstrumentEL) {
+            let opt = i;
+            let el = document.createElement("option");
             el.textContent = InstrumentEL[opt];
             el.value = InstrumentEL[opt];
-            //el.setAttribute('value', InstrumentEL[i].value);
-            //el.appendChild(document.createTextNode(InstrumentEL[i].value));
             selectInstrumentsEl.appendChild(el);
         }
 
@@ -40,8 +37,6 @@ pl.v.updateMember = {
                 formEl.memberId.value = memberRec.memberId;
                 formEl.role.value = memberRec.role;
                 formEl.name.value = memberRec.name;
-                // formEl.selectInstrument.value = memberRec.instrument;
-                // formEl.selectInstrument.selectedOptions.add(memberRec.instrument); // = memberRec.instrument;
                 formEl.mailAddress.value = memberRec.mailAddress;
             } else {
                 formEl.reset();
@@ -66,28 +61,6 @@ pl.v.updateMember = {
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
         });
-
-        // roles - check if role string separated by comma?
-        /*
-        formEl.roles.addEventListener("input", async function() {
-
-            const validationResult = await Member.validateMail(
-                formEl.roles.value
-            );
-            formEl.roles.setCustomValidity(validationResult.message);
-        });
-        */
-
-        // instrument - check here constraint that you can't choose NONE and something else?
-        /*
-        formEl.mailAddress.addEventListener("input", async function() {
-            const validationResult = await Member.validateMail(
-                formEl.mailAddress.value
-            );
-            formEl.mailAddress.setCustomValidity(validationResult.message);
-        });
-        */
-
 
         // set an event handler for the submit/save button
         updateButton.addEventListener("click",

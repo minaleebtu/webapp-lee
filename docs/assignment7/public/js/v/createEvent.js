@@ -16,20 +16,17 @@ pl.v.createEvent = {
             pl.v.createEvent.handleSaveButtonClickEvent);
 
         // fill drop down menu with event enum elements
-        for(var i in EventTypeEL) {
-
-            var opt = i;
-            var el = document.createElement("option");
-            el.textContent = EventTypeEL[opt];
-            el.value = EventTypeEL[opt];
+        for(let i in EventTypeEL) {
+            let el = document.createElement("option");
+            el.textContent = EventTypeEL[i];
+            el.value = EventTypeEL[i];
             selectEventTypeEl.appendChild(el);
         }
         
         // fill other menu with possible participants
         const ensembleRecords = await retrieveAllEnsembles();
         for (const ensembleRec of ensembleRecords) {
-            var opt = i;
-            var el = document.createElement("option");
+            let el = document.createElement("option");
             el.textContent = ensembleRec.name;
             el.value = ensembleRec.ensembleId;
             selectParticipants.appendChild(el);
@@ -56,32 +53,6 @@ pl.v.createEvent = {
             );
             formEl.title.setCustomValidity(validationResult.message);
         });
-
-        // date has implicit input validation
-
-        // description - no validation needed
-        /*
-        formEl.description.addEventListener("input", async function() {
-
-            const validationResult = await Event.validateMail(
-                formEl.description.value
-            );
-            formEl.description.setCustomValidity(validationResult.message);
-        });
-        */
-
-        // person in charge - no validation needed
-        /*
-        formEl.mailAddress.addEventListener("input", async function() {
-            const validationResult = await Member.validateMail(
-                formEl.mailAddress.value
-            );
-            formEl.mailAddress.setCustomValidity(validationResult.message);
-        });
-        */
-
-        // participants have implicit input validation
-        
     },
     // save user input data
     handleSaveButtonClickEvent: async function () {
@@ -112,57 +83,3 @@ pl.v.createEvent = {
         formEl.reset();
     }
 }
-
-/**
- * Fill a select element with option elements created from an
- * map of objects
- *
- * @param {object} selectEl  A select(ion list) element
- * @param {object|array} selectionRange  A map of objects or an array
- * @param {string} keyProp [optional]  The standard identifier property
- * @param {object} optPar [optional]  A record of optional parameter slots
- *                 including optPar.displayProp and optPar.selection
- */
-function fillSelectWithOptions(selectEl, selectionRange, keyProp, optPar) {
-    let optionEl = null, displayProp = "";
-    // delete old contents
-    selectEl.innerHTML = "";
-    // create "no selection yet" entry
-    if (!selectEl.multiple) selectEl.add(createOption("", " --- "));
-    // create option elements from object property values
-    let options = Array.isArray(selectionRange) ? selectionRange : Object.keys(selectionRange);
-    for (let i = 0; i < options.length; i++) {
-        if (Array.isArray(selectionRange)) {
-            optionEl = createOption(i, options[i]);
-        } else {
-            const key = options[i];
-            const obj = selectionRange[key];
-            if (!selectEl.multiple) obj.index = i + 1;  // store selection list index
-            if (optPar && optPar.displayProp) displayProp = optPar.displayProp;
-            else displayProp = keyProp;
-            optionEl = createOption(key, obj[displayProp]);
-            // if invoked with a selection argument, flag the selected options
-            if (selectEl.multiple && optPar && optPar.selection &&
-                optPar.selection[keyProp]) {
-                // flag the option element with this value as selected
-                optionEl.selected = true;
-            }
-        }
-        selectEl.add(optionEl);
-    }
-}
-
-async function retrieveAllEnsembles() {
-    const ensemblesCollRef = db.collection("ensembles");
-    var ensemblesQuerySnapshot = null;
-    try {
-        ensemblesQuerySnapshot = await ensemblesCollRef.get();
-    } catch (e) {
-        console.error(`Error when retrieving ensemble records: ${e}`);
-        return null;
-    }
-    const ensembleDocs = ensemblesQuerySnapshot.docs,
-        ensembleRecords = ensembleDocs.map(d => d.data());
-    console.log(`${ensembleRecords.length} ensemble records retrieved.`);
-    return ensembleRecords;
-};

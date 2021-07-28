@@ -13,12 +13,11 @@ pl.v.retrieveAndListAllMembers = {
             row.insertCell().textContent = memberRec.memberId;
             row.insertCell().textContent = memberRec.role;
             row.insertCell().textContent = memberRec.name;
-            var i = "";
-            for(var a of memberRec.instrument) {
-                var meme = Object.values(InstrumentEL)[a];
-                if (meme) {
-
-                    i += meme + ', ';
+            let i = "";
+            for(let a of memberRec.instrument) {
+                let instrument = Object.values(InstrumentEL)[a];
+                if (instrument) {
+                    i += instrument + ', ';
                 }
             }
             row.insertCell().textContent = i.slice(0, -2); // cut off last ', '

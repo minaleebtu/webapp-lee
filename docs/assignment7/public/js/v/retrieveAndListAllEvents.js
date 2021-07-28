@@ -19,11 +19,11 @@ pl.v.retrieveAndListAllEvents = {
             row.insertCell().textContent = eventRec.date;
             row.insertCell().textContent = eventRec.description;
             row.insertCell().textContent = eventRec.personInCharge;
-            var i = "";
-            for(var ensembleId in eventRec.participants) {
-                var meme = await getEnsembleFromRecords(ensembleId, ensembleRecords)
-                if (meme) {
-                    i += meme.name + ', ';
+            let i = "";
+            for(let ensembleId in eventRec.participants) {
+                let names = await getEnsembleFromRecords(ensembleId, ensembleRecords)
+                if (names) {
+                    i += names.name + ', ';
                 }
             }
             row.insertCell().textContent = i.slice(0, -2);
@@ -47,9 +47,9 @@ async function getEnsembleRecords() {
 }
 
 async function getEnsembleFromRecords(ensembleId, rec) {
-    for( var i of rec) {
-        if(i.ensembleId == ensembleId) {
+    for( let i of rec) {
+        if(i.ensembleId === ensembleId) {
             return i;
         }
-    };
+    }
 }

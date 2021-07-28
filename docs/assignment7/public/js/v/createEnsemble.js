@@ -53,8 +53,7 @@ pl.v.createEnsemble = {
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
         for (const memberRec of membersRecords) {
-            var opt = memberRec;
-            var el = document.createElement("option");
+            let el = document.createElement("option");
             el.textContent = memberRec.name;
             el.value = memberRec.memberId;
             selectMembers.appendChild(el);
@@ -74,7 +73,7 @@ pl.v.createEnsemble = {
 
         const selMembersOptions = formEl.members.selectedOptions;
         for (const opt of selMembersOptions) {
-            var index = opt.value;
+            let index = opt.value;
             slots.members.push( index);
         }
         

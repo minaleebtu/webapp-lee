@@ -6,7 +6,7 @@ pl.v.createMember = {
     setupUserInterface: async function () {
 
         const 
-            formEl = document.forms['Member']
+            formEl = document.forms['Member'],
             saveButton = formEl.commit,
             selectInstrumentsEl = formEl.selectInstrument;
 
@@ -16,9 +16,9 @@ pl.v.createMember = {
 
 
         // fill menu with instument enum elements
-        for(var i in InstrumentEL) {
-            var opt = i;
-            var el = document.createElement("option");
+        for(let i in InstrumentEL) {
+            let opt = i;
+            let el = document.createElement("option");
             el.textContent = InstrumentEL[opt];
             el.value = InstrumentEL[opt];
             selectInstrumentsEl.appendChild(el);
@@ -49,29 +49,6 @@ pl.v.createMember = {
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
         });
-
-        // roles - check if role string separated by comma?
-        /*
-        formEl.roles.addEventListener("input", async function() {
-
-            const validationResult = await Member.validateMail(
-                formEl.roles.value
-            );
-            formEl.roles.setCustomValidity(validationResult.message);
-        });
-        */
-
-        // instrument - check here constraint that you can't choose NONE and something else?
-        /*
-        formEl.mailAddress.addEventListener("input", async function() {
-            const validationResult = await Member.validateMail(
-                formEl.mailAddress.value
-            );
-            formEl.mailAddress.setCustomValidity(validationResult.message);
-        });
-        */
-
-        
     },
     
     // save user input data

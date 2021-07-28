@@ -161,7 +161,7 @@ async function destroyEvent(eventId) {
  */
 async function retrieveAllEvents() {
     const eventsCollRef = db.collection("events");
-    var eventsQuerySnapshot = null;
+    let eventsQuerySnapshot = null;
     try {
         eventsQuerySnapshot = await eventsCollRef.get();
     } catch (e) {
@@ -190,7 +190,7 @@ async function clearEventData() {
 async function retrieveEvent(eventId) {
     const eventsCollRef = db.collection("events"),
         eventDocRef = eventsCollRef.doc(eventId);
-    var eventDocSnapshot = null;
+    let eventDocSnapshot = null;
     try {
         eventDocSnapshot = await eventDocRef.get();
     } catch (e) {
