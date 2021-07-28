@@ -9056,6 +9056,7 @@ a.text-dark:focus, a.text-dark:hover {
 
     img, tr {
         page-break-inside: avoid
+        border: none;
     }
 
     h2, h3, p {
