@@ -79,36 +79,6 @@ function checkEventType(r) {
     }
 }
 
-/*
-async function checkEventValidity() {
-    var er = await retrieveAllEvents();
-    for (const eventRec of er) {
-        updateEventParticipants(eventRec.eventId);
-    }
-}
-*/
-
-/*
-async function updateEventParticipants(eventId) {
-    var eventRec = await retrieveEvent(eventId);
-    var newParticipants = [];
-    for(var i of eventRec.participants) {
-        var ensembleRec = retrieveEnsemble(i);
-        if(ensembleRec) {
-            if (!newParticipants.includes(ensembleRec.ensembleId)) {
-                newParticipants.push(ensembleRec.ensembleId);
-            }
-        }
-    }
-    const slots = {
-        eventId: eventId,
-        participants: newParticipants
-    };
-    updateEnsemble(slots);
-}
-*/
-
-
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
@@ -235,37 +205,42 @@ async function retrieveEvent(eventId) {
 };
 
 async function validateEventSlots(slots) {
-    //check title
+    /*
+     *  check id
+     */
     var validationResult = checkEventID(slots.eventId);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
+    if (!validationResult instanceof NoConstraintViolation) {
         throw validationResult;
     }
 
-    //check title
-    var validationResult = checkEventTitle(slots.title);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
-        throw validationResult;
-    }
-
-    //check eventtype
+    /*
+     *  check eventType
+     */
     var validationResult = checkEventType(slots.eventType);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
+    if (!validationResult instanceof NoConstraintViolation) {
         throw validationResult;
     }
 
-    //check date
+    /*
+     *  check title
+     */
+    var validationResult = checkEventTitle(slots.title);
+    if (!validationResult instanceof NoConstraintViolation) {
+        throw validationResult;
+    }
+
+    /*
+     *  check date
+     */
     var validationResult = checkEventDate(slots.date);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
+    if (!validationResult instanceof NoConstraintViolation) {
         throw validationResult;
     }
+
+    /*
+     *  checking description and person in charge not needed
+     */
+
 }
 
 async function generateEventTestData() {
