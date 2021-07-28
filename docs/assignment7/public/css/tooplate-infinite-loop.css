@@ -186,7 +186,7 @@ blockquote {
 .tm-hero-text-container {
   width: 100%;
   height: 100%;
-  display: flex;
+  display: block;
   flex-flow: column;
   justify-content: center;
 }
@@ -545,13 +545,16 @@ figure.effect-honey:hover h2 i {
 }
 
 .tm-input {
-	margin: 0 0 20px 0;
-	width: 90%;
-  padding: 8px 20px;
-  border-radius: 6px;
-  border: 1px solid white;
-  background: transparent;
-  color: white;
+	width: 900%;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+    text-align:center;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .tm-btn-submit {
@@ -566,6 +569,19 @@ figure.effect-honey:hover h2 i {
 .tm-btn-submit:hover {
 	color: #fff;
 	background-color: #38B;
+}
+
+.bigcenter {
+  margin-left: 25%;
+  margin-right:25%;
+  width: 50%;
+  text-align: center;
+  display: inline-block;
+}
+
+.center {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 ::placeholder {

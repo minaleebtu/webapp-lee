@@ -65,6 +65,11 @@ a {
     transition: all 0.3s ease;
     color: #38B;
 }
+form {
+    margin-left: 25%;
+    margin-right:25%;
+    width: 50%;
+}
 
 a:hover,
 a:focus {

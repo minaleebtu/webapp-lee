@@ -27,8 +27,8 @@
     <div class="tm-hero-text-container-inner">
         <section id="contact" class="text-white tm-font-big tm-parallax">
             <h1>Update a member record</h1>
-            <div class="col-sm-12 col-md-6">
-                <form id="Member">
+            <form id="Member">
+                <div class="bigcenter">
                     <div>
                         <label>Select member:
                             <select name="selectMember">
@@ -36,7 +36,8 @@
                             </select>
                         </label>
                     </div>
-                    <div><output name="memberId" class="tm-input"/></div>
+                    <br>
+                    <div><output name="memberId" class="tm-input"></output></div>
                     <div><label>
                         <input name="role" placeholder="Role" class="tm-input"/>
                     </label></div>
@@ -44,7 +45,8 @@
                         <input name="name" placeholder="Name" class="tm-input"/>
                     </label></div>
                     <div class="select-many">
-                        <label>Instrument: <select id="selectInstrument" name="selectInstrument" multiple="multiple"></select></label>
+                        Instrument:<br>
+                        <label> <select id="selectInstrument" name="selectInstrument" multiple="multiple"></select></label>
                     </div>
                     <div><label>
                         <input name="mailAddress" placeholder="Mail Address" class="tm-input"/>
@@ -52,12 +54,12 @@
                     <div>
                         <button name="commit" type="button" class="btn tm-btn-submit">Save Changes</button>
                     </div>
-                </form>
-                <br>
-                <footer>
-                    <a href="../index.html">« Back to main menu</a>
-                </footer>
-            </div>
+                </div>
+            </form>
+            <br>
+            <footer>
+                <a href="../index.html">« Back to main menu</a>
+            </footer>
         </section>
     </div>
 </div>
