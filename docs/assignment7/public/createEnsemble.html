@@ -30,15 +30,25 @@
             <div class="col-sm-12 col-md-6">
 
                 <form id="Ensemble">
-                    <div><input name="ensembleId" placeholder="Ensemble ID" class="tm-input"/></div>
-                    <div><input name="ensembleType" placeholder="Ensemble Type" class="tm-input"/></div>
-                    <div><input name="name" placeholder="Name" class="tm-input"/></div>
+                    <div><label>
+                        <input name="ensembleId" placeholder="Ensemble ID" class="tm-input"/>
+                    </label></div>
+                    <div><label>
+                        <input name="ensembleType" placeholder="Ensemble Type" class="tm-input"/>
+                    </label></div>
+                    <div><label>
+                        <input name="name" placeholder="Name" class="tm-input"/>
+                    </label></div>
                     <div class="select-many">
                         <label>Members: <select id="members" name="members" multiple="multiple"></select></label>
                     </div>
 
-                    <div><input name="practicingLocation" placeholder="Practicing location" class="tm-input"/></div>
-                    <div><input name="practicingDate" placeholder="Practicing date" class="tm-input"/></div>
+                    <div><label>
+                        <input name="practicingLocation" placeholder="Practicing location" class="tm-input"/>
+                    </label></div>
+                    <div><label>
+                        <input name="practicingDate" placeholder="Practicing date" class="tm-input"/>
+                    </label></div>
                     <div>
                         <button name="commit" type="button" class="btn tm-btn-submit">Save</button>
                         <progress id="clearData" style="display:none"></progress>

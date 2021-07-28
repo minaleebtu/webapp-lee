@@ -29,13 +29,21 @@
             <h1>Create a new member record</h1>
             <div class="col-sm-12 col-md-6">
                 <form id="Member">
-                    <div class="field"><input name="memberId" placeholder="Member ID" class="tm-input"/></div>
-                    <div class="field"><input name="role" placeholder="Role" class="tm-input"/></div>
-                    <div class="field"><input name="name" placeholder="Name" class="tm-input"/></div>
+                    <div class="field"><label>
+                        <input name="memberId" placeholder="Member ID" class="tm-input"/>
+                    </label></div>
+                    <div class="field"><label>
+                        <input name="role" placeholder="Role" class="tm-input"/>
+                    </label></div>
+                    <div class="field"><label>
+                        <input name="name" placeholder="Name" class="tm-input"/>
+                    </label></div>
                     <div class="select-many">
-                        <select  id="selectInstrument" name="selectInstrument" multiple="multiple" placeholder="Instruments"></select>
+                        <label for="selectInstrument"></label><select id="selectInstrument" name="selectInstrument" multiple="multiple" placeholder="Instruments"></select>
                     </div>
-                    <div class="field"><input name="mailAddress" placeholder="Mail Address" class="tm-input"/></div>
+                    <div class="field"><label>
+                        <input name="mailAddress" placeholder="Mail Address" class="tm-input"/>
+                    </label></div>
                     <div>
                         <button name="commit" type="button" class="btn tm-btn-submit">Save</button>
                         <progress id="clearData" style="display:none"></progress>
