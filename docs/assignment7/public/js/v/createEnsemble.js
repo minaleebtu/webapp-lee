@@ -65,13 +65,12 @@ pl.v.createEnsemble = {
             practicingDate: formEl.practicingDate.value
         };
 
-        // console.log(formEl);
         const d = document.querySelector("form");
         const selMembersOptions = d.querySelector(".MultiSelectionWidget").firstElementChild;
-
         for (const opt of selMembersOptions.children) {
             let index = opt.value;
-            slots.allMembers.push( index);
+
+            slots.allMembers.push(opt.getAttribute("data-value"));
         }
 
         
