@@ -21,10 +21,10 @@ pl.v.updateEvent = {
         }
 
         // fill drop down menu with event enum elements
-        for(var i in EventTypeEL) {
+        for(let i in EventTypeEL) {
 
-            var opt = i;
-            var el = document.createElement("option");
+            let opt = i;
+            let el = document.createElement("option");
             el.textContent = EventTypeEL[opt];
             el.value = EventTypeEL[opt];
             selectEventTypeEl.appendChild(el);
@@ -33,8 +33,7 @@ pl.v.updateEvent = {
         // fill other menu with possible participants
         const ensembleRecords = await retrieveAllEnsembles();
         for (const ensembleRec of ensembleRecords) {
-            var opt = i;
-            var el = document.createElement("option");
+            let el = document.createElement("option");
             el.textContent = ensembleRec.name;
             el.value = ensembleRec.ensembleId;
             selectParticipants.appendChild(el);
@@ -87,7 +86,7 @@ pl.v.updateEvent = {
 
 async function retrieveAllEnsembles() {
     const ensemblesCollRef = db.collection("ensembles");
-    var ensemblesQuerySnapshot = null;
+    let ensemblesQuerySnapshot = null;
     try {
         ensemblesQuerySnapshot = await ensemblesCollRef.get();
     } catch (e) {
@@ -98,4 +97,4 @@ async function retrieveAllEnsembles() {
         ensembleRecords = ensembleDocs.map(d => d.data());
     console.log(`${ensembleRecords.length} ensemble records retrieved.`);
     return ensembleRecords;
-};
+}

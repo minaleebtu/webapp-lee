@@ -22,8 +22,7 @@ pl.v.updateEnsemble = {
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
         for (const memberRec of membersRecords) {
-            var opt = memberRec;
-            var el = document.createElement("option");
+            let el = document.createElement("option");
             el.textContent = memberRec.name;
             el.value = memberRec.memberId;
             selectMembers.appendChild(el);
@@ -33,22 +32,11 @@ pl.v.updateEnsemble = {
         selectEnsembleEl.addEventListener("change", async function () {
             const ensembleId = selectEnsembleEl.value;
             if (ensembleId) {
-                // retrieve up-to-date book record
+                // retrieve up-to-date ensemble record
                 const ensembleRec = await retrieveEnsemble(ensembleId);
                 formEl.ensembleId.value = ensembleRec.ensembleId;
                 formEl.ensembleType.value = ensembleRec.ensembleType;
                 formEl.name.value = ensembleRec.name;
-
-                // members
-                /*
-                var i = "";
-                for(var a of ensembleRec.members) {
-                    var meme = await getMemberfromID(a);
-                    i += meme.name + ', ';
-                }
-                formEl.member.value = i.slice(0, -2); // cut off last ', '
-                */
-
                 formEl.practicingLocation.value = ensembleRec.practicingLocation;
                 formEl.practicingDate.value = ensembleRec.practicingDate;
             } else {
@@ -89,27 +77,6 @@ pl.v.updateEnsemble = {
     }
 };
 
-async function getMemberfromID(memberId) {
-    const membersCollRef = db.collection("members");
-    var membersQuerySnapshot = null;
-    try {
-        membersQuerySnapshot = await membersCollRef.get();
-    } catch (e) {
-        console.error(`Error when retrieving member records: ${e}`);
-        return null;
-    }
-    const membersDocs = membersQuerySnapshot.docs,
-        memberRecords = membersDocs.map(d => d.data());
-    console.log(`${memberRecords.length} member records retrieved.`);
-    for( var i of memberRecords) {
-        // console.log(i.memberId + "vs." + memberId);
-        if(i.memberId == memberId) {
-            return i;
-        }
-    };
-    return 0;
-}
-
 async function retrieveAllMembers() {
     const membersCollRef = db.collection("members");
     var membersQuerySnapshot = null;
@@ -123,4 +90,4 @@ async function retrieveAllMembers() {
         memberRecords = memberDocs.map(d => d.data());
     console.log(`${memberRecords.length} member records retrieved.`);
     return memberRecords;
-};
+}

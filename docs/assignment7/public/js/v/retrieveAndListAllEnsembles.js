@@ -5,9 +5,9 @@
 pl.v.retrieveAndListAllEnsembles = {
     setupUserInterface: async function () {
         const tableBodyEl = document.querySelector("table#ensembles>tbody");
-        // load a list of all book records from Firestore
+        // load a list of all member records from Firestore
         const ensembleRecords = await retrieveAllEnsembles();
-        // for each book, create a table row with a cell for each attribute
+        // for each member, create a table row with a cell for each attribute
 
         const memberRecords = await getMemberRecords();
 
@@ -16,16 +16,14 @@ pl.v.retrieveAndListAllEnsembles = {
             row.insertCell().textContent = ensembleRec.ensembleId;
             row.insertCell().textContent = ensembleRec.ensembleType;
             row.insertCell().textContent = ensembleRec.name;
-            var i = "";
-            for(var memberId of ensembleRec.members) {
-                var meme = await getMemberFromRecords(memberId, memberRecords);
-                if (meme) {
-                    i += meme.name + ', ';
+            let i = "";
+            for(let memberId of ensembleRec.members) {
+                let names = await getMemberFromRecords(memberId, memberRecords);
+                if (names) {
+                    i += names.name + ', ';
                 }
             }
             row.insertCell().textContent = i.slice(0, -2); // cut off last ', '
-
-            row.insertCell().textContent = ensembleRec.member;
             row.insertCell().textContent = ensembleRec.practicingLocation;
             row.insertCell().textContent = ensembleRec.practicingDate;
         }
@@ -34,7 +32,7 @@ pl.v.retrieveAndListAllEnsembles = {
 
 async function getMemberRecords() {
     const membersCollRef = db.collection("members");
-    var membersQuerySnapshot = null;
+    let membersQuerySnapshot = null;
     try {
         membersQuerySnapshot = await membersCollRef.get();
     } catch (e) {
@@ -49,7 +47,7 @@ async function getMemberRecords() {
 
 async function getMemberFromRecords(memberId, rec) {
     for( var i of rec) {
-        if(i.memberId == memberId) {
+        if(i.memberId === memberId) {
             return i;
         }
     };
