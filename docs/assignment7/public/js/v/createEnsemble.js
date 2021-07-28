@@ -69,16 +69,11 @@ pl.v.createEnsemble = {
         const d = document.querySelector("form");
         const selMembersOptions = d.querySelector(".MultiSelectionWidget").firstElementChild;
 
-        console.log(selMembersOptions);
-        console.log(selMembersOptions.textContent);
-
-        /*
-        for (const opt of selMembersOptions) {
+        for (const opt of selMembersOptions.children) {
             let index = opt.value;
             slots.allMembers.push( index);
         }
-        */
-        // slots.allMembers.push(
+
         
         await addEnsemble(slots);
         formEl.reset();

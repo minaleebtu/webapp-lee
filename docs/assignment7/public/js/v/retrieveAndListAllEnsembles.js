@@ -17,7 +17,7 @@ pl.v.retrieveAndListAllEnsembles = {
             row.insertCell().textContent = ensembleRec.ensembleType;
             row.insertCell().textContent = ensembleRec.name;
             let i = "";
-            for(let memberId of ensembleRec.members) {
+            for(let memberId of ensembleRec.allMembers) {
 
                 let m = await getMemberFromRecords(memberId, memberRecords);
 
