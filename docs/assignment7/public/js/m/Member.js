@@ -284,7 +284,7 @@ async function retrieveAllMembers() {
 // Clear test data
 async function clearMemberData() {
     if (confirm("Do you really want to delete all member records?")) {
-        // retrieve all book documents from Firestore
+        // retrieve all member documents from Firestore
         const memberRecords = await retrieveAllMembers();
         // delete all documents
         await Promise.all(memberRecords.map(

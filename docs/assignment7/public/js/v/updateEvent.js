@@ -1,5 +1,5 @@
 /**
- * @fileOverview  View methods for the use case "update book"
+ * @fileOverview  View methods for the use case "update event"
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.updateEvent = {
@@ -43,7 +43,7 @@ pl.v.updateEvent = {
         selectEventEl.addEventListener("change", async function () {
             const eventId = selectEventEl.value;
             if (eventId) {
-                // retrieve up-to-date book record
+                // retrieve up-to-date event record
                 const eventRec = await retrieveEvent(eventId);
                 formEl.eventId.value = eventRec.eventId;
                 formEl.selectEventType.value = eventRec.eventType; // todo

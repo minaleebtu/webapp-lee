@@ -1,5 +1,5 @@
 /**
- * @fileOverview  Contains various view functions for the use case listBooks
+ * @fileOverview  Contains various view functions for the use case listevents
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.retrieveAndListAllEvents = {
@@ -33,7 +33,7 @@ pl.v.retrieveAndListAllEvents = {
 
 async function getEnsembleRecords() {
     const ensemblesCollRef = db.collection("ensembles");
-    var ensemblesQuerySnapshot = null;
+    let ensemblesQuerySnapshot = null;
     try {
         ensemblesQuerySnapshot = await ensemblesCollRef.get();
     } catch (e) {

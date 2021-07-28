@@ -1,5 +1,5 @@
 /**
- * @fileOverview  Contains various view functions for the use case deleteBook
+ * @fileOverview  Contains various view functions for the use case deleteEvent
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.deleteEvent = {
@@ -7,7 +7,7 @@ pl.v.deleteEvent = {
         const formEl = document.forms["Event"],
             deleteButton = formEl.commit,
             selectEventEl = formEl.selectEvent;
-        // load all ensemble records
+        // load all event records
         const eventRecords = await retrieveAllEvents();
         for (const eventRec of eventRecords) {
             const optionEl = document.createElement("option");
@@ -19,13 +19,13 @@ pl.v.deleteEvent = {
         deleteButton.addEventListener("click",
             pl.v.deleteEvent.handleDeleteButtonClickEvent);
     },
-    // Event handler for deleting a book
+    // Event handler for deleting a event
     handleDeleteButtonClickEvent: async function () {
         const selectEventEl = document.forms['Event'].selectEvent;
         const eventId = selectEventEl.value;
         if (eventId) {
             await destroyEvent(eventId);
-            // remove deleted book from select options
+            // remove deleted event from select options
             selectEventEl.remove(selectEventEl.selectedIndex);
         }
     }

@@ -1,5 +1,5 @@
 /**
- * @fileOverview  Contains various view functions for the use case deleteBook
+ * @fileOverview  Contains various view functions for the use case deleteEnsemble
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.deleteEnsemble = {
@@ -19,13 +19,13 @@ pl.v.deleteEnsemble = {
         deleteButton.addEventListener("click",
             pl.v.deleteEnsemble.handleDeleteButtonClickEvent);
     },
-    // Event handler for deleting a book
+    // Event handler for deleting a ensemble
     handleDeleteButtonClickEvent: async function () {
         const selectEnsembleEl = document.forms['Ensemble'].selectEnsemble;
         const ensembleId = selectEnsembleEl.value;
         if (ensembleId) {
             await destroyEnsemble(ensembleId);
-            // remove deleted book from select options
+            // remove deleted ensemble from select options
             selectEnsembleEl.remove(selectEnsembleEl.selectedIndex);
         }
     }

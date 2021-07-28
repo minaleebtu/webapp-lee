@@ -7,7 +7,7 @@ pl.v.deleteMember = {
         const formEl = document.forms["Member"],
             deleteButton = formEl.commit,
             selectMemberEl = formEl.selectMember;
-        // load all ensemble records
+        // load all member records
         const memberRecords = await retrieveAllMembers();
         for (const memberRec of memberRecords) {
             const optionEl = document.createElement("option");
@@ -19,13 +19,13 @@ pl.v.deleteMember = {
         deleteButton.addEventListener("click",
             pl.v.deleteMember.handleDeleteButtonClickEvent);
     },
-    // Event handler for deleting a book
+    // Event handler for deleting a member
     handleDeleteButtonClickEvent: async function () {
         const selectMemberEl = document.forms['Member'].selectMember;
         const memberId = selectMemberEl.value;
         if (memberId) {
             await destroyMember(memberId);
-            // remove deleted book from select options
+            // remove deleted member from select options
             selectMemberEl.remove(selectMemberEl.selectedIndex);
         }
     }
