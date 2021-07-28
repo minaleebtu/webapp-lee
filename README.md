@@ -118,8 +118,8 @@ BTU Music Club (**Domain name**: btu-musicclub)
 
 ## Division of work
 
-Fabian - Enumerations, Other Data Validation
+Fabian - Enumerations, Associations, Other Data Validation
 
 Tobias - Firebase Data Validation, Firebase Rules Data Validation, DB-UI synchronization
 
-Both - Basic Functionalities, Associations, UI Design, Bug Fixing
+Both - Basic Functionalities, UI Design, Bug Fixing
