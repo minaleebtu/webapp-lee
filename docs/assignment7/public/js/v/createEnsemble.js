@@ -50,22 +50,6 @@ pl.v.createEnsemble = {
             formEl.members.setCustomValidity(validationResult.message);
         });
 
-        // practicing location
-        formEl.practicingLocation.addEventListener("input", async function() {
-            const validationResult = await checkEnsembleLocation(
-                formEl.practicingLocation.value
-            );
-            formEl.practicingLocation.setCustomValidity(validationResult.message);
-        });
-
-        // practicing date
-        formEl.practicingDate.addEventListener("input", async function() {
-            const validationResult = await checkEnsemblePracticingDate(
-                formEl.practicingDate.value
-            );
-            formEl.practicingDate.setCustomValidity(validationResult.message);
-        });
-
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
         for (const memberRec of membersRecords) {
@@ -93,24 +77,8 @@ pl.v.createEnsemble = {
             var index = opt.value;
             slots.members.push( index);
         }
-        // console.log(slots.members);
         
         await addEnsemble(slots);
         formEl.reset();
     }
 }
-
-async function retrieveAllMembers() {
-    const membersCollRef = db.collection("members");
-    var membersQuerySnapshot = null;
-    try {
-        membersQuerySnapshot = await membersCollRef.get();
-    } catch (e) {
-        console.error(`Error when retrieving member records: ${e}`);
-        return null;
-    }
-    const memberDocs = membersQuerySnapshot.docs,
-        memberRecords = memberDocs.map(d => d.data());
-    console.log(`${memberRecords.length} member records retrieved.`);
-    return memberRecords;
-};

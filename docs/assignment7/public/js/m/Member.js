@@ -352,7 +352,7 @@ async function generateMemberTestData() {
  */
 function isIntegerOrIntegerString(x) {
     return typeof (x) === "number" && Number.isInteger(x) ||
-        typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
+        typeof (x) === "string" && x.search(/^-?[0-9]+$/) === 0;
 }
 
 function isNonEmptyString(string) {

@@ -29,18 +29,6 @@ class RangeConstraintViolation extends ConstraintViolation {
     }
 }
 
-class StringLengthConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class IntervalConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
 class PatternConstraintViolation extends ConstraintViolation {
     constructor(msg) {
         super(msg);
@@ -48,12 +36,6 @@ class PatternConstraintViolation extends ConstraintViolation {
 }
 
 class UniquenessConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
     constructor(msg) {
         super(msg);
     }

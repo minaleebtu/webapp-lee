@@ -29,7 +29,7 @@ function checkEnsembleMembers(members) {
 async function retrieveMember(memberId) {
     const membersCollRef = db.collection("members"),
         memberDocRef = membersCollRef.doc(memberId);
-    var memberDocSnapshot = null;
+    let memberDocSnapshot = null;
     try {
         memberDocSnapshot = await memberDocRef.get();
     } catch (e) {
@@ -281,7 +281,7 @@ async function validateEnsembleSlots(slots) {
 
 function isIntegerOrIntegerString(x) {
     return typeof (x) === "number" && Number.isInteger(x) ||
-        typeof (x) === "string" && x.search(/^-?[0-9]+$/) == 0;
+        typeof (x) === "string" && x.search(/^-?[0-9]+$/) === 0;
 }
 
 function isNonEmptyString(string) {
