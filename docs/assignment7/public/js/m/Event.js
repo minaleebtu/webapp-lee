@@ -79,41 +79,12 @@ function checkEventType(r) {
     }
 }
 
-/*
-async function checkEventValidity() {
-    var er = await retrieveAllEvents();
-    for (const eventRec of er) {
-        updateEventParticipants(eventRec.eventId);
-    }
-}
-*/
-
-/*
-async function updateEventParticipants(eventId) {
-    var eventRec = await retrieveEvent(eventId);
-    var newParticipants = [];
-    for(var i of eventRec.participants) {
-        var ensembleRec = retrieveEnsemble(i);
-        if(ensembleRec) {
-            if (!newParticipants.includes(ensembleRec.ensembleId)) {
-                newParticipants.push(ensembleRec.ensembleId);
-            }
-        }
-    }
-    const slots = {
-        eventId: eventId,
-        participants: newParticipants
-    };
-    updateEnsemble(slots);
-}
-*/
-
 
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
 /**
- *  Create a new movie record/object
+ *  Create a new Event record/object
  */
 async function addEvent(slots) {
     validateEventSlots(slots);
@@ -129,7 +100,7 @@ async function addEvent(slots) {
 };
 
 /**
- *  Update an existing Movie record/object
+ *  Update an existing Event record/object
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
@@ -206,10 +177,7 @@ async function retrieveAllEvents() {
 
 // Clear test data
 async function clearEventData() {
-    if (
-        // confirm("Do you really want to delete all event records?")
-        true
-    ) {
+    if (confirm("Do you really want to delete all event records?")) {
         // retrieve all events documents from Firestore
         const eventRecords = await retrieveAllEvents();
         // delete all documents
@@ -232,7 +200,7 @@ async function retrieveEvent(eventId) {
     }
     const eventRecord = eventDocSnapshot.data();
     return eventRecord;
-};
+}
 
 async function validateEventSlots(slots) {
     //check title
@@ -322,27 +290,11 @@ async function isMemberIDUsed(memberId) {
     try {
         memberDocSnapshot = await memberDocRef.get();
     } catch (e) {
-        console.log("error");
-        // console.error(`Error when retrieving member record: ${e}`);
+        console.error(`Error when retrieving member record: ${e}`);
         return false;
     }
-    console.log("okay");
     const memberRecord = memberDocSnapshot.data();
     return true;
-
-
-    /*
-    console.log("isMemberIDUsed 0");
-    var member = await db.collection("members").doc(memberId).get();
-    console.log("isMemberIDUsed 1");
-    if (member.exists) {
-        console.log("isMemberIDUsed 2");
-        return true;
-    }
-    console.log("isMemberIDUsed 3");
-    return false;
-
-     */
 }
 
 function isNonEmptyString(string) {
@@ -460,9 +412,6 @@ function fillSelectWithOptions2(selectEl, selectionRange, keyProp, optPar) {
     let optionEl = null, obj = null, displayProp = "";
     // delete old contents
     selectEl.innerHTML = "";
-
-    // create "no selection yet" entry
-    // if (!selectEl.multiple) selectEl.add(createOption("", " --- "));
 
     // create option elements from object property values
     let options = Object.keys(selectionRange);
@@ -743,67 +692,6 @@ function createChoiceWidget(containerEl, fld, values,
         });
     }
     return containerEl;
-}
-
-/**
- * @fileOverview  Defines error classes (also called "exception" classes)
- * for property constraint violations
- * @person Gerd Wagner
- */
-
-class ConstraintViolation {
-    constructor(msg) {
-        this.message = msg;
-    }
-}
-
-class NoConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-        this.message = "";
-    }
-}
-
-class MandatoryValueConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class RangeConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class StringLengthConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class IntervalConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class PatternConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class UniquenessConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class ReferentialIntegrityConstraintViolation extends ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
 }
 
 

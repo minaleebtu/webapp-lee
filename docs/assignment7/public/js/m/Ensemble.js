@@ -1,39 +1,29 @@
-/**
- * The class Ensemble
- * @class
- * @param {object} slots - Object creation slots.
- */
-
-
-
-
 function checkEnsembleName(name) {
-    // console.log(name);
     if (!isNonEmptyString(name)) {
         console.log("ERROR: The name must be a non-empty string!");
-        return new E_RangeConstraintViolation(
+        return new RangeConstraintViolation(
             "ERROR: The name must be a non-empty string!");
     }
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 function checkEnsembleType(type) {
     if (!isNonEmptyString(type)) {
         console.log("ERROR: The type must be a non-empty string!");
-        return new E_RangeConstraintViolation(
+        return new RangeConstraintViolation(
             "ERROR: The type must be a non-empty string!");
     }
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 function checkEnsembleMembers(members) {
     for (var i of members) {
         var memberRec = retrieveMember(i);
         if (!memberRec) {
-            return new E_RangeConstraintViolation("Member " + i + " does not exist!");
+            return new RangeConstraintViolation("Member " + i + " does not exist!");
         }
     }
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 async function retrieveMember(memberId) {
@@ -46,16 +36,15 @@ async function retrieveMember(memberId) {
         console.error(`Error when retrieving member record: ${e}`);
         return null;
     }
-    const memberRecord = memberDocSnapshot.data();
-    return memberRecord;
-};
+    return memberDocSnapshot.data();
+}
 
 function checkEnsembleLocation(location) {
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 function checkEnsemblePracticingDate(date) {
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 // Validate ensemble id from param and a
@@ -63,74 +52,47 @@ function checkEnsembleID(ensembleId) {
 
     if (ensembleId == null) {
         console.log("ERROR: A value for the Ensemble ID must be provided!");
-        return new E_MandatoryValueConstraintViolation(
+        return new MandatoryValueConstraintViolation(
             "ERROR: A value for the Ensemble ID must be provided!");
     }
     if (!isIntegerOrIntegerString(ensembleId)) {
         console.log("ERROR: Ensemble ID " + ensembleId + " is not a number!");
-        return new E_RangeConstraintViolation(
+        return new RangeConstraintViolation(
             "ERROR: Ensemble ID " + ensembleId + " is not a number!");
     }
     if (ensembleId < 0) {
         console.log("ERROR: Ensemble ID is not positive!");
-        return new E_RangeConstraintViolation(
+        return new RangeConstraintViolation(
             "ERROR: Ensemble ID is not positive!");
     }
 
-    return new E_NoConstraintViolation();
+    return new NoConstraintViolation();
 }
 
 async function checkEnsembleIDasID(ensembleId) {
 
     const validationResult = checkEnsembleID(ensembleId);
-    if (!validationResult instanceof E_NoConstraintViolation) {
+    if (!validationResult instanceof NoConstraintViolation) {
         return validationResult;
     }
 
-    var ensemble = await db.collection("ensembles").doc(ensembleId).get();
+    let ensemble = await db.collection("ensembles").doc(ensembleId).get();
 
     if (ensemble.exists) {
-        return new E_UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
+        return new UniquenessConstraintViolation("ERROR: Ensemble ID already in use!");
     }
 
     return validationResult;
-}
-
-async function checkEnsemblesValidity() {
-    var er = await retrieveAllEnsembles();
-    for (const ensembleRec of er) {
-        updateEnsembleMembers(ensembleRec.ensembleId);
-    }
-}
-
-async function updateEnsembleMembers(ensembleId) {
-    var ensembleRec = await retrieveEnsemble(ensembleId);
-    var newMembers = [];
-    for (var i of ensembleRec.members) {
-        var memberRec = retrieveMember(i);
-        if (memberRec) {
-            if (!newMembers.includes(memberRec.memberId)) {
-                newMembers.push(memberRec.memberId);
-            }
-        }
-    }
-    const slots = {
-        ensembleId: ensembleId,
-        members: newMembers
-    };
-    updateEnsemble(slots);
 }
 
 /********************************************************
  *** Class-level ("static") storage management methods ***
  *********************************************************/
 /**
- *  Create a new movie record/object
+ *  Create a new Ensemble record/object
  */
 async function addEnsemble(slots) {
-
-    // console.log("ensemble add called");
-    validateEnsembleSlots(slots);
+    await validateEnsembleSlots(slots);
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(slots.ensembleId);
     try {
@@ -140,10 +102,10 @@ async function addEnsemble(slots) {
         return;
     }
     console.log(`Ensemble record ${slots.ensembleId} created.`);
-};
+}
 
 /**
- *  Update an existing Movie record/object
+ *  Update an existing Ensemble record/object
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
@@ -176,10 +138,10 @@ async function updateEnsemble({ensembleId, ensembleType, name, members, practici
         }
         console.log(`Ensemble record ${ensembleId} modified.`);
     }
-};
+}
 
 /**
- *  Delete an existing Movie record/object
+ *  Delete an existing Ensemble record/object
  */
 async function destroyEnsemble(ensembleId) {
     /*
@@ -198,10 +160,7 @@ async function destroyEnsemble(ensembleId) {
         for (const ev of associatedEvents) {
             const eventRef = allEvents.doc(ev.eventId);
             // remove associated publisher from each book record
-            batch.update(
-                eventRef,
-                {
-                // publisher_id: firebase.firestore.FieldValue.delete()
+            batch.update(eventRef,{
                 participants: FieldValue.arrayRemove(ensembleId)
             });
         }
@@ -213,22 +172,7 @@ async function destroyEnsemble(ensembleId) {
         console.error(`Error deleting ensemble record: ${e}`);
     }
 
-};
-
-async function retrieveAllEvents() {
-    const eventsCollRef = db.collection("events");
-    var eventsQuerySnapshot = null;
-    try {
-        eventsQuerySnapshot = await eventsCollRef.get();
-    } catch (e) {
-        console.error(`Error when retrieving event records: ${e}`);
-        return null;
-    }
-    const eventDocs = eventsQuerySnapshot.docs,
-        eventRecords = eventDocs.map(d => d.data());
-    console.log(`${eventRecords.length} event records retrieved.`);
-    return eventRecords;
-};
+}
 
 /**
  *  Load all movie table rows and convert them to objects
@@ -247,14 +191,11 @@ async function retrieveAllEnsembles() {
         ensembleRecords = ensembleDocs.map(d => d.data());
     console.log(`${ensembleRecords.length} ensemble records retrieved.`);
     return ensembleRecords;
-};
+}
 
 // Clear test data
 async function clearEnsembleData() {
-    if (
-        // confirm("Do you really want to delete all ensemble records?")
-        true
-    ) {
+    if (confirm("Do you really want to delete all ensemble records?")) {
         // retrieve all ensemble documents from Firestore
         const ensembleRecords = await retrieveAllEnsembles();
         // delete all documents
@@ -263,7 +204,7 @@ async function clearEnsembleData() {
         // ... and then report that they have been deleted
         console.log(`${Object.values(ensembleRecords).length} ensembles deleted.`);
     }
-};
+}
 
 async function retrieveEnsemble(ensembleId) {
     const ensemblesCollRef = db.collection("ensembles"),
@@ -275,9 +216,8 @@ async function retrieveEnsemble(ensembleId) {
         console.error(`Error when retrieving ensemble record: ${e}`);
         return null;
     }
-    const ensembleRecord = ensembleDocSnapshot.data();
-    return ensembleRecord;
-};
+    return ensembleDocSnapshot.data();
+}
 
 async function generateEnsembleTestData() {
     let ensembleRecords = [
@@ -311,52 +251,52 @@ async function generateEnsembleTestData() {
         ensembleRec => db.collection("ensembles").doc(ensembleRec.ensembleId).set(ensembleRec)
     ));
     console.log(`${Object.keys(ensembleRecords).length} ensembles saved.`);
-};
+}
 
 async function validateEnsembleSlots(slots) {
     //check id
     var validationResult = checkEnsembleID(slots.ensembleId);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
     }
 
     //check type
-    var validationResult = checkEnsembleType(slots.ensembleType);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    validationResult = checkEnsembleType(slots.ensembleType);
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
     }
 
     //check name
-    var validationResult = checkEnsembleName(slots.name);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    validationResult = checkEnsembleName(slots.name);
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
     }
 
     //check date
-    var validationResult = checkEnsemblePracticingDate(slots.practicingDate);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    validationResult = checkEnsemblePracticingDate(slots.practicingDate);
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
     }
 
     //check location
-    var validationResult = checkEnsembleLocation(slots.practicingLocation);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    validationResult = checkEnsembleLocation(slots.practicingLocation);
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
     }
 
     //check members
-    var validationResult = checkEnsembleMembers(slots.members);
-    if (validationResult instanceof E_NoConstraintViolation) {
+    validationResult = checkEnsembleMembers(slots.members);
+    if (validationResult instanceof NoConstraintViolation) {
 
     } else {
         throw validationResult;
@@ -370,67 +310,6 @@ function isIntegerOrIntegerString(x) {
 
 function isNonEmptyString(string) {
     return typeof (string) === "string" && string.trim() !== "";
-}
-
-/**
- * @fileOverview  Defines error classes (also called "exception" classes)
- * for property constraint violations
- * @person Gerd Wagner
- */
-
-class E_ConstraintViolation {
-    constructor(msg) {
-        this.message = msg;
-    }
-}
-
-class E_NoConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-        this.message = "";
-    }
-}
-
-class E_MandatoryValueConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_RangeConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_StringLengthConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_IntervalConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_PatternConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_UniquenessConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
-}
-
-class E_ReferentialIntegrityConstraintViolation extends E_ConstraintViolation {
-    constructor(msg) {
-        super(msg);
-    }
 }
 
 
