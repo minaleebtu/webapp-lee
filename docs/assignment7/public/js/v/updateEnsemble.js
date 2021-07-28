@@ -44,7 +44,7 @@ pl.v.updateEnsemble = {
                 formEl.name.value = ensembleRec.name;
                 formEl.practicingLocation.value = ensembleRec.practicingLocation;
                 formEl.practicingDate.value = ensembleRec.practicingDate;
-                console.log(membersRecords[0]);
+
 
                 const c = [];
                 for (const i of membersRecords) {
