@@ -18,9 +18,11 @@ pl.v.retrieveAndListAllEnsembles = {
             row.insertCell().textContent = ensembleRec.name;
             let i = "";
             for(let memberId of ensembleRec.members) {
-                let names = await getMemberFromRecords(memberId, memberRecords);
-                if (names) {
-                    i += names.name + ', ';
+
+                let m = await getMemberFromRecords(memberId, memberRecords);
+
+                if (m) {
+                    i += m.name + ', ';
                 }
             }
             row.insertCell().textContent = i.slice(0, -2); // cut off last ', '
@@ -47,7 +49,7 @@ async function getMemberRecords() {
 
 async function getMemberFromRecords(memberId, rec) {
     for( var i of rec) {
-        if(i.memberId === memberId) {
+        if(i.memberId + "" === memberId + "") {
             return i;
         }
     };

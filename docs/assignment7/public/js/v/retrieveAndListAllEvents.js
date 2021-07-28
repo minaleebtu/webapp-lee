@@ -48,7 +48,7 @@ async function getEnsembleRecords() {
 
 async function getEnsembleFromRecords(ensembleId, rec) {
     for( let i of rec) {
-        if(i.ensembleId === ensembleId) {
+        if(i.ensembleId + "" === ensembleId + "") {
             return i;
         }
     }
