@@ -127,8 +127,7 @@ function createMultiSelectionWidget(widgetContainerEl, selection, selectionRange
                                     keyProp, displayProp, minCard) {
     const selectedItemsListEl = document.createElement("ul"),  // shows the selected objects
         selectEl = document.createElement("select");
-    var el = null;
-    if (!minCard) minCard = 0;  // default
+    let el = null;
     widgetContainerEl.innerHTML = "";  // delete old contents
     if (!displayProp) displayProp = keyProp;
     fillSelectedItemsList(selectedItemsListEl, selection, keyProp, displayProp);
@@ -138,10 +137,6 @@ function createMultiSelectionWidget(widgetContainerEl, selection, selectionRange
             const btnEl = e.target,
                 listItemEl = btnEl.parentNode,
                 listEl = listItemEl.parentNode;
-            if (listEl.children.length <= minCard) {
-                alert("A book must have at least one author!");
-                return;
-            }
             if (listItemEl.classList.contains("removed")) {
                 // undoing a previous removal
                 listItemEl.classList.remove("removed");
