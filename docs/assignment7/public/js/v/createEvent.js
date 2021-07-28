@@ -70,7 +70,6 @@ pl.v.createEvent = {
         let et = formEl.selectEventType.value;
         if (et) {
             slots.eventType = Object.values(EventTypeEL).indexOf(et);
-            console.log(slots.eventType);
         }
 
         const selParticipantsOptions = formEl.participants.selectedOptions;

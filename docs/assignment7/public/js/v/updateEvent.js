@@ -48,6 +48,7 @@ pl.v.updateEvent = {
                 formEl.eventId.value = eventRec.eventId;
                 formEl.selectEventType.value = eventRec.eventType; // todo
                 formEl.title.value = eventRec.title;
+                console.log(eventRec.date);
                 formEl.date.value = eventRec.date;
                 formEl.description.value = eventRec.description;
                 formEl.personInCharge.value = eventRec.personInCharge;
