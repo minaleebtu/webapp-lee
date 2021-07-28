@@ -53,6 +53,7 @@ pl.v.updateMember = {
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
+            formEl.name.reportValidity();
         });
         // mailAddress
         formEl.mailAddress.addEventListener("input", async function() {
@@ -60,16 +61,17 @@ pl.v.updateMember = {
                 formEl.mailAddress.value
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
+            formEl.mailAddress.reportValidity();
         });
-
-        // set an event handler for the submit/save button
-        updateButton.addEventListener("click",
-            pl.v.updateMember.handleSaveButtonClickEvent);
 
         // neutralize the submit member
         formEl.addEventListener("submit", function (e) {
             e.preventDefault();
         });
+
+        // set an event handler for the submit/save button
+        updateButton.addEventListener("click",
+            pl.v.updateMember.handleSaveButtonClickEvent);
 
     },
     

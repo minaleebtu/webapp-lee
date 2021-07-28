@@ -25,6 +25,7 @@ pl.v.createEnsemble = {
                 formEl.ensembleId.value
             );
             formEl.ensembleId.setCustomValidity(validationResult.message);
+            formEl.ensembleId.reportValidity();
         });
         // ensembleType
         formEl.ensembleType.addEventListener("input", async function() {
@@ -32,6 +33,7 @@ pl.v.createEnsemble = {
                 formEl.ensembleType.value
             );
             formEl.ensembleType.setCustomValidity(validationResult.message);
+            formEl.ensembleType.reportValidity();
         });
         // name
         formEl.name.addEventListener("input", async function() {
@@ -39,6 +41,7 @@ pl.v.createEnsemble = {
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
+            formEl.name.reportValidity();
         });
 
         // members
@@ -48,6 +51,7 @@ pl.v.createEnsemble = {
                 formEl.allMembers.value
             );
             formEl.allMembers.setCustomValidity(validationResult.message);
+            formEl.allMembers.reportValidity();
         });
 
         // fill list of possible members

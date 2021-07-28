@@ -8,7 +8,7 @@ pl.v.updateEnsemble = {
         const formEl = document.forms["Ensemble"],
             updateButton = formEl.commit,
             selectEnsembleEl = formEl.selectEnsemble,
-            selectMembers = formEl.members;
+            selectMembers = formEl.allMembers;
         
         // load all ensemble records
         const ensembleRecords = await retrieveAllEnsembles();
@@ -43,9 +43,43 @@ pl.v.updateEnsemble = {
                 formEl.reset();
             }
         });
+
+        formEl.ensembleId.addEventListener("input", async function() {
+            const validationResult = await checkEnsembleIDasID(
+                formEl.ensembleId.value
+            );
+            formEl.ensembleId.setCustomValidity(validationResult.message);
+            formEl.ensembleId.reportValidity();
+        });
+        formEl.ensembleType.addEventListener("input", async function() {
+            const validationResult = await checkEnsembleType(
+                formEl.ensembleType.value
+            );
+            formEl.ensembleType.setCustomValidity(validationResult.message);
+            formEl.ensembleType.reportValidity();
+        });
+        // name
+        formEl.name.addEventListener("input", async function() {
+            const validationResult = await checkEnsembleName(
+                formEl.name.value
+            );
+            formEl.name.setCustomValidity(validationResult.message);
+            formEl.name.reportValidity();
+        });
+
+        // members
+        formEl.allMembers.addEventListener("input", async function() {
+
+            const validationResult = await checkEnsembleMembers(
+                formEl.allMembers.value
+            );
+            formEl.allMembers.setCustomValidity(validationResult.message);
+            formEl.allMembers.reportValidity();
+        });
         // set an event handler for the submit/save button
         updateButton.addEventListener("click",
             pl.v.updateEnsemble.handleSaveButtonClickEvent);
+
         // neutralize the submit event
         formEl.addEventListener("submit", function (e) {
             e.preventDefault();
@@ -59,15 +93,15 @@ pl.v.updateEnsemble = {
             ensembleId: formEl.ensembleId.value,
             ensembleType: formEl.ensembleType.value,
             name: formEl.name.value,
-            members: [],
+            allMembers: [],
             practicingLocation: formEl.practicingLocation.value,
             practicingDate: formEl.practicingDate.value
         };
 
-        const selMembersOptions = formEl.members.selectedOptions;
+        const selMembersOptions = formEl.allMembers.selectedOptions;
         for (const opt of selMembersOptions) {
-            var index = opt.value;
-            slots.members.push( index);
+            let index = opt.value;
+            slots.allMembers.push( index);
         }
 
         await updateEnsemble(slots);
@@ -76,18 +110,3 @@ pl.v.updateEnsemble = {
         formEl.reset();
     }
 };
-
-async function retrieveAllMembers() {
-    const membersCollRef = db.collection("members");
-    var membersQuerySnapshot = null;
-    try {
-        membersQuerySnapshot = await membersCollRef.get();
-    } catch (e) {
-        console.error(`Error when retrieving member records: ${e}`);
-        return null;
-    }
-    const memberDocs = membersQuerySnapshot.docs,
-        memberRecords = memberDocs.map(d => d.data());
-    console.log(`${memberRecords.length} member records retrieved.`);
-    return memberRecords;
-}
