@@ -111,8 +111,8 @@ async function updateEnsemble({ensembleId, ensembleType, name, members, practici
     if (name && ensembleRec.name !== name) {
         updSlots.name = name;
     }
-    if (members && ensembleRec.members !== members) {
-        updSlots.members = members;
+    if (members && ensembleRec.allMembers !== members) {
+        updSlots.allMembers = members;
     }
     if (practicingLocation && ensembleRec.practicingLocation !== practicingLocation) {
         updSlots.practicingLocation = practicingLocation;
@@ -271,7 +271,7 @@ async function validateEnsembleSlots(slots) {
     }
 
     //check members
-    validationResult = checkEnsembleMembers(slots.members);
+    validationResult = checkEnsembleMembers(slots.allMembers);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {

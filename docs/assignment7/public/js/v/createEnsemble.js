@@ -43,30 +43,9 @@ pl.v.createEnsemble = {
             formEl.name.reportValidity();
         });
 
-        // members
-        /*
-        formEl.allMembers.addEventListener("input", async function() {
-
-            const validationResult = await checkEnsembleMembers(
-                formEl.allMembers.value
-            );
-            formEl.allMembers.setCustomValidity(validationResult.message);
-            formEl.allMembers.reportValidity();
-        });
-        */
 
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
-        /*
-        for (const memberRec of membersRecords) {
-            let el = document.createElement("option");
-            el.textContent = memberRec.name;
-            el.value = memberRec.memberId;
-            selectMembers.appendChild(el);
-        }
-        */
-
-
 
         const selectMembersWidget = formEl.querySelector(".MultiSelectionWidget");
         createMultiSelectionWidget( selectMembersWidget, [],
@@ -81,16 +60,25 @@ pl.v.createEnsemble = {
             ensembleId: formEl.ensembleId.value,
             ensembleType: formEl.ensembleType.value,
             name: formEl.name.value,
-            members: [],
+            allMembers: [],
             practicingLocation: formEl.practicingLocation.value,
             practicingDate: formEl.practicingDate.value
         };
 
-        const selMembersOptions = formEl.allMembers.selectedOptions;
+        // console.log(formEl);
+        const d = document.querySelector("form");
+        const selMembersOptions = d.querySelector(".MultiSelectionWidget").firstElementChild;
+
+        console.log(selMembersOptions);
+        console.log(selMembersOptions.textContent);
+
+        /*
         for (const opt of selMembersOptions) {
             let index = opt.value;
-            slots.members.push( index);
+            slots.allMembers.push( index);
         }
+        */
+        // slots.allMembers.push(
         
         await addEnsemble(slots);
         formEl.reset();
