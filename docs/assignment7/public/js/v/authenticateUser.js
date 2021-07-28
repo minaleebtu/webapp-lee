@@ -14,7 +14,9 @@ pl.v.authenticateUser = {
                 "/",
                 "/index.html",
                 "/authenticateUser.html",
-                "/retrieveAndListAllBooks.html"],
+                "/retrieveAndListAllMembers.html",
+                "/retrieveAndListAllEvents.html",
+                "/retrieveAndListAllEnsembless.html"],
             loginMngEls0 = document.querySelectorAll("div#login-management-0")
             loginMngEls1 = document.querySelectorAll("div#login-management-1");
         // reset (hide) all login management elements: [0]sign in/up , [1]sign out
