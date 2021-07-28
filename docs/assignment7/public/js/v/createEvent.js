@@ -42,6 +42,7 @@ pl.v.createEvent = {
                 formEl.eventId.value
             );
             formEl.eventId.setCustomValidity(validationResult.message);
+            formEl.eventId.reportValidity();
         });
 
         // eventType has implicit input validation
@@ -52,6 +53,7 @@ pl.v.createEvent = {
                 formEl.title.value
             );
             formEl.title.setCustomValidity(validationResult.message);
+            formEl.title.reportValidity();
         });
     },
     // save user input data

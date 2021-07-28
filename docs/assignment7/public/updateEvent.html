@@ -30,7 +30,8 @@
             <form id="Event">
                 <div class="bigcenter">
                     <div>
-                        <label>Select event:
+                        Select event:<br>
+                        <label>
                             <select name="selectEvent">
                                 <option value=""> ---</option>
                             </select><br><br>
@@ -46,13 +47,14 @@
                     <div><input name="title" placeholder="Title" class="tm-input"/></div>
 
                     <div class="field">
-                        <input type="date" placeholder="Date" name="date" class="tm-input"/>
+                        <input name="date" placeholder="Date" class="tm-input" type="text" onfocus="(this.type='date')" id="date"/>
                     </div>
                     <div><input name="description" placeholder="Description" class="tm-input"/></div>
                     <div><input name="personInCharge" placeholder="Person In Charge" class="tm-input"/></div>
 
                     <div class="select-many">
-                        <label>Participants: <select id="participants" name="participants" multiple="multiple"></select></label>
+                        Participants:<br>
+                        <label><select id="participants" name="participants" multiple="multiple"></select></label>
                         <br><br>
                     </div>
                     <div>

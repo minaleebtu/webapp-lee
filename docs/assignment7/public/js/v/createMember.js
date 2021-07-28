@@ -34,6 +34,7 @@ pl.v.createMember = {
                 formEl.memberId.value
             );
             formEl.memberId.setCustomValidity(validationResult.message);
+            formEl.memberId.reportValidity();
         });
         // name
         formEl.name.addEventListener("input", async function() {
@@ -41,6 +42,7 @@ pl.v.createMember = {
                 formEl.name.value
             );
             formEl.name.setCustomValidity(validationResult.message);
+            formEl.name.reportValidity();
         });
         // mailAddress
         formEl.mailAddress.addEventListener("input", async function() {
@@ -48,6 +50,7 @@ pl.v.createMember = {
                 formEl.mailAddress.value
             );
             formEl.mailAddress.setCustomValidity(validationResult.message);
+            formEl.mailAddress.reportValidity();
         });
     },
     
