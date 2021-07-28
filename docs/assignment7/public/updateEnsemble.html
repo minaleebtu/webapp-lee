@@ -13,10 +13,12 @@
     <script src="../js/m/Ensemble.js"></script>
     <script src="../js/v/updateEnsemble.js"></script>
     <script src="../js/c/ConstraintValidation.js"></script>
+    <script src="../lib/util.js"></script>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
     <link rel="stylesheet" href="../css/main.css">
+
 
     <script>
         window.addEventListener("load", pl.v.updateEnsemble.setupUserInterface);
@@ -42,15 +44,14 @@
                     <div><label>
                         <input name="ensembleType" placeholder="Ensemble Type" class="tm-input"/>
                     </label></div>
+
                     <div><label>
                         <input name="name" placeholder="Name" class="tm-input"/>
                     </label></div>
-                    Members:<br>
-                    <div class="select-many">
-                        <label>
-                            <select id="ourMembers" name="members" multiple="multiple"></select><br>
-                        </label>
-                        <br>
+
+                    <div class="widget">
+                        <label for="selectMembers">Members:</label>
+                        <div id="selectMembers" class="MultiSelectionWidget"></div>
                     </div>
 
                     <div><label>

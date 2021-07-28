@@ -14,6 +14,7 @@
     <script src="../js/v/createEnsemble.js"></script>
     <script src="../js/c/ConstraintValidation.js"></script>
     <script src="../js/m/Member.js"></script>
+    <script src="../lib/util.js"></script>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../css/tooplate-infinite-loop.css"/>
@@ -33,23 +34,28 @@
                     <div><label>
                         <input name="ensembleId" placeholder="Ensemble ID" class="tm-input"/>
                     </label></div>
+
                     <div><label>
                         <input name="ensembleType" placeholder="Ensemble Type" class="tm-input"/>
                     </label></div>
+
                     <div><label>
                         <input name="name" placeholder="Name" class="tm-input"/>
                     </label></div>
-                    <div class="select-many">
-                        <label>Members: <select id="allMembers" name="allMembers" multiple="multiple"></select></label>
-                        <br><br>
+
+                    <div class="widget">
+                        <label for="selectMembers">Members:</label>
+                        <div id="selectMembers" class="MultiSelectionWidget"></div>
                     </div>
 
                     <div><label>
                         <input name="practicingLocation" placeholder="Practicing location" class="tm-input"/>
                     </label></div>
+
                     <div><label>
                         <input name="practicingDate" placeholder="Practicing date" class="tm-input"/>
                     </label></div>
+
                     <div>
                         <button name="commit" type="button" class="btn tm-btn-submit">Save</button>
                         <progress id="clearData" style="display:none"></progress>

@@ -42,6 +42,7 @@ pl.v.createEnsemble = {
         });
 
         // members
+        /*
         formEl.allMembers.addEventListener("input", async function() {
 
             const validationResult = await checkEnsembleMembers(
@@ -49,15 +50,26 @@ pl.v.createEnsemble = {
             );
             formEl.allMembers.setCustomValidity(validationResult.message);
         });
+        */
 
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
+        /*
         for (const memberRec of membersRecords) {
             let el = document.createElement("option");
             el.textContent = memberRec.name;
             el.value = memberRec.memberId;
             selectMembers.appendChild(el);
         }
+        */
+
+
+
+        const selectMembersWidget = formEl.querySelector(".MultiSelectionWidget");
+        createMultiSelectionWidget( selectMembersWidget, [],
+            membersRecords, "memberId", "name", 100);
+        // widget, preselection, options, key, display, minimum count of selected entries
+
     },
     // save user input data
     handleSaveButtonClickEvent: async function () {

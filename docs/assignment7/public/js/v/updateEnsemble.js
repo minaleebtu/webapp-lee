@@ -21,12 +21,17 @@ pl.v.updateEnsemble = {
 
         // fill list of possible members
         const membersRecords = await retrieveAllMembers();
+        /*
         for (const memberRec of membersRecords) {
             let el = document.createElement("option");
             el.textContent = memberRec.name;
             el.value = memberRec.memberId;
             selectMembers.appendChild(el);
         }
+        */
+        const selectMembersWidget = formEl.querySelector(".MultiSelectionWidget");
+        createMultiSelectionWidget( selectMembersWidget, [],
+            membersRecords, "memberId", "name", 1);
         
         // when an ensemble is selected, fill the form with its data
         selectEnsembleEl.addEventListener("change", async function () {
@@ -39,6 +44,17 @@ pl.v.updateEnsemble = {
                 formEl.name.value = ensembleRec.name;
                 formEl.practicingLocation.value = ensembleRec.practicingLocation;
                 formEl.practicingDate.value = ensembleRec.practicingDate;
+                console.log(membersRecords[0]);
+
+                const c = [];
+                for (const i of membersRecords) {
+                    if (ensembleRec.members[i.memberId]) {
+                        c.push(i);
+                    }
+                }
+                createMultiSelectionWidget(selectMembersWidget, c,
+                    membersRecords, "memberId", "name", 100);
+
             } else {
                 formEl.reset();
             }
