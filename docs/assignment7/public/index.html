@@ -59,11 +59,8 @@
 <!-- Hero section -->
 <section id="infinite" class="text-white tm-font-big tm-parallax">
 
-
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-md tm-navbar" id="tmNav">
-
         <div class="container">
 
             <div class="tm-next">
@@ -75,9 +72,6 @@
                 <i class="fas fa-bars navbar-toggler-icon"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
-
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link tm-nav-link" href="#infinite">Home</a>
@@ -117,7 +111,7 @@
                 <br>
                 <button type="button" class="btn tm-btn-submit">Sign out</button>
             </div>
-
+        </div>
     </div>
 
 
@@ -153,53 +147,7 @@
                 <p class="mb-4 tm-intro-text">
                     This is the place from which the members can be managed.
                 </p>
-                <!--
-                <div class="mx-auto tm-gallery-container tm-gallery-container-2">
-                    <div class="tm-members-carousel">
 
-                        <figure class="tm-member-item">
-                            <img src="img/testimonial-img-01.jpg" alt="Image" class="img-fluid mx-auto">
-                            <blockquote>This background image includes a semi-transparent overlay layer. This section
-                                also has a parallax image effect.
-                            </blockquote>
-                            <figcaption>Catherine Win (Designer)</figcaption>
-                        </figure>
-
-                        <figure class="tm-member-item">
-                            <img src="img/testimonial-img-02.jpg" alt="Image" class="img-fluid mx-auto">
-                            <blockquote>Testimonial section comes with carousel items. You can use Infinite Loop HTML
-                                CSS template for your websites.
-                            </blockquote>
-                            <figcaption>Dual Rocker (CEO)</figcaption>
-                        </figure>
-
-                        <figure class="tm-member-item">
-                            <img src="img/testimonial-img-05.jpg" alt="Image" class="img-fluid mx-auto">
-                            <blockquote>Nulla finibus ligula nec tortor convallis tincidunt. Interdum et malesuada fames
-                                ac ante ipsum primis in faucibus.
-                            </blockquote>
-                            <figcaption>Mia Khalifa (Marketing)</figcaption>
-                        </figure>
-
-                        <figure class="tm-member-item">
-                            <img src="img/testimonial-img-04.jpg" alt="Image" class="img-fluid mx-auto">
-                            <blockquote>Curabitur rutrum pharetra lobortis. Pellentesque vehicula, velit quis eleifend
-                                fermentum, erat arcu aliquet neque.
-                            </blockquote>
-                            <figcaption>Oliva Htoo (Designer)</figcaption>
-                        </figure>
-
-                        <figure class="tm-member-item">
-                            <img src="img/testimonial-img-02.jpg" alt="Image" class="img-fluid mx-auto">
-                            <blockquote>Integer sit amet risus et erat imperdiet finibus. Nam lacus nunc, vulputate id
-                                ex eget, euismod auctor augue.
-                            </blockquote>
-                            <figcaption>Jacob Joker (CTO)</figcaption>
-                        </figure>
-
-                    </div>
-                </div>
-                -->
                 <div class="row tm-content-box">
 
                     <div class="text-center col-lg-3">
@@ -514,8 +462,8 @@
 <script>
 
     function getOffSet() {
-        var _offset = 450;
-        var windowHeight = window.innerHeight;
+        let _offset = 450;
+        const windowHeight = window.innerHeight;
 
         if (windowHeight > 500) {
             _offset = 400;
@@ -531,18 +479,18 @@
     }
 
     function setParallaxPosition($doc, multiplier, $object) {
-        var offset = getOffSet();
-        var from_top = $doc.scrollTop(),
+        const offset = getOffSet();
+        const from_top = $doc.scrollTop(),
             bg_css = 'center ' + (multiplier * from_top - offset) + 'px';
         $object.css({"background-position": bg_css});
     }
 
     // Parallax function
     // Adapted based on https://codepen.io/roborich/pen/wpAsm
-    var background_image_parallax = function ($object, multiplier, forceSet) {
+    const background_image_parallax = function ($object, multiplier, forceSet) {
         multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
         multiplier = 1 - multiplier;
-        var $doc = $(document);
+        const $doc = $(document);
         // $object.css({"background-attatchment" : "fixed"});
 
         if (forceSet) {
@@ -554,19 +502,18 @@
         }
     };
 
-    var background_image_parallax_2 = function ($object, multiplier) {
+    const background_image_parallax_2 = function ($object, multiplier) {
         multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
         multiplier = 1 - multiplier;
-        var $doc = $(document);
         $object.css({"background-attachment": "fixed"});
 
         $(window).scroll(function () {
             if ($(window).width() > 768) {
-                var firstTop = $object.offset().top,
+                const firstTop = $object.offset().top,
                     pos = $(window).scrollTop(),
                     yPos = Math.round((multiplier * (firstTop - pos)) - 186);
 
-                var bg_css = 'center ' + yPos + 'px';
+                const bg_css = 'center ' + yPos + 'px';
 
                 $object.css({"background-position": bg_css});
             } else {
@@ -587,7 +534,7 @@
         }, true);
 
         // Detect window scroll and update navbar
-        $(window).scroll(function (e) {
+        $(window).scroll(function () {
             if ($(document).scrollTop() > 120) {
                 $('.tm-navbar').addClass("scroll");
             } else {
@@ -611,7 +558,7 @@
         $("a").on('click', function (event) {
             if (this.hash !== "") {
                 event.preventDefault();
-                var hash = this.hash;
+                const hash = this.hash;
 
                 $('html, body').animate({
                     scrollTop: $(hash).offset().top
