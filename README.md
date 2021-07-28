@@ -118,6 +118,8 @@ BTU Music Club (**Domain name**: btu-musicclub)
 
 ## Division of work
 
-Fabian - Member Class, Event Class, Enumerations, other Data Validation
+Fabian - Enumerations, Other Data Validation
 
-Tobias - Ensemble Class, Firebase Backend, Firebase Rules Data Validation, DB-UI synchronization
+Tobias - Firebase Data Validation, Firebase Rules Data Validation, DB-UI synchronization
+
+Both - Basic Functionalities, Associations, UI Design, Bug Fixing
