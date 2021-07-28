@@ -17,8 +17,8 @@ function checkEnsembleType(type) {
 }
 
 function checkEnsembleMembers(members) {
-    for (var i of members) {
-        var memberRec = retrieveMember(i);
+    for (let i of members) {
+        let memberRec = retrieveMember(i);
         if (!memberRec) {
             return new RangeConstraintViolation("Member " + i + " does not exist!");
         }
