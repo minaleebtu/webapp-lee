@@ -3,7 +3,6 @@ service cloud.firestore {
     match /databases/{database}/documents { // {database} clause indicates that these rules apply to all databases in Firestore
 
         match /{document=**} {
-            // allow write: if request.auth.token.email_verified == true;
             allow read: if request.auth != null;
 
             allow delete: if request.auth.token.email_verified == true;
@@ -22,7 +21,7 @@ service cloud.firestore {
 
             allow update: if request.auth.token.email_verified == true
                 && (request.resource.data.diff(resource.data).affectedKeys()
-                    .hasOnly(['ensembleType', 'name', 'members', 'practicingLocation', 'practicingDate']))
+                    .hasOnly(['ensembleType', 'name', 'allMembers', 'practicingLocation', 'practicingDate']))
                 && request.resource.data.ensembleType != null ? checkEnsembleType(request.resource.data.ensembleType) : false
                 && request.resource.data.name != null ? checkEnsembleName(request.resource.data.name) : false
                 && request.resource.data.practicingLocation != null // ? checkEnsemblePracticingLocation(request.resource.data.practicingLocation) : true;
@@ -51,27 +50,9 @@ service cloud.firestore {
             return
                 true
                 && name != null
-                && !(exists(/databases/$(database)/documents/members/$(name)))
+                && !(exists(/databases/$(database)/documents/ensembles/$(name)))
                 ;
         }
-
-        /*
-        function checkEnsemblePracticingLocation(practicingLocation) {
-            return
-                true
-                // && !(exists(/databases/$(database)/documents/members/$(practicingLocation)))
-                ;
-        }
-        */
-
-        /*
-        function checkEnsemblePracticingDate(practicingDate) {
-            return
-                true
-                // && !(exists(/databases/$(database)/documents/members/$(practicingDate)))
-                ;
-        }
-        */
 
         /*
          *  Members
@@ -166,42 +147,9 @@ service cloud.firestore {
 
         function checkEventTitle(title) {
             return
-                !(exists(/databases/$(database)/documents/members/$(title)))
+                !(exists(/databases/$(database)/documents/events/$(title)))
                 && title != null
                 ;
         }
-
-        /*
-        function checkEventDate(date) {
-            return
-                true
-                ;
-        }
-        */
-
-        /*
-        function checkEventDescription(description) {
-            return
-                true
-                ;
-        }
-        */
-
-        /*
-        function checkEventPersonInCharge(personInCharge) {
-            return
-                true
-                ;
-        }
-        */
-
-        /*
-        function checkEventParticipants(participants) {
-            return
-                true
-                ;
-        }
-        */
-
     }
 }
