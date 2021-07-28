@@ -7,8 +7,7 @@ pl.v.createEnsemble = {
 
         const
             formEl = document.forms['Ensemble'],
-            saveButton = document.forms['Ensemble'].commit,
-            selectMembers = formEl.allMembers;
+            saveButton = document.forms['Ensemble'].commit;
 
         // set an event handler for the submit/save button
         saveButton.addEventListener("click",
@@ -87,7 +86,7 @@ pl.v.createEnsemble = {
             practicingDate: formEl.practicingDate.value
         };
 
-        const selMembersOptions = formEl.members.selectedOptions;
+        const selMembersOptions = formEl.allMembers.selectedOptions;
         for (const opt of selMembersOptions) {
             let index = opt.value;
             slots.members.push( index);

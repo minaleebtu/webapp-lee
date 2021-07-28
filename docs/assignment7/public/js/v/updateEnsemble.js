@@ -84,6 +84,7 @@ pl.v.updateEnsemble = {
         });
 
         // members
+        console.log(formEl);
         formEl.allMembers.addEventListener("input", async function() {
 
             const validationResult = await checkEnsembleMembers(

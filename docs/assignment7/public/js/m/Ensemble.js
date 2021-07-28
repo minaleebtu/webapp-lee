@@ -217,7 +217,7 @@ async function generateEnsembleTestData() {
             ensembleId: "0",
             ensembleType: "flute choir",
             name: "The Air Benders",
-            members: [0, 1],
+            allMembers: [0, 1],
             practicingLocation: "Building A, Room 42",
             practicingDate: "every Sunday at 8"
         },
@@ -225,7 +225,7 @@ async function generateEnsembleTestData() {
             ensembleId: "1",
             ensembleType: "saxophone ensemble",
             name: "Epic Sax Guy and Friends",
-            members: [3, 2],
+            allMembers: [3, 2],
             practicingLocation: "Building B, Room 69",
             practicingDate: "every Wednesday at 7"
         },
@@ -233,7 +233,7 @@ async function generateEnsembleTestData() {
             ensembleId: "2",
             ensembleType: "saxophone ensemble",
             name: "Cantina Band",
-            members: [2],
+            allMembers: [2],
             practicingLocation: "Building C, Canteen",
             practicingDate: "every Sunday, biweekly"
         }
