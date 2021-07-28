@@ -1,5 +1,5 @@
 /**
- * @fileOverview  Contains various view functions for the use case listBooks
+ * @fileOverview  Contains various view functions for the use case listensembles
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.retrieveAndListAllEnsembles = {
@@ -48,9 +48,9 @@ async function getMemberRecords() {
 }
 
 async function getMemberFromRecords(memberId, rec) {
-    for( var i of rec) {
+    for( let i of rec) {
         if(i.memberId + "" === memberId + "") {
             return i;
         }
-    };
+    }
 }

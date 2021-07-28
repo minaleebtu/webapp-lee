@@ -152,7 +152,7 @@ async function destroyEnsemble(ensembleId) {
         const batch = db.batch();
         for (const ev of associatedEvents) {
             const eventRef = allEvents.doc(ev.eventId);
-            // remove associated publisher from each book record
+            // remove associated publisher from each ensemble record
             batch.update(eventRef,{
                 participants: FieldValue.arrayRemove(ensembleId)
             });

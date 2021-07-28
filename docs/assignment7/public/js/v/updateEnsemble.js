@@ -1,5 +1,5 @@
 /**
- * @fileOverview  View methods for the use case "update book"
+ * @fileOverview  View methods for the use case "update ensemble"
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.updateEnsemble = {

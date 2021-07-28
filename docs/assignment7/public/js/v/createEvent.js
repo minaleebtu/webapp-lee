@@ -1,5 +1,5 @@
 /**
- * @fileOverview  View methods for the use case "create book"
+ * @fileOverview  View methods for the use case "create event"
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.createEvent = {

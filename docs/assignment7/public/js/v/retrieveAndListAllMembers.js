@@ -1,5 +1,5 @@
 /**
- * @fileOverview  Contains various view functions for the use case listBooks
+ * @fileOverview  Contains various view functions for the use case listMembers
  * @authors Gerd Wagner & Juan-Francisco Reyes
  */
 pl.v.retrieveAndListAllMembers = {
