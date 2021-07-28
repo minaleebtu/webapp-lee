@@ -39,14 +39,6 @@ async function retrieveMember(memberId) {
     return memberDocSnapshot.data();
 }
 
-function checkEnsembleLocation(location) {
-    return new NoConstraintViolation();
-}
-
-function checkEnsemblePracticingDate(date) {
-    return new NoConstraintViolation();
-}
-
 // Validate ensemble id from param and a
 function checkEnsembleID(ensembleId) {
 
@@ -180,7 +172,7 @@ async function destroyEnsemble(ensembleId) {
  */
 async function retrieveAllEnsembles() {
     const ensemblesCollRef = db.collection("ensembles");
-    var ensemblesQuerySnapshot = null;
+    let ensemblesQuerySnapshot = null;
     try {
         ensemblesQuerySnapshot = await ensemblesCollRef.get();
     } catch (e) {
@@ -209,7 +201,7 @@ async function clearEnsembleData() {
 async function retrieveEnsemble(ensembleId) {
     const ensemblesCollRef = db.collection("ensembles"),
         ensembleDocRef = ensemblesCollRef.doc(ensembleId);
-    var ensembleDocSnapshot = null;
+    let ensembleDocSnapshot = null;
     try {
         ensembleDocSnapshot = await ensembleDocRef.get();
     } catch (e) {
@@ -255,7 +247,7 @@ async function generateEnsembleTestData() {
 
 async function validateEnsembleSlots(slots) {
     //check id
-    var validationResult = checkEnsembleID(slots.ensembleId);
+    let validationResult = checkEnsembleID(slots.ensembleId);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
@@ -272,22 +264,6 @@ async function validateEnsembleSlots(slots) {
 
     //check name
     validationResult = checkEnsembleName(slots.name);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
-        throw validationResult;
-    }
-
-    //check date
-    validationResult = checkEnsemblePracticingDate(slots.practicingDate);
-    if (validationResult instanceof NoConstraintViolation) {
-
-    } else {
-        throw validationResult;
-    }
-
-    //check location
-    validationResult = checkEnsembleLocation(slots.practicingLocation);
     if (validationResult instanceof NoConstraintViolation) {
 
     } else {
