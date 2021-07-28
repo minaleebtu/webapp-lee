@@ -48,7 +48,7 @@ pl.v.updateEnsemble = {
 
                 const c = [];
                 for (const i of membersRecords) {
-                    if (ensembleRec.members[i.memberId]) {
+                    if (ensembleRec.allMembers[i.memberId]) {
                         c.push(i);
                     }
                 }
@@ -83,16 +83,6 @@ pl.v.updateEnsemble = {
             formEl.name.reportValidity();
         });
 
-        // members
-        console.log(formEl);
-        formEl.allMembers.addEventListener("input", async function() {
-
-            const validationResult = await checkEnsembleMembers(
-                formEl.allMembers.value
-            );
-            formEl.allMembers.setCustomValidity(validationResult.message);
-            formEl.allMembers.reportValidity();
-        });
         // set an event handler for the submit/save button
         updateButton.addEventListener("click",
             pl.v.updateEnsemble.handleSaveButtonClickEvent);
@@ -115,10 +105,12 @@ pl.v.updateEnsemble = {
             practicingDate: formEl.practicingDate.value
         };
 
-        const selMembersOptions = formEl.allMembers.selectedOptions;
-        for (const opt of selMembersOptions) {
+        const d = document.querySelector("form");
+        const selMembersOptions = d.querySelector(".MultiSelectionWidget").firstElementChild;
+        for (const opt of selMembersOptions.children) {
             let index = opt.value;
-            slots.allMembers.push( index);
+
+            slots.allMembers.push(opt.getAttribute("data-value"));
         }
 
         await updateEnsemble(slots);

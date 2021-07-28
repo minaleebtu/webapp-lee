@@ -101,7 +101,7 @@ async function addEnsemble(slots) {
  *  properties are updated with implicit setters for making sure
  *  that the new values are validated
  */
-async function updateEnsemble({ensembleId, ensembleType, name, members, practicingLocation, practicingDate}) {
+async function updateEnsemble({ensembleId, ensembleType, name, allMembers, practicingLocation, practicingDate}) {
     const updSlots = {};
     const ensembleRec = await retrieveEnsemble(ensembleId);
 
@@ -111,8 +111,9 @@ async function updateEnsemble({ensembleId, ensembleType, name, members, practici
     if (name && ensembleRec.name !== name) {
         updSlots.name = name;
     }
-    if (members && ensembleRec.allMembers !== members) {
-        updSlots.allMembers = members;
+
+    if (allMembers && ensembleRec.allMembers !== allMembers) {
+        updSlots.allMembers = allMembers;
     }
     if (practicingLocation && ensembleRec.practicingLocation !== practicingLocation) {
         updSlots.practicingLocation = practicingLocation;
