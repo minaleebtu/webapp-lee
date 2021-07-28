@@ -28,22 +28,32 @@
             <h1>Create a new event record</h1>
             <div class="col-sm-12 col-md-6">
                 <form id="Event">
-                    <div><input name="eventId" placeholder="Event ID" class="tm-input"/></div>
+                    <div><label>
+                        <input name="eventId" placeholder="Event ID" class="tm-input"/>
+                    </label></div>
 
                     <div class="select-one">
-                        <select id="selectEventType" name="Event Type"></select>
+                        <label for="selectEventType"></label><select id="selectEventType" name="Event Type"></select>
                     </div>
 
-                    <div><input name="title" placeholder="Title" class="tm-input"/></div>
+                    <div><label>
+                        <input name="title" placeholder="Title" class="tm-input"/>
+                    </label></div>
 
                     <div class="field">
-                        <input type="date" name="date" placeholder="Date" class="tm-input"/>
+                        <label>
+                            <input type="date" name="date" placeholder="Date" class="tm-input"/>
+                        </label>
                     </div>
-                    <div><input name="description" placeholder="Description / Location" class="tm-input"/></div>
-                    <div><input name="personInCharge" placeholder="Person In Charge" class="tm-input"/></div>
+                    <div><label>
+                        <input name="description" placeholder="Description / Location" class="tm-input"/>
+                    </label></div>
+                    <div><label>
+                        <input name="personInCharge" placeholder="Person In Charge" class="tm-input"/>
+                    </label></div>
 
                     <div class="select-many">
-                        <select id="participants" name="participants" placeholder="Participants" multiple="multiple"></select>
+                        <label for="participants"></label><select id="participants" name="participants" multiple="multiple"></select>
                     </div>
 
                     <div>

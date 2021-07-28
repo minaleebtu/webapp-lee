@@ -8,13 +8,18 @@
 pl.v.authenticateUser = {
     setupUiByUserStatus: function () {
         // set initial values and login management elements
-        const page = window.location.pathname,
-            allowedPages = ["/", "/index.html",
-                "/authenticateUser.html", "/retrieveAndListAllBooks.html"],
-            loginMngEls = document.querySelectorAll("div#login-management");
+        const
+            page = window.location.pathname,
+            allowedPages = [
+                "/",
+                "/index.html",
+                "/authenticateUser.html",
+                "/retrieveAndListAllBooks.html"],
+            loginMngEls0 = document.querySelectorAll("div#login-management-0")
+            loginMngEls1 = document.querySelectorAll("div#login-management-1");
         // reset (hide) all login management elements: [0]sign in/up , [1]sign out
         if (page !== "/authenticateUser.html") {
-            loginMngEls[0].hidden = loginMngEls[1].hidden = true;
+            loginMngEls0[0].hidden = loginMngEls1[0].hidden = true;
         }
         //evaluate user authentication status
         auth.onAuthStateChanged(async function (user) {
@@ -25,7 +30,7 @@ pl.v.authenticateUser = {
                         // redirect to authentication page
                         window.location.pathname = "/authenticateUser.html";
                     }
-                    loginMngEls[0].hidden = false; // show 'sign in/up'
+                    loginMngEls0[0].hidden = false; // show 'sign in/up'
                     console.log("Authenticated as 'anonymous'");
                 } else { // if status is 'registered'
                     const spanEl = document.createElement("span");
@@ -34,8 +39,8 @@ pl.v.authenticateUser = {
                     } else {
                         spanEl.textContent = `Signed in as ${user.email} `;
                     }
-                    loginMngEls[1].prepend(spanEl);
-                    loginMngEls[1].hidden = false; // show 'sign out'
+                    loginMngEls1[0].prepend(spanEl);
+                    loginMngEls1[0].hidden = false; // show 'sign out'
                     // if current page is not allowed & email is verified
                     if (!allowedPages.includes(page) && !user.emailVerified) {
                         alert(`Check your email ${user.email} for instructions to verify your account before using this operation`);
@@ -52,7 +57,7 @@ pl.v.authenticateUser = {
 
                     }
                     // set and event handler for 'sign out' button
-                    const signOutButton = loginMngEls[1].querySelector("button");
+                    const signOutButton = loginMngEls1[0].querySelector("button");
                     signOutButton.addEventListener("click", pl.v.authenticateUser.handleSignOut);
                     console.log(`Authenticated as 'registered with ${user.emailVerified ? '' : 'NO '}verified account' (${user.email})`);
                 }
