@@ -49,7 +49,7 @@ pl.v.createEnsemble = {
 
         const selectMembersWidget = formEl.querySelector(".MultiSelectionWidget");
         createMultiSelectionWidget( selectMembersWidget, [],
-            membersRecords, "memberId", "name", 100);
+            membersRecords, "memberId", "name", 1);
         // widget, preselection, options, key, display, minimum count of selected entries
 
     },

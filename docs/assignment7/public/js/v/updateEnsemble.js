@@ -53,7 +53,7 @@ pl.v.updateEnsemble = {
                     }
                 }
                 createMultiSelectionWidget(selectMembersWidget, c,
-                    membersRecords, "memberId", "name", 100);
+                    membersRecords, "memberId", "name", 1);
 
             } else {
                 formEl.reset();
